@@ -1,0 +1,161 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 222.2 84% 4.9%;
+
+    --radius: 0.5rem;
+
+    --sidebar-background: 220 14% 96%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 220 14% 92%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+
+    /* Status card colors with 100% saturation for light mode */
+    --status-card-up: 142 76% 45%;
+    --status-card-down: 0 84% 60%;
+    --status-card-paused: 214 100% 52%;
+    --status-card-warning: 38 92% 50%;
+  }
+
+  .dark {
+    --background: 0 0% 7%; /* Updated to #121212 */
+    --foreground: 210 40% 98%;
+
+    --card: 0 0% 7%; /* Updated to match background */
+    --card-foreground: 210 40% 98%;
+
+    --popover: 0 0% 7%; /* Updated to match background */
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+    
+    --sidebar-background: 0 0% 7%; /* Updated to match background */
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 0 0% 10%; /* Updated to be slightly lighter than background */
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 0 0% 12%; /* Updated to be slightly lighter than background */
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground transition-colors duration-300 font-inter;
+  }
+  
+  /* Add smooth transitions for theme changes */
+  .transition-theme {
+    @apply transition-all duration-300 ease-in-out;
+  }
+  
+  /* Selection styles for both themes */
+  ::selection {
+    @apply bg-primary/20 text-foreground;
+  }
+}
+
+/* Custom scrollbar for both light and dark modes */
+@layer utilities {
+  .scrollbar::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  .scrollbar::-webkit-scrollbar-track {
+    @apply bg-muted;
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-muted-foreground/40 hover:bg-muted-foreground/60 rounded;
+  }
+
+  .scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: var(--muted-foreground) var(--muted);
+  }
+  
+  /* Sidebar collapse functionality */
+  .sidebar-collapsed .sidebar {
+    width: 4rem;
+  }
+  
+  .sidebar {
+    transition: width 0.3s ease-in-out;
+  }
+  
+  /* Card styles with 100% color saturation for light mode */
+  .status-card-up {
+    @apply bg-green-500 border-green-600 text-white;
+  }
+  
+  .status-card-down {
+    @apply bg-red-500 border-red-600 text-white;
+  }
+  
+  .status-card-paused {
+    @apply bg-blue-500 border-blue-600 text-white;
+  }
+  
+  .status-card-warning {
+    @apply bg-yellow-500 border-yellow-600 text-white;
+  }
+}

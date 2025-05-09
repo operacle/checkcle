@@ -1,0 +1,18 @@
+services:
+  checkcle:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: checkcle
+    restart: unless-stopped
+    ports:
+      - "8090:8090"  # Allow access to frontend + PocketBase
+    volumes:
+      - pb_data:/app/pb_data  # Ensure persistent data across rebuilds
+    ulimits:
+      nofile:
+        soft: 4096
+        hard: 8192
+
+volumes:
+  pb_data:  # Docker-managed volume for persistence

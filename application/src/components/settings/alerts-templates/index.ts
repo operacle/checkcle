@@ -1,0 +1,2 @@
+
+export { AlertsTemplates } from "./AlertsTemplates";

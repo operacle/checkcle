@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useNavigate } from "react-router-dom";
 import { useSystemSettings } from "@/hooks/useSystemSettings";
+import QuickActionsDialog from "./QuickActionsDialog";
 
 interface HeaderProps {
   currentUser: AuthUser | null;
@@ -28,6 +29,7 @@ export const Header = ({
   const [greeting, setGreeting] = useState<string>("");
   const { systemName } = useSystemSettings();
   const navigate = useNavigate();
+  const [quickActionsOpen, setQuickActionsOpen] = useState(false);
 
   // Set greeting based on time of day
   useEffect(() => {
@@ -88,8 +90,18 @@ export const Header = ({
         <Button variant="ghost" size="icon" onClick={toggleSidebar} className="mr-2">
           {sidebarCollapsed ? <PanelLeft className="h-5 w-5" /> : <PanelLeftClose className="h-5 w-5" />}
         </Button>
-        <div className="flex items-center space-x-2">
+        
+        {/* Quick Actions Button */}
+        <Button 
+          variant="ghost" 
+          size="icon" 
+          onClick={() => setQuickActionsOpen(true)} 
+          className="mr-2"
+        >
           <Grid3x3 className="h-5 w-5 text-green-500" />
+        </Button>
+        
+        <div className="flex items-center space-x-2">
           <h1 className="text-lg font-medium">{greeting}, {currentUser?.name || currentUser?.email?.split('@')[0] || 'User'} 👋 ✨</h1>
         </div>
       </div>
@@ -205,6 +217,9 @@ export const Header = ({
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
+      
+      {/* Quick Actions Dialog */}
+      <QuickActionsDialog isOpen={quickActionsOpen} setIsOpen={setQuickActionsOpen} />
     </header>
   );
 };

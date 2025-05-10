@@ -118,25 +118,45 @@ export const Header = ({
         </DropdownMenu>
         
         {/* Documentation */}
-        <Button variant="outline" size="icon" className="rounded-full w-8 h-8 border-border">
+        <Button 
+          variant="outline" 
+          size="icon" 
+          className="rounded-full w-8 h-8 border-border"
+          onClick={() => window.open("https://docs.checkcle.io", "_blank")}
+        >
           <span className="sr-only">{t("documentation")}</span>
           <FileText className="w-4 h-4" />
         </Button>
         
         {/* GitHub */}
-        <Button variant="outline" size="icon" className="rounded-full w-8 h-8 border-border">
+        <Button 
+          variant="outline" 
+          size="icon" 
+          className="rounded-full w-8 h-8 border-border"
+          onClick={() => window.open("https://github.com/operacle/checkcle", "_blank")}
+        >
           <span className="sr-only">GitHub</span>
           <Github className="w-4 h-4" />
         </Button>
         
         {/* X (Twitter) */}
-        <Button variant="outline" size="icon" className="rounded-full w-8 h-8 border-border">
+        <Button 
+          variant="outline" 
+          size="icon" 
+          className="rounded-full w-8 h-8 border-border"
+          onClick={() => window.open("https://x.com/tlengoss", "_blank")}
+        >
           <span className="sr-only">X (Twitter)</span>
           <Twitter className="w-4 h-4" />
         </Button>
         
-        {/* Discord (replaced with MessageSquare) */}
-        <Button variant="outline" size="icon" className="rounded-full w-8 h-8 border-border">
+        {/* Discord */}
+        <Button 
+          variant="outline" 
+          size="icon" 
+          className="rounded-full w-8 h-8 border-border"
+          onClick={() => window.open("https://discord.gg/xs9gbubGwX", "_blank")}
+        >
           <span className="sr-only">Discord</span>
           <MessageSquare className="w-4 h-4" />
         </Button>

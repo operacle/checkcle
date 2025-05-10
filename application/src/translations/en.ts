@@ -72,5 +72,46 @@ export const enTranslations = {
   viewOnGithub: "View on GitHub",
   viewDocumentation: "View Documentation",
   followOnX: "Follow on X",
-  joinDiscord: "Join Discord"
+  joinDiscord: "Join Discord",
+  // Quick Actions Dialog translations
+  quickActions: "Quick Actions",
+  quickActionsDescription: "Access common monitoring operations and features quickly. Select an action below to get started.",
+  close: "Close",
+  quickTips: "Quick Tips",
+  // Website Monitoring Card
+  monitorWebsite: "Website Monitoring",
+  monitorWebsiteDesc: "Monitor website availability and performance with detailed metrics and alerts.",
+  monitorMultipleEndpoints: "Monitor multiple endpoints",
+  trackResponseTimes: "Track response times",
+  setCustomAlerts: "Set custom alerts",
+  // Server Monitoring Card
+  monitorServer: "Server Monitoring",
+  monitorServerDesc: "Track server health metrics including CPU, memory, disk usage, and network traffic.",
+  monitorCPURam: "Monitor CPU & RAM usage",
+  trackNetworkMetrics: "Track network metrics",
+  viewProcesses: "View active processes",
+  // SSL Certificate Card
+  sslCertificate: "SSL Certificate",
+  sslCertificateDesc: "Monitor SSL certificate validity and receive alerts before expiration dates.",
+  trackSSLExpiration: "Track SSL expiration dates",
+  getEarlyRenewal: "Get early renewal notices",
+  monitorMultipleDomains: "Monitor multiple domains",
+  // Incidents Management Card
+  incidentsManagement: "Incidents Management",
+  incidentsManagementDesc: "Create, track, and manage incidents including assignment and resolution workflows.",
+  createTrackIncidents: "Create & track incidents",
+  assignIncidents: "Assign incidents to team",
+  monitorResolution: "Monitor resolution progress",
+  // Operational Status Card
+  operationalStatus: "Operational Status",
+  operationalStatusDesc: "Create and manage public status pages to communicate system health to users.",
+  createCustomStatus: "Create custom status pages",
+  displayRealTime: "Display real-time metrics",
+  shareIncidentUpdates: "Share incident updates",
+  // Reports & Analytics Card
+  reportsAnalytics: "Reports & Analytics",
+  reportsAnalyticsDesc: "Generate reports on system performance, uptime history, and incident metrics.",
+  generateUptimeReports: "Generate uptime reports",
+  analyzePerformance: "Analyze performance trends",
+  exportMonitoringData: "Export monitoring data"
 };

@@ -72,5 +72,46 @@ export const kmTranslations = {
   viewOnGithub: "មើលលើ GitHub",
   viewDocumentation: "មើលឯកសារ",
   followOnX: "តាមដានលើ X",
-  joinDiscord: "ចូលរួមក្នុង Discord"
+  joinDiscord: "ចូលរួមក្នុង Discord",
+  // Quick Actions Dialog translations
+  quickActions: "សកម្មភាពរហ័ស",
+  quickActionsDescription: "ចូលប្រើប្រតិបត្តិការត្រួតពិនិត្យ និងមុខងារទូទៅយ៉ាងរហ័ស។ ជ្រើសរើសសកម្មភាពខាងក្រោមដើម្បីចាប់ផ្តើម។",
+  close: "បិទ",
+  quickTips: "គន្លឹះរហ័ស",
+  // Website Monitoring Card
+  monitorWebsite: "ការត្រួតពិនិត្យគេហទំព័រ",
+  monitorWebsiteDesc: "ត្រួតពិនិត្យការអាចប្រើបាននៃគេហទំព័រ និងដំណើរការដោយមានព័ត៌មានលម្អិត និងការជូនដំណឹង។",
+  monitorMultipleEndpoints: "ត្រួតពិនិត្យចំណុចចប់ច្រើន",
+  trackResponseTimes: "តាមដានពេលវេលាឆ្លើយតប",
+  setCustomAlerts: "កំណត់ការជូនដំណឹងផ្ទាល់ខ្លួន",
+  // Server Monitoring Card
+  monitorServer: "ការត្រួតពិនិត្យម៉ាស៊ីនមេ",
+  monitorServerDesc: "តាមដានសុខភាពម៉ាស៊ីនមេរួមទាំងការប្រើប្រាស់ CPU, អង្គចងចាំ, ថាស, និងចរាចរណ៍បណ្តាញ។",
+  monitorCPURam: "ត្រួតពិនិត្យការប្រើប្រាស់ CPU និង RAM",
+  trackNetworkMetrics: "តាមដានចរាចរណ៍បណ្តាញ",
+  viewProcesses: "មើលដំណើរការសកម្ម",
+  // SSL Certificate Card
+  sslCertificate: "វិញ្ញាបនបត្រ SSL",
+  sslCertificateDesc: "ត្រួតពិនិត្យសុពលភាពវិញ្ញាបនបត្រ SSL និងទទួលបានការជូនដំណឹងមុនថ្ងៃផុតកំណត់។",
+  trackSSLExpiration: "តាមដានកាលបរិច្ឆេទផុតកំណត់ SSL",
+  getEarlyRenewal: "ទទួលបានការជូនដំណឹងបន្តមុនពេល",
+  monitorMultipleDomains: "ត្រួតពិនិត្យដែនជាច្រើន",
+  // Incidents Management Card
+  incidentsManagement: "ការគ្រប់គ្រងឧប្បត្តិហេតុ",
+  incidentsManagementDesc: "បង្កើត, តាមដាន និងគ្រប់គ្រងឧប្បត្តិហេតុរួមទាំងការចាត់តាំង និងដំណើរការដោះស្រាយ។",
+  createTrackIncidents: "បង្កើត និងតាមដានឧប្បត្តិហេតុ",
+  assignIncidents: "ចាត់តាំងឧប្បត្តិហេតុទៅក្រុម",
+  monitorResolution: "តាមដានដំណើរការដោះស្រាយ",
+  // Operational Status Card
+  operationalStatus: "ស្ថានភាពប្រតិបត្តិការ",
+  operationalStatusDesc: "បង្កើត និងគ្រប់គ្រងទំព័រស្ថានភាពសាធារណៈដើម្បីទំនាក់ទំនងសុខភាពប្រព័ន្ធទៅកាន់អ្នកប្រើប្រាស់។",
+  createCustomStatus: "បង្កើតទំព័រស្ថានភាពតាមបំណង",
+  displayRealTime: "បង្ហាញទិន្នន័យជាក់ស្តែង",
+  shareIncidentUpdates: "ចែករំលែកព័ត៌មានថ្មីៗអំពីឧប្បត្តិហេតុ",
+  // Reports & Analytics Card
+  reportsAnalytics: "របាយការណ៍និងការវិភាគ",
+  reportsAnalyticsDesc: "បង្កើតរបាយការណ៍អំពីដំណើរការប្រព័ន្ធ, ប្រវត្តិនៃពេលវេលាដំណើរការ, និងទិន្នន័យឧប្បត្តិហេតុ។",
+  generateUptimeReports: "បង្កើតរបាយការណ៍ពេលវេលាដំណើរការ",
+  analyzePerformance: "វិភាគនិន្នាការដំណើរការ",
+  exportMonitoringData: "នាំចេញទិន្នន័យត្រួតពិនិត្យ"
 };

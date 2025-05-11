@@ -63,10 +63,10 @@ export const Sidebar = ({
           <Boxes className={`${mainIconSize} text-blue-400`} />
           {!collapsed && <span className="ml-2.5 font-medium text-foreground tracking-wide text-[15px]">{t("instanceMonitoring")}</span>}
         </div>
-        <div className={`${collapsed ? 'p-3' : 'p-2 pl-3'} mb-1 rounded-lg hover:${theme === 'dark' ? 'bg-gray-800' : 'bg-sidebar-accent'} flex items-center ${collapsed ? 'justify-center' : ''} transition-colors duration-200`}>
+        <Link to="/ssl-domain" className={`${collapsed ? 'p-3' : 'p-2 pl-3'} mb-1 rounded-lg ${location.pathname === '/ssl-domain' ? theme === 'dark' ? 'bg-gray-800' : 'bg-sidebar-accent' : `hover:${theme === 'dark' ? 'bg-gray-800' : 'bg-sidebar-accent'}`} flex items-center ${collapsed ? 'justify-center' : ''} transition-colors duration-200`}>
           <Radar className={`${mainIconSize} text-cyan-400`} />
           {!collapsed && <span className="ml-2.5 font-medium text-foreground tracking-wide text-[15px]">{t("sslDomain")}</span>}
-        </div>
+        </Link>
         <div className={`${collapsed ? 'p-3' : 'p-2 pl-3'} mb-1 rounded-lg hover:${theme === 'dark' ? 'bg-gray-800' : 'bg-sidebar-accent'} flex items-center ${collapsed ? 'justify-center' : ''} transition-colors duration-200`}>
           <Calendar className={`${mainIconSize} text-emerald-400`} />
           {!collapsed && <span className="ml-2.5 font-medium text-foreground tracking-wide text-[15px]">{t("scheduleIncident")}</span>}

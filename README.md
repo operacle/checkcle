@@ -78,14 +78,15 @@ volumes:
 - [x] Auth with Multi-users system (admin)
 - [x] Notifications (Telegram)
 - [x] Docker containerization 
-- [ ] SSL & Domain Monitoring
+- [x] CheckCle Website
+- [ ] SSL & Domain Monitoring (Inprogress)
+- [ ] Uptime monitoring (PING - Inprogress)
 - [ ] Infrastructure Server Monitoring
 - [ ] Schedule Maintenance & Incident Management
 - [ ] Operational Status / Public Status Pages
 - [ ] Uptime monitoring (TCP, PING, DNS)
 - [ ] User Permission Roles & Service Group
 - [ ] Notifications (Email/Slack/Discord/Signal)  
-- [ ] Mobile PWA version
 - [ ] Open-source release with full documentation 
 
 ## 🌟 CheckCle for Communities?
@@ -108,7 +109,7 @@ Here are some ways you can help improve CheckCle:
 ---
 
 ## 🌍 Stay Connected
-- Website: [checkcle.io](https://checkcle.io)
+- Website: [checkcle.deno.dev](https://checkcle.deno.dev)
 - GitHub Repository: ⭐ [CheckCle](https://github.com/operacle/checkcle.git)
 - Community Channels: Engage via discussions and issues!
 - Discord: Join our community [@discord](https://discord.gg/xs9gbubGwX)

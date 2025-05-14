@@ -25,16 +25,16 @@ CheckCle is an Open Source solution for seamless, real-time monitoring of full-s
 ## #️⃣ Getting Started
 
 ### Installation with Docker Compose
-1. Clone the repository and run
+1. Copy ready docker run command
 ```bash 
-#Clone the repository
+# Create Docker Volume for data persistence
 
-git clone https://github.com/operacle/checkcle.git
-cd checkcle
+docker volume create pb_data
 
-# Run docker compose
 
-docker compose up -d
+# Docker Run Command
+
+docker run --name checkcle --restart unless-stopped -p 8090:8090 -v pb_data:/app/pb_data --ulimit nofile=4096:8192 operacle/checkcle:latest
 
 ```
 2. Docker Compose - Recommended

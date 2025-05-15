@@ -89,17 +89,81 @@ export const userService = {
         return currentUser;
       }
       
-      // Important fix: Don't send avatar field if it's a local path
-      // PocketBase API doesn't accept local file paths as valid files
-      if (cleanData.avatar && typeof cleanData.avatar === 'string' && cleanData.avatar.startsWith('/upload/profile/')) {
-        console.log("Removing local avatar path from update data");
-        delete cleanData.avatar;
+      // Handle email updates separately using the request-email-change endpoint
+      const hasEmailChange = cleanData.email !== undefined;
+      const emailToUpdate = hasEmailChange ? cleanData.email : null;
+      
+      // Remove email from regular update if it's being changed
+      if (hasEmailChange) {
+        console.log("Email change detected, will handle separately:", emailToUpdate);
+        delete cleanData.email;
+        delete cleanData.emailVisibility; // Don't set this yet, it will be set after email change
       }
       
-      // Use the PocketBase API to update the user
-      const result = await pb.collection('users').update(id, cleanData);
-      console.log("Update result:", result);
-      return result as unknown as User;
+      let updatedUser: User | null = null;
+      
+      // Only perform the regular update if there are fields to update
+      if (Object.keys(cleanData).length > 0) {
+        console.log("Final update payload to PocketBase:", cleanData);
+        
+        // Use the direct API approach for more control over the update process
+        const apiUrl = `${pb.baseUrl}/api/collections/users/records/${id}`;
+        const response = await fetch(apiUrl, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': pb.authStore.token
+          },
+          body: JSON.stringify(cleanData)
+        });
+        
+        if (!response.ok) {
+          const errorData = await response.json();
+          console.error("PocketBase API error:", errorData);
+          throw new Error(errorData.message || "Failed to update user");
+        }
+        
+        updatedUser = await response.json() as unknown as User;
+        console.log("PocketBase update response for regular fields:", updatedUser);
+      } else {
+        // If no other fields to update, get the current user
+        updatedUser = await this.getUser(id);
+      }
+      
+      // Now handle email change separately if needed
+      if (emailToUpdate) {
+        try {
+          console.log("Processing email change request for new email:", emailToUpdate);
+          // Use the request-email-change endpoint directly
+          const emailChangeUrl = `${pb.baseUrl}/api/collections/users/request-email-change`;
+          const emailChangeResponse = await fetch(emailChangeUrl, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': pb.authStore.token
+            },
+            body: JSON.stringify({
+              newEmail: emailToUpdate
+            })
+          });
+          
+          if (!emailChangeResponse.ok) {
+            const errorData = await emailChangeResponse.json();
+            console.error("Email change request failed:", errorData);
+            throw new Error(errorData.message || "Failed to request email change");
+          }
+          
+          console.log("Email change request sent successfully");
+          // The email won't be updated immediately as verification is required
+          // We'll return the current user data, and email will be updated after verification
+        } catch (error) {
+          console.error("Failed to request email change:", error);
+          // Continue with the function and return updated user for the fields that were updated
+          // We don't throw here because we want to save the other fields even if email change fails
+        }
+      }
+      
+      return updatedUser;
     } catch (error) {
       console.error("Failed to update user:", error);
       throw error; // Re-throw to handle in the component

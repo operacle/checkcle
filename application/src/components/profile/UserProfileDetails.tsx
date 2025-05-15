@@ -23,6 +23,9 @@ export function UserProfileDetails({ user }: UserProfileDetailsProps) {
     return user.username[0].toUpperCase();
   };
 
+  // Determine if the user is active based on the status field
+  const isActive = user.status === "Active";
+
   return (
     <div className="flex flex-col items-center space-y-4">
       <Avatar className="h-32 w-32">
@@ -54,8 +57,8 @@ export function UserProfileDetails({ user }: UserProfileDetailsProps) {
               {user.role}
             </Badge>
           )}
-          <Badge variant={user.isActive ? "default" : "outline"} className="px-2 py-1">
-            {user.isActive ? "Active" : "Inactive"}
+          <Badge variant={isActive ? "default" : "outline"} className="px-2 py-1">
+            {user.status || (isActive ? "Active" : "Inactive")}
           </Badge>
           {user.verified && (
             <Badge className="bg-green-600 hover:bg-green-700 px-2 py-1">

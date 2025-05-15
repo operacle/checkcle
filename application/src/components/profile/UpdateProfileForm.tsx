@@ -9,6 +9,8 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { authService } from "@/services/authService";
+import { AlertCircle } from "lucide-react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 // Profile update form schema
 const profileFormSchema = z.object({
@@ -31,6 +33,8 @@ interface UpdateProfileFormProps {
 
 export function UpdateProfileForm({ user }: UpdateProfileFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [emailChangeRequested, setEmailChangeRequested] = useState(false);
+  const [updateError, setUpdateError] = useState<string | null>(null);
   const { toast } = useToast();
   
   // Initialize the form with current user data
@@ -45,21 +49,45 @@ export function UpdateProfileForm({ user }: UpdateProfileFormProps) {
 
   async function onSubmit(data: ProfileFormValues) {
     setIsSubmitting(true);
+    setUpdateError(null);
+    setEmailChangeRequested(false);
     
     try {
-      await userService.updateUser(user.id, {
+      console.log("Submitting profile update with data:", data);
+      
+      // Detect if email is being changed
+      const isEmailChanged = data.email !== user.email;
+      
+      // Create update payload with all fields
+      const updateData = {
         full_name: data.full_name,
         username: data.username,
-        email: data.email,
-      });
+        email: isEmailChanged ? data.email : undefined,
+        // Only set emailVisibility if email is being changed
+        emailVisibility: isEmailChanged ? true : undefined
+      };
+      
+      console.log("Sending update payload:", updateData);
+      
+      // Update user data using the userService
+      await userService.updateUser(user.id, updateData);
       
       // Refresh user data in auth context
       await authService.refreshUserData();
       
-      toast({
-        title: "Profile updated",
-        description: "Your profile information has been updated successfully.",
-      });
+      // If email was changed, show a specific message
+      if (isEmailChanged) {
+        setEmailChangeRequested(true);
+        toast({
+          title: "Email change requested",
+          description: "A verification email has been sent to your new email address. Please check your inbox and follow the instructions to complete the change.",
+        });
+      } else {
+        toast({
+          title: "Profile updated",
+          description: "Your profile information has been updated successfully.",
+        });
+      }
     } catch (error) {
       console.error("Profile update error:", error);
       
@@ -67,6 +95,8 @@ export function UpdateProfileForm({ user }: UpdateProfileFormProps) {
       if (error instanceof Error) {
         errorMessage = error.message;
       }
+      
+      setUpdateError(errorMessage);
       
       toast({
         title: "Update failed",
@@ -81,6 +111,23 @@ export function UpdateProfileForm({ user }: UpdateProfileFormProps) {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        {updateError && (
+          <Alert variant="destructive">
+            <AlertCircle className="h-4 w-4" />
+            <AlertDescription>{updateError}</AlertDescription>
+          </Alert>
+        )}
+        
+        {emailChangeRequested && (
+          <Alert className="bg-yellow-50 border-yellow-200 text-yellow-800">
+            <AlertCircle className="h-4 w-4 text-yellow-600" />
+            <AlertDescription>
+              A verification email has been sent to your new email address. 
+              Please check your inbox and follow the instructions to complete the change.
+            </AlertDescription>
+          </Alert>
+        )}
+
         <FormField
           control={form.control}
           name="full_name"
@@ -119,6 +166,11 @@ export function UpdateProfileForm({ user }: UpdateProfileFormProps) {
                 <Input type="email" placeholder="your.email@example.com" {...field} />
               </FormControl>
               <FormMessage />
+              {field.value !== user.email && (
+                <p className="text-xs text-muted-foreground mt-1">
+                  Changing your email requires verification. A verification email will be sent.
+                </p>
+              )}
             </FormItem>
           )}
         />

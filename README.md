@@ -5,7 +5,7 @@
 CheckCle is an Open Source solution for seamless, real-time monitoring of full-stack systems, applications, and infrastructure. It provides developers, sysadmins, and DevOps teams with deep insights and actionable data across every layer of their environment—whether it's servers, applications, or services. With CheckCle, you gain visibility, control, and the ability to ensure optimal performance throughout your entire technology stack.
 
 ## 🎯 Live Demo  
-👉 **Try it now:** [CheckCle Live Demo](https://demo.checkcle.io) Coming Soon!
+👉 **Try it now:** [CheckCle Live Demo](https://demo.checkcle.io)
 
 ## 🌟 Core Features
 
@@ -79,6 +79,7 @@ volumes:
 - [x] Notifications (Telegram)
 - [x] Docker containerization 
 - [x] CheckCle Website
+- [x] CheckCle Demo Server
 - [ ] SSL & Domain Monitoring (Inprogress)
 - [ ] Uptime monitoring (PING - Inprogress)
 - [ ] Infrastructure Server Monitoring
@@ -109,7 +110,7 @@ Here are some ways you can help improve CheckCle:
 ---
 
 ## 🌍 Stay Connected
-- Website: [checkcle.deno.dev](https://checkcle.deno.dev)
+- Website: [checkcle.io](https://checkcle.io)
 - GitHub Repository: ⭐ [CheckCle](https://github.com/operacle/checkcle.git)
 - Community Channels: Engage via discussions and issues!
 - Discord: Join our community [@discord](https://discord.gg/xs9gbubGwX)

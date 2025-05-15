@@ -1,4 +1,3 @@
-
 import { pb } from "@/lib/pocketbase";
 
 export interface User {
@@ -13,6 +12,7 @@ export interface User {
   avatar?: string;
   role?: string;
   isActive?: boolean;
+  status?: string; // Added this field to support the backend status
 }
 
 export interface CreateUserData {

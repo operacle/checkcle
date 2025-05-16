@@ -80,7 +80,7 @@ volumes:
 - [x] Docker containerization 
 - [x] CheckCle Website
 - [x] CheckCle Demo Server
-- [ ] SSL & Domain Monitoring (Inprogress)
+- [x] SSL & Domain Monitoring - added in release of https://github.com/operacle/checkcle/releases/tag/v1.1.0
 - [ ] Uptime monitoring (PING - Inprogress)
 - [ ] Infrastructure Server Monitoring
 - [ ] Schedule Maintenance & Incident Management

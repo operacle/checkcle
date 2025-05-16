@@ -23,6 +23,10 @@ export const SSLStatusBadge: React.FC<SSLStatusBadgeProps> = ({ status }) => {
       variant = "bg-red-500 hover:bg-red-600";
       label = "Expired";
       break;
+    case "pending":
+      variant = "bg-blue-500 hover:bg-blue-600";
+      label = "Pending";
+      break;
     default:
       variant = "bg-gray-500 hover:bg-gray-600";
       label = status.charAt(0).toUpperCase() + status.slice(1);

@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { User } from "@/services/userService";
 import { UserProfileDetails } from "./UserProfileDetails";
@@ -9,10 +9,18 @@ import { UpdateProfileForm } from "./UpdateProfileForm";
 
 interface ProfileContentProps {
   currentUser: User | null;
+  onUserUpdated?: () => Promise<void>;
 }
 
-export function ProfileContent({ currentUser }: ProfileContentProps) {
+export function ProfileContent({ currentUser, onUserUpdated }: ProfileContentProps) {
   const [activeTab, setActiveTab] = useState("details");
+
+  // When active tab changes, refresh user data if needed
+  useEffect(() => {
+    if (activeTab === "details" && onUserUpdated) {
+      onUserUpdated();
+    }
+  }, [activeTab, onUserUpdated]);
 
   if (!currentUser) {
     return (

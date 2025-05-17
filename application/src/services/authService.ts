@@ -60,15 +60,18 @@ export const authService = {
     return pb.authStore.isValid;
   },
   
-  // New method to refresh user data after updates
+  // Method to refresh user data after updates
   async refreshUserData(): Promise<void> {
     if (!pb.authStore.isValid || !pb.authStore.model) return;
     
     try {
       // Fetch the latest user data from the server
       const userId = (pb.authStore.model as any).id;
+      console.log("Refreshing user data for ID:", userId);
+      
+      // Use the getOne method directly to refresh the auth store
       await pb.collection('users').getOne(userId);
-      // PocketBase will automatically update the authStore
+      console.log("User data refreshed successfully");
     } catch (error) {
       console.error('Failed to refresh user data:', error);
     }

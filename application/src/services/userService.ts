@@ -1,3 +1,4 @@
+
 import { pb } from "@/lib/pocketbase";
 
 export interface User {
@@ -89,7 +90,7 @@ export const userService = {
         return currentUser;
       }
       
-      // Handle email updates separately using the request-email-change endpoint
+      // Handle email updates separately
       const hasEmailChange = cleanData.email !== undefined;
       const emailToUpdate = hasEmailChange ? cleanData.email : null;
       
@@ -97,7 +98,11 @@ export const userService = {
       if (hasEmailChange) {
         console.log("Email change detected, will handle separately:", emailToUpdate);
         delete cleanData.email;
-        delete cleanData.emailVisibility; // Don't set this yet, it will be set after email change
+        
+        // For email changes, we should always set emailVisibility
+        if (cleanData.emailVisibility === undefined) {
+          cleanData.emailVisibility = true;
+        }
       }
       
       let updatedUser: User | null = null;
@@ -106,25 +111,14 @@ export const userService = {
       if (Object.keys(cleanData).length > 0) {
         console.log("Final update payload to PocketBase:", cleanData);
         
-        // Use the direct API approach for more control over the update process
-        const apiUrl = `${pb.baseUrl}/api/collections/users/records/${id}`;
-        const response = await fetch(apiUrl, {
-          method: 'PATCH',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': pb.authStore.token
-          },
-          body: JSON.stringify(cleanData)
-        });
-        
-        if (!response.ok) {
-          const errorData = await response.json();
-          console.error("PocketBase API error:", errorData);
-          throw new Error(errorData.message || "Failed to update user");
+        try {
+          // Use PocketBase's update method for the regular fields
+          updatedUser = await pb.collection('users').update(id, cleanData) as unknown as User;
+          console.log("PocketBase update response for regular fields:", updatedUser);
+        } catch (error) {
+          console.error("Error updating user regular fields:", error);
+          throw error;
         }
-        
-        updatedUser = await response.json() as unknown as User;
-        console.log("PocketBase update response for regular fields:", updatedUser);
       } else {
         // If no other fields to update, get the current user
         updatedUser = await this.getUser(id);
@@ -134,32 +128,18 @@ export const userService = {
       if (emailToUpdate) {
         try {
           console.log("Processing email change request for new email:", emailToUpdate);
-          // Use the request-email-change endpoint directly
-          const emailChangeUrl = `${pb.baseUrl}/api/collections/users/request-email-change`;
-          const emailChangeResponse = await fetch(emailChangeUrl, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': pb.authStore.token
-            },
-            body: JSON.stringify({
-              newEmail: emailToUpdate
-            })
-          });
           
-          if (!emailChangeResponse.ok) {
-            const errorData = await emailChangeResponse.json();
-            console.error("Email change request failed:", errorData);
-            throw new Error(errorData.message || "Failed to request email change");
-          }
+          // Use the proper API endpoint for email change requests
+          const emailChangeResponse = await pb.collection('users').requestEmailChange(emailToUpdate);
           
-          console.log("Email change request sent successfully");
+          console.log("Email change request response:", emailChangeResponse);
+          console.log("Email verification has been sent to:", emailToUpdate);
+          
           // The email won't be updated immediately as verification is required
           // We'll return the current user data, and email will be updated after verification
         } catch (error) {
           console.error("Failed to request email change:", error);
-          // Continue with the function and return updated user for the fields that were updated
-          // We don't throw here because we want to save the other fields even if email change fails
+          throw new Error(`Failed to request email change: ${error instanceof Error ? error.message : "Unknown error"}`);
         }
       }
       

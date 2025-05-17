@@ -9,7 +9,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { authService } from "@/services/authService";
-import { AlertCircle } from "lucide-react";
+import { AlertCircle, CheckCircle } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
 // Profile update form schema
@@ -35,6 +35,7 @@ export function UpdateProfileForm({ user }: UpdateProfileFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [emailChangeRequested, setEmailChangeRequested] = useState(false);
   const [updateError, setUpdateError] = useState<string | null>(null);
+  const [updateSuccess, setUpdateSuccess] = useState<string | null>(null);
   const { toast } = useToast();
   
   // Initialize the form with current user data
@@ -50,6 +51,7 @@ export function UpdateProfileForm({ user }: UpdateProfileFormProps) {
   async function onSubmit(data: ProfileFormValues) {
     setIsSubmitting(true);
     setUpdateError(null);
+    setUpdateSuccess(null);
     setEmailChangeRequested(false);
     
     try {
@@ -62,8 +64,9 @@ export function UpdateProfileForm({ user }: UpdateProfileFormProps) {
       const updateData = {
         full_name: data.full_name,
         username: data.username,
+        // Only include email if it's changed
         email: isEmailChanged ? data.email : undefined,
-        // Only set emailVisibility if email is being changed
+        // Always set emailVisibility to true if email is changing
         emailVisibility: isEmailChanged ? true : undefined
       };
       
@@ -78,11 +81,14 @@ export function UpdateProfileForm({ user }: UpdateProfileFormProps) {
       // If email was changed, show a specific message
       if (isEmailChanged) {
         setEmailChangeRequested(true);
+        setUpdateSuccess("A verification email has been sent to your new email address. Please check your inbox to complete the change.");
         toast({
-          title: "Email change requested",
+          title: "Email verification sent",
           description: "A verification email has been sent to your new email address. Please check your inbox and follow the instructions to complete the change.",
+          variant: "default",
         });
       } else {
+        setUpdateSuccess("Your profile information has been updated successfully.");
         toast({
           title: "Profile updated",
           description: "Your profile information has been updated successfully.",
@@ -115,6 +121,15 @@ export function UpdateProfileForm({ user }: UpdateProfileFormProps) {
           <Alert variant="destructive">
             <AlertCircle className="h-4 w-4" />
             <AlertDescription>{updateError}</AlertDescription>
+          </Alert>
+        )}
+        
+        {updateSuccess && (
+          <Alert className="bg-green-50 border-green-200 text-green-800">
+            <CheckCircle className="h-4 w-4 text-green-600" />
+            <AlertDescription>
+              {updateSuccess}
+            </AlertDescription>
           </Alert>
         )}
         

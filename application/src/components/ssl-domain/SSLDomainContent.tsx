@@ -13,8 +13,10 @@ import { AddSSLCertificateForm } from "./AddSSLCertificateForm";
 import { EditSSLCertificateForm } from "./EditSSLCertificateForm";
 import type { AddSSLCertificateDto, SSLCertificate } from "@/types/ssl.types";
 import { pb } from "@/lib/pocketbase";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export const SSLDomainContent = () => {
+  const { t } = useLanguage();
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [refreshingId, setRefreshingId] = useState<string | null>(null);
@@ -33,7 +35,7 @@ export const SSLDomainContent = () => {
         return result;
       } catch (error) {
         console.error("Error fetching certificates:", error);
-        toast.error("Failed to load SSL certificates");
+        toast.error(t('failedToLoadCertificates'));
         throw error;
       }
     },
@@ -47,11 +49,11 @@ export const SSLDomainContent = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['ssl-certificates'] });
       setIsAddDialogOpen(false);
-      toast.success("SSL certificate added successfully");
+      toast.success(t('sslCertificateAdded'));
     },
     onError: (error) => {
       console.error("Error adding SSL certificate:", error);
-      toast.error(error instanceof Error ? error.message : "Failed to add SSL certificate. Make sure the domain is valid and accessible.");
+      toast.error(error instanceof Error ? error.message : t('failedToAddCertificate'));
     }
   });
 
@@ -84,11 +86,11 @@ export const SSLDomainContent = () => {
       queryClient.invalidateQueries({ queryKey: ['ssl-certificates'] });
       setIsEditDialogOpen(false);
       setSelectedCertificate(null);
-      toast.success("SSL certificate updated successfully");
+      toast.success(t('sslCertificateUpdated'));
     },
     onError: (error) => {
       console.error("Error updating SSL certificate:", error);
-      toast.error(error instanceof Error ? error.message : "Failed to update SSL certificate");
+      toast.error(error instanceof Error ? error.message : t('failedToUpdateCertificate'));
     }
   });
 
@@ -97,11 +99,11 @@ export const SSLDomainContent = () => {
     mutationFn: deleteSSLCertificate,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['ssl-certificates'] });
-      toast.success("SSL certificate deleted successfully");
+      toast.success(t('sslCertificateDeleted'));
     },
     onError: (error) => {
       console.error("Error deleting SSL certificate:", error);
-      toast.error(error instanceof Error ? error.message : "Failed to delete SSL certificate");
+      toast.error(error instanceof Error ? error.message : t('failedToDeleteCertificate'));
     }
   });
 
@@ -111,12 +113,12 @@ export const SSLDomainContent = () => {
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['ssl-certificates'] });
       setRefreshingId(null);
-      toast.success(`SSL certificate for ${data.domain} updated successfully`);
+      toast.success(t('sslCertificateRefreshed').replace('{domain}', data.domain));
     },
     onError: (error) => {
       console.error("Error refreshing SSL certificate:", error);
       
-      let errorMessage = "Failed to check SSL certificate.";
+      let errorMessage = t('failedToCheckCertificate');
       
       if (error instanceof Error) {
         errorMessage = error.message;
@@ -138,14 +140,16 @@ export const SSLDomainContent = () => {
       setIsRefreshingAll(false);
       
       if (result.failed === 0) {
-        toast.success(`Successfully refreshed all ${result.success} certificates`);
+        toast.success(t('allCertificatesRefreshed').replace('{count}', result.success.toString()));
       } else {
-        toast.info(`Refreshed ${result.success} certificates, ${result.failed} failed`);
+        toast.info(t('someCertificatesFailed')
+          .replace('{success}', result.success.toString())
+          .replace('{failed}', result.failed.toString()));
       }
     },
     onError: (error) => {
       console.error("Error refreshing all certificates:", error);
-      toast.error("Failed to refresh all certificates");
+      toast.error(t('failedToCheckCertificate'));
       setIsRefreshingAll(false);
       
       // Still refresh the data to show any partial information
@@ -179,12 +183,12 @@ export const SSLDomainContent = () => {
 
   const handleRefreshAll = async () => {
     if (certificates.length === 0) {
-      toast.info("No certificates to refresh");
+      toast.info(t('noCertificatesToRefresh'));
       return;
     }
     
     setIsRefreshingAll(true);
-    toast.info(`Starting refresh of all ${certificates.length} certificates...`);
+    toast.info(t('startingRefreshAll').replace('{count}', certificates.length.toString()));
     refreshAllMutation.mutate();
   };
 
@@ -195,8 +199,10 @@ export const SSLDomainContent = () => {
   if (error) {
     return (
       <div className="flex flex-col items-center justify-center h-full gap-4 text-foreground">
-        <p>Error loading SSL certificate data.</p>
-        <Button onClick={() => queryClient.invalidateQueries({ queryKey: ['ssl-certificates'] })}>Retry</Button>
+        <p>{t('failedToLoadCertificates')}</p>
+        <Button onClick={() => queryClient.invalidateQueries({ queryKey: ['ssl-certificates'] })}>
+          {t('check')}
+        </Button>
       </div>
     );
   }
@@ -206,8 +212,8 @@ export const SSLDomainContent = () => {
       <div className="flex flex-col flex-1">
         <div className="flex justify-between items-center mb-6">
           <div>
-            <h2 className="text-2xl font-bold text-foreground">SSL & Domain Management</h2>
-            <p className="text-sm text-muted-foreground mt-1">Monitor SSL certificates and their expiration dates</p>
+            <h2 className="text-2xl font-bold text-foreground">{t('sslDomainManagement')}</h2>
+            <p className="text-sm text-muted-foreground mt-1">{t('monitorSSLCertificates')}</p>
           </div>
           <div className="flex gap-2">
             <Button 
@@ -217,7 +223,7 @@ export const SSLDomainContent = () => {
               className="relative"
             >
               <RefreshCw className={`w-4 h-4 mr-2 ${isRefreshingAll ? 'animate-spin' : ''}`} /> 
-              Refresh All
+              {t('refreshAll')}
               {isRefreshingAll && (
                 <span className="absolute top-0 right-0 -mt-2 -mr-2 bg-primary text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
                   ...
@@ -228,7 +234,7 @@ export const SSLDomainContent = () => {
               className="text-primary-foreground"
               onClick={() => setIsAddDialogOpen(true)}
             >
-              <Plus className="w-4 h-4 mr-2" /> Add Domain
+              <Plus className="w-4 h-4 mr-2" /> {t('addDomain')}
             </Button>
           </div>
         </div>
@@ -249,7 +255,7 @@ export const SSLDomainContent = () => {
       <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Add SSL Certificate</DialogTitle>
+            <DialogTitle>{t('addSSLCertificate')}</DialogTitle>
           </DialogHeader>
           <AddSSLCertificateForm 
             onSubmit={handleAddCertificate} 
@@ -266,7 +272,7 @@ export const SSLDomainContent = () => {
         }}>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Edit SSL Certificate</DialogTitle>
+              <DialogTitle>{t('editSSLCertificate')}</DialogTitle>
             </DialogHeader>
             <EditSSLCertificateForm 
               certificate={selectedCertificate}

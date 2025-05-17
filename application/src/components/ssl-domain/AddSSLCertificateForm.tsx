@@ -12,6 +12,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { DialogFooter } from "@/components/ui/dialog";
 import { AddSSLCertificateDto } from "@/types/ssl.types";
 import { alertConfigService, AlertConfiguration } from "@/services/alertConfigService";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const formSchema = z.object({
   domain: z.string().min(1, "Domain is required"),
@@ -31,6 +32,7 @@ export const AddSSLCertificateForm = ({
   onCancel,
   isPending = false 
 }: AddSSLCertificateFormProps) => {
+  const { t } = useLanguage();
   const [alertConfigs, setAlertConfigs] = useState<AlertConfiguration[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -71,14 +73,14 @@ export const AddSSLCertificateForm = ({
         }
       } catch (error) {
         console.error("Error fetching notification channels:", error);
-        toast.error("Failed to load notification channels");
+        toast.error(t('failedToLoadCertificates'));
       } finally {
         setIsLoading(false);
       }
     };
     
     fetchNotificationChannels();
-  }, [form]);
+  }, [form, t]);
 
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
@@ -94,7 +96,7 @@ export const AddSSLCertificateForm = ({
       form.reset();
     } catch (error) {
       console.error("Error adding SSL certificate:", error);
-      toast.error("Failed to add SSL certificate");
+      toast.error(t('failedToAddCertificate'));
     }
   };
 
@@ -106,7 +108,7 @@ export const AddSSLCertificateForm = ({
           name="domain"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Domain</FormLabel>
+              <FormLabel>{t('domain')}</FormLabel>
               <FormControl>
                 <Input placeholder="example.com" {...field} />
               </FormControl>
@@ -120,12 +122,12 @@ export const AddSSLCertificateForm = ({
           name="warning_threshold"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Warning Threshold (days)</FormLabel>
+              <FormLabel>{t('warningThreshold')}</FormLabel>
               <FormControl>
                 <Input type="number" {...field} />
               </FormControl>
               <FormDescription>
-                Get notified when certificates are about to expire
+                {t('getNotifiedExpiration')}
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -137,12 +139,12 @@ export const AddSSLCertificateForm = ({
           name="expiry_threshold"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Expiry Threshold (days)</FormLabel>
+              <FormLabel>{t('expiryThreshold')}</FormLabel>
               <FormControl>
                 <Input type="number" {...field} />
               </FormControl>
               <FormDescription>
-                Get notified when certificates are critically close to expiring
+                {t('getNotifiedCritical')}
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -154,11 +156,11 @@ export const AddSSLCertificateForm = ({
           name="notification_channel"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Notification Channel</FormLabel>
+              <FormLabel>{t('notificationChannel')}</FormLabel>
               <Select onValueChange={field.onChange} value={field.value}>
                 <FormControl>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select notification channel" />
+                    <SelectValue placeholder={t('chooseChannel')} />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
@@ -169,15 +171,15 @@ export const AddSSLCertificateForm = ({
                       </SelectItem>
                     ))
                   ) : isLoading ? (
-                    <SelectItem value="loading" disabled>Loading channels...</SelectItem>
+                    <SelectItem value="loading" disabled>{t('loadingChannels')}</SelectItem>
                   ) : (
-                    <SelectItem value="none" disabled>No notification channels found</SelectItem>
+                    <SelectItem value="none" disabled>{t('noChannelsFound')}</SelectItem>
                   )}
                 </SelectContent>
               </Select>
               <FormDescription className="flex items-center gap-1">
                 <Bell className="h-4 w-4" /> 
-                Choose where to receive SSL certificate alerts
+                {t('chooseChannel')}
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -185,9 +187,9 @@ export const AddSSLCertificateForm = ({
         />
         
         <DialogFooter>
-          <Button type="button" variant="outline" onClick={onCancel}>Cancel</Button>
+          <Button type="button" variant="outline" onClick={onCancel}>{t('cancel')}</Button>
           <Button type="submit" disabled={isPending || isLoading}>
-            Add Certificate
+            {t('addCertificate')}
           </Button>
         </DialogFooter>
       </form>

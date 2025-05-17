@@ -1,4 +1,3 @@
-
 import React, { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { authService } from "@/services/authService";
@@ -8,8 +7,12 @@ import { Sidebar } from "@/components/dashboard/Sidebar";
 import { SSLDomainContent } from "@/components/ssl-domain/SSLDomainContent";
 import { LoadingState } from "@/components/services/LoadingState";
 import { fetchSSLCertificates, shouldRunDailyCheck, checkAllCertificatesAndNotify } from "@/services/sslCertificateService";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const SslDomain = () => {
+  // Get language context for translations
+  const { t } = useLanguage();
+  
   // State for sidebar collapse functionality
   const [sidebarCollapsed, setSidebarCollapsed] = React.useState(false);
   const toggleSidebar = () => setSidebarCollapsed(prev => !prev);
@@ -90,15 +93,15 @@ const SslDomain = () => {
             toggleSidebar={toggleSidebar} 
           />
           <div className="flex flex-col items-center justify-center h-full p-6">
-            <h2 className="text-xl font-bold mb-2">Error Loading SSL Certificates</h2>
+            <h2 className="text-xl font-bold mb-2">{t('failedToLoadCertificates')}</h2>
             <p className="text-muted-foreground mb-4">
-              {error instanceof Error ? error.message : "Unknown error occurred"}
+              {error instanceof Error ? error.message : t('unknown')}
             </p>
             <button 
               className="px-4 py-2 bg-primary text-primary-foreground rounded-md"
               onClick={() => refetch()}
             >
-              Retry
+              {t('check')}
             </button>
           </div>
         </div>

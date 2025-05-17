@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -11,6 +10,7 @@ import { SSLCertificate } from "@/types/ssl.types";
 import { Loader2, Bell } from "lucide-react";
 import { toast } from "sonner";
 import { alertConfigService, AlertConfiguration } from "@/services/alertConfigService";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const formSchema = z.object({
   domain: z.string().min(1, "Domain is required"),
@@ -29,6 +29,7 @@ interface EditSSLCertificateFormProps {
 }
 
 export const EditSSLCertificateForm = ({ certificate, onSubmit, onCancel, isPending }: EditSSLCertificateFormProps) => {
+  const { t } = useLanguage();
   const [alertConfigs, setAlertConfigs] = useState<AlertConfiguration[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   
@@ -61,14 +62,14 @@ export const EditSSLCertificateForm = ({ certificate, onSubmit, onCancel, isPend
         setAlertConfigs(enabledConfigs);
       } catch (error) {
         console.error("Error fetching notification channels:", error);
-        toast.error("Failed to load notification channels");
+        toast.error(t('failedToLoadCertificates'));
       } finally {
         setIsLoading(false);
       }
     };
     
     fetchNotificationChannels();
-  }, []);
+  }, [t]);
 
   const handleSubmit = (data: FormValues) => {
     // Merge the updated values with the original certificate
@@ -96,7 +97,7 @@ export const EditSSLCertificateForm = ({ certificate, onSubmit, onCancel, isPend
           name="domain"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Domain</FormLabel>
+              <FormLabel>{t('domainName')}</FormLabel>
               <FormControl>
                 <Input 
                   {...field}
@@ -105,7 +106,7 @@ export const EditSSLCertificateForm = ({ certificate, onSubmit, onCancel, isPend
                 />
               </FormControl>
               <FormDescription>
-                Domain name cannot be changed. To monitor a different domain, add a new certificate.
+                {t('domainCannotChange')}
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -118,7 +119,7 @@ export const EditSSLCertificateForm = ({ certificate, onSubmit, onCancel, isPend
             name="warning_threshold"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Warning Threshold (Days)</FormLabel>
+                <FormLabel>{t('warningThresholdDays')}</FormLabel>
                 <FormControl>
                   <Input 
                     {...field}
@@ -128,7 +129,7 @@ export const EditSSLCertificateForm = ({ certificate, onSubmit, onCancel, isPend
                   />
                 </FormControl>
                 <FormDescription>
-                  Days before expiration to send warning
+                  {t('daysBeforeExpiration')}
                 </FormDescription>
                 <FormMessage />
               </FormItem>
@@ -140,7 +141,7 @@ export const EditSSLCertificateForm = ({ certificate, onSubmit, onCancel, isPend
             name="expiry_threshold"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Expiry Threshold (Days)</FormLabel>
+                <FormLabel>{t('expiryThresholdDays')}</FormLabel>
                 <FormControl>
                   <Input 
                     {...field}
@@ -150,7 +151,7 @@ export const EditSSLCertificateForm = ({ certificate, onSubmit, onCancel, isPend
                   />
                 </FormControl>
                 <FormDescription>
-                  Days before expiration to send critical alert
+                  {t('daysBeforeCritical')}
                 </FormDescription>
                 <FormMessage />
               </FormItem>
@@ -163,7 +164,7 @@ export const EditSSLCertificateForm = ({ certificate, onSubmit, onCancel, isPend
           name="notification_channel"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Notification Channel</FormLabel>
+              <FormLabel>{t('notificationChannel')}</FormLabel>
               <Select 
                 onValueChange={field.onChange} 
                 defaultValue={field.value}
@@ -172,7 +173,7 @@ export const EditSSLCertificateForm = ({ certificate, onSubmit, onCancel, isPend
               >
                 <FormControl>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select notification channel" />
+                    <SelectValue placeholder={t('chooseChannel')} />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
@@ -183,7 +184,7 @@ export const EditSSLCertificateForm = ({ certificate, onSubmit, onCancel, isPend
                       </SelectItem>
                     ))
                   ) : isLoading ? (
-                    <SelectItem value="loading" disabled>Loading channels...</SelectItem>
+                    <SelectItem value="loading" disabled>{t('loadingChannels')}</SelectItem>
                   ) : (
                     <>
                       <SelectItem value="email">Email</SelectItem>
@@ -197,7 +198,7 @@ export const EditSSLCertificateForm = ({ certificate, onSubmit, onCancel, isPend
               </Select>
               <FormDescription className="flex items-center gap-1">
                 <Bell className="h-4 w-4" /> 
-                Where to send notifications about this certificate
+                {t('whereToSend')}
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -211,7 +212,7 @@ export const EditSSLCertificateForm = ({ certificate, onSubmit, onCancel, isPend
             onClick={onCancel}
             disabled={isPending}
           >
-            Cancel
+            {t('cancel')}
           </Button>
           <Button 
             type="submit" 
@@ -219,10 +220,10 @@ export const EditSSLCertificateForm = ({ certificate, onSubmit, onCancel, isPend
           >
             {isPending ? (
               <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Updating...
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" /> {t('updating')}
               </>
             ) : (
-              'Save Changes'
+              t('saveChanges')
             )}
           </Button>
         </div>

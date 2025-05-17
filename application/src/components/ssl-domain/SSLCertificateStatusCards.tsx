@@ -1,13 +1,15 @@
-
 import React from "react";
 import { Card } from "@/components/ui/card";
 import { SSLCertificate } from "@/types/ssl.types";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface SSLCertificateStatusCardsProps {
   certificates: SSLCertificate[];
 }
 
 export const SSLCertificateStatusCards = ({ certificates }: SSLCertificateStatusCardsProps) => {
+  const { t } = useLanguage();
+  
   // Count certificates by status
   const validCount = certificates.filter(cert => cert.status === 'valid').length;
   const expiringCount = certificates.filter(cert => cert.status === 'expiring_soon').length;
@@ -24,7 +26,7 @@ export const SSLCertificateStatusCards = ({ certificates }: SSLCertificateStatus
           </div>
         </div>
         <div>
-          <p className="text-sm font-medium text-muted-foreground">Valid Certificates</p>
+          <p className="text-sm font-medium text-muted-foreground">{t('validCertificates')}</p>
           <p className="text-3xl font-bold">{validCount}</p>
         </div>
       </Card>
@@ -38,7 +40,7 @@ export const SSLCertificateStatusCards = ({ certificates }: SSLCertificateStatus
           </div>
         </div>
         <div>
-          <p className="text-sm font-medium text-muted-foreground">Expiring Soon</p>
+          <p className="text-sm font-medium text-muted-foreground">{t('expiringSoon')}</p>
           <p className="text-3xl font-bold">{expiringCount}</p>
         </div>
       </Card>
@@ -52,7 +54,7 @@ export const SSLCertificateStatusCards = ({ certificates }: SSLCertificateStatus
           </div>
         </div>
         <div>
-          <p className="text-sm font-medium text-muted-foreground">Expired</p>
+          <p className="text-sm font-medium text-muted-foreground">{t('expired')}</p>
           <p className="text-3xl font-bold">{expiredCount}</p>
         </div>
       </Card>

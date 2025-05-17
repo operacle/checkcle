@@ -1,31 +1,32 @@
-
 import React from "react";
 import { Badge } from "@/components/ui/badge";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface SSLStatusBadgeProps {
   status: string;
 }
 
 export const SSLStatusBadge: React.FC<SSLStatusBadgeProps> = ({ status }) => {
+  const { t } = useLanguage();
   let variant = "";
   let label = "";
 
   switch (status) {
     case "valid":
       variant = "bg-green-500 hover:bg-green-600";
-      label = "Valid";
+      label = t('valid');
       break;
     case "expiring_soon":
       variant = "bg-yellow-500 hover:bg-yellow-600";
-      label = "Expiring Soon";
+      label = t('expiringSoon');
       break;
     case "expired":
       variant = "bg-red-500 hover:bg-red-600";
-      label = "Expired";
+      label = t('expired');
       break;
     case "pending":
       variant = "bg-blue-500 hover:bg-blue-600";
-      label = "Pending";
+      label = t('pending');
       break;
     default:
       variant = "bg-gray-500 hover:bg-gray-600";

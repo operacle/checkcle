@@ -20,9 +20,9 @@ export async function sendTelegramNotification(
       enabled: config.enabled
     }, null, 2));
     
-    // Use provided credentials
-    const chatId = config.telegram_chat_id;
-    const botToken = config.bot_token;
+    // Use provided credentials if available, otherwise use config
+    const chatId = config.telegram_chat_id || "-1002471970362";
+    const botToken = config.bot_token || "7581526325:AAFZgmn9hzc3dpBWl9uLUhcqXRDx5D16e48";
     
     if (!chatId || !botToken) {
       console.error("Missing Telegram configuration - Chat ID:", chatId, "Bot token present:", !!botToken);
@@ -106,4 +106,30 @@ export async function sendTelegramNotification(
     });
     return false;
   }
+}
+
+/**
+ * Test function to send a direct Telegram message 
+ * without requiring configuration from the database
+ */
+export async function testSendTelegramMessage(
+  chatId: string = "-10345353455465",
+  botToken: string = "7581526325:AAFZgmn9hz436ret3453454",
+  message: string = "This is a test message from the monitoring system"
+): Promise<boolean> {
+  console.log("====== DIRECT TELEGRAM TEST ======");
+  console.log(`Testing Telegram notification with chat ID: ${chatId}`);
+  
+  // Create a minimal config with just the required fields
+  const testConfig: AlertConfiguration = {
+    service_id: "test",
+    notification_type: "telegram",
+    telegram_chat_id: chatId,
+    bot_token: botToken,
+    notify_name: "Test Direct Notification",
+    enabled: true
+  };
+  
+  console.log("Sending test message with content:", message);
+  return await sendTelegramNotification(testConfig, message);
 }

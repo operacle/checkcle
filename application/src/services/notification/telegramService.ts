@@ -21,8 +21,8 @@ export async function sendTelegramNotification(
     }, null, 2));
     
     // Use provided credentials if available, otherwise use config
-    const chatId = config.telegram_chat_id || "-1002471970362";
-    const botToken = config.bot_token || "7581526325:AAFZgmn9hzc3dpBWl9uLUhcqXRDx5D16e48";
+    const chatId = config.telegram_chat_id || "-10345353455465";
+    const botToken = config.bot_token || "7581526325:AAFZgmn9hz436ret3453454";
     
     if (!chatId || !botToken) {
       console.error("Missing Telegram configuration - Chat ID:", chatId, "Bot token present:", !!botToken);

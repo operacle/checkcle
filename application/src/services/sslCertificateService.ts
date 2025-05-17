@@ -13,8 +13,7 @@ import { determineSSLStatus } from './ssl/sslStatusUtils';
 import {
   checkAllCertificatesAndNotify,
   checkCertificateAndNotify,
-  shouldRunDailyCheck,
-  testCertificateNotification
+  shouldRunDailyCheck
 } from './ssl/notification';
 
 export {
@@ -25,6 +24,5 @@ export {
   checkAndUpdateCertificate,
   checkAllCertificatesAndNotify,
   checkCertificateAndNotify,
-  shouldRunDailyCheck,
-  testCertificateNotification
+  shouldRunDailyCheck
 };

@@ -62,8 +62,8 @@ export const enTranslations = {
   and: "and",
   privacyPolicy: "Privacy Policy",
   // About System page
-  aboutReamStack: "About ReamStack",
-  systemDescription: "ReamStack is an open-source monitoring stack offering real-time insights into server and service health, incident management, and operational transparency. Released as MIT License.",
+  aboutCheckcle: "About Checkcle",
+  systemDescription: "Checkcle is an open-source monitoring stack offering real-time insights into server and service health, incident management, and operational transparency. Released as MIT License.",
   systemVersion: "System Version",
   license: "License",
   mitLicense: "MIT License",

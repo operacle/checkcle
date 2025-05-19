@@ -4,6 +4,7 @@ export const kmTranslations = {
   language: "ភាសា",
   english: "អង់គ្លេស",
   khmer: "ខ្មែរ",
+  german: "អាឡឺម៉ង់",
   goodMorning: "អរុណសួស្តី",
   goodAfternoon: "ទិវាសួស្តី",
   goodEvening: "សាយណ្ហសួស្តី",

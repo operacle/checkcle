@@ -5,6 +5,7 @@ export const enTranslations = {
   language: "Language",
   english: "English",
   khmer: "Khmer",
+  german: "German",
   goodMorning: "Good morning",
   goodAfternoon: "Good afternoon",
   goodEvening: "Good evening",

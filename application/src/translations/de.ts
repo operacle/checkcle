@@ -4,7 +4,7 @@ export const deTranslations = {
   language: "Sprache",
   english: "Englisch",
   khmer: "Khmer",
-  german: "German",
+  german: "Deutsch",
   goodMorning: "Guten Morgen",
   goodAfternoon: "Guten Nachmittag",
   goodEvening: "Guten Abend",

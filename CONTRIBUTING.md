@@ -46,7 +46,7 @@ Click "Fork" on [GitHub](https://github.com/operacle/checkcle) to create your ow
 
 ### 2. Clone Your Fork
 ```bash
-git clone https://github.com/operacle/checkcle.git
+git clone --branch develop https://github.com/operacle/checkcle.git
 cd checkcle
 ```
 

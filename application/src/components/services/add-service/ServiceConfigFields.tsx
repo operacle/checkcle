@@ -3,12 +3,14 @@ import { FormControl, FormField, FormItem, FormLabel } from "@/components/ui/for
 import { Input } from "@/components/ui/input";
 import { UseFormReturn } from "react-hook-form";
 import { ServiceFormData } from "./types";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface ServiceConfigFieldsProps {
   form: UseFormReturn<ServiceFormData>;
 }
 
 export function ServiceConfigFields({ form }: ServiceConfigFieldsProps) {
+  const { t } = useLanguage();
   return (
     <>
       <FormField
@@ -16,7 +18,7 @@ export function ServiceConfigFields({ form }: ServiceConfigFieldsProps) {
         name="interval"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Heartbeat Interval</FormLabel>
+            <FormLabel>{t("heartbeatInterval")}</FormLabel>
             <FormControl>
               <Input 
                 type="number" 
@@ -34,7 +36,7 @@ export function ServiceConfigFields({ form }: ServiceConfigFieldsProps) {
         name="retries"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Maximum Retries</FormLabel>
+            <FormLabel>{t("maximumRetries")}</FormLabel>
             <FormControl>
               <Input 
                 type="number" 

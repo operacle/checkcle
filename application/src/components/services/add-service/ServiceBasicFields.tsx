@@ -3,12 +3,14 @@ import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/comp
 import { Input } from "@/components/ui/input";
 import { UseFormReturn } from "react-hook-form";
 import { ServiceFormData } from "./types";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface ServiceBasicFieldsProps {
   form: UseFormReturn<ServiceFormData>;
 }
 
 export function ServiceBasicFields({ form }: ServiceBasicFieldsProps) {
+  const { t } = useLanguage();
   return (
     <>
       <FormField
@@ -16,7 +18,7 @@ export function ServiceBasicFields({ form }: ServiceBasicFieldsProps) {
         name="name"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Service Name</FormLabel>
+            <FormLabel>{t("serviceName")}</FormLabel>
             <FormControl>
               <Input 
                 placeholder="Service Name" 
@@ -34,7 +36,7 @@ export function ServiceBasicFields({ form }: ServiceBasicFieldsProps) {
         name="url"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Service URL</FormLabel>
+            <FormLabel>{t("serviceURL")}</FormLabel>
             <FormControl>
               <Input 
                 placeholder="https://example.com" 

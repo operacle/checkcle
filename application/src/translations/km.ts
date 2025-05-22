@@ -26,7 +26,38 @@ export const kmTranslations = {
   dataRetention: "ការរក្សាទុកទិន្នន័យ",
   backupSettings: "ការកំណត់បម្រុងទុក",
   aboutSystem: "អំពីប្រព័ន្ធ",
+  // Uptime Monitoring Content
+  currentlyMonitoring: "ការត្រួតពិនិត្យបច្ចុប្បន្ន",
+  upServices: "សេវាកម្មដំណើរការ",
+  downServices: "សេវាកម្មឈប់ដំណើរការ",
+  pausedServices: "សេវាកម្មផ្អាក",
+  warningServices: "សេវាកម្មមានការព្រមាន",
+    // Create Service Form
+  createNewService: "បង្កើតសេវាកម្មថ្មី",
+  fillInTheDetailsToCreateANewServiceToMonitor: "បំពេញព័ត៌មានលម្អិតដើម្បីបង្កើតសេវាកម្មថ្មីសម្រាប់តាមដាន",
+  newService: "សេវាកម្មថ្មី",
+  serviceURL: "អាសយដ្ឋានសេវាកម្ម",
+  heartbeatInterval: "ចន្លោះពេលលោត",
+  maximumRetries: "ការព្យាយាមអតិបរមា",
+  alertTemplate: "គំរូប្រកាសអាសន្ន",
+  createService: "បង្កើតសេវាកម្ម",
+  default: "លំនាំដើម",
+  processing: "កំពុងដំណើរការ",
+  errorLoadingServiceData: "កំហុសក្នុងការផ្ទុកទិន្នន័យសេវាកម្ម",
+  retry: "ព្យាយាមម្តងទៀត",
+  MonitorWebsitesAndRESTAPIsWithHTTPHTTPSProtocol: "តាមដានគេហទំព័រនិង REST APIs ជាមួយពិធីការ HTTP/HTTPS",
+
+  // Request Message
+  serviceNameIsRequired: "ឈ្មោះសេវាកម្មតម្រូវឱ្យមាន",
+  serviceTypeIsRequired: "ប្រភេទសេវាកម្មតម្រូវឱ្យមាន",
+  serviceURLIsRequired: "អាសយដ្ឋានសេវាកម្មតម្រូវឱ្យមាន",
+  heartbeatIntervalIsRequired: "ចន្លោះពេលលោតតម្រូវឱ្យមា",
+  maximumRetriesIsRequired: "ការព្យាយាមអតិបរមាតម្រូវឱ្យមាន",
+
+  
   // Service table headers
+  overview: "ទិដ្ឋភាពទូទៅ",
+  allType: "គ្រប់ប្រភេទ",
   serviceName: "ឈ្មោះសេវាកម្ម",
   serviceType: "ប្រភេទសេវាកម្ម",
   serviceStatus: "ស្ថានភាពសេវាកម្ម",

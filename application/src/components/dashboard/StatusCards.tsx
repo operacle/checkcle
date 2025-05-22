@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowUp, ArrowDown, Pause, AlertTriangle } from "lucide-react";
 import { Service } from "@/services/serviceService";
 import { useTheme } from "@/contexts/ThemeContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface StatusCardsProps {
   services: Service[];
@@ -17,6 +18,7 @@ export const StatusCards = ({ services }: StatusCardsProps) => {
   
   // Get current theme to adjust card styles
   const { theme } = useTheme();
+  const { t } = useLanguage();  
   
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 w-full">
@@ -42,7 +44,7 @@ export const StatusCards = ({ services }: StatusCardsProps) => {
           ></div>
         </div>
         <CardHeader className="pb-2 relative z-10">
-          <CardTitle className="text-sm font-medium text-white">UP SERVICES</CardTitle>
+          <CardTitle className="text-sm font-medium text-white">{t("upServices")}</CardTitle>
         </CardHeader>
         <CardContent className="flex items-center justify-between relative z-10">
           <span className="text-5xl font-bold text-white">{upServices}</span>
@@ -74,7 +76,7 @@ export const StatusCards = ({ services }: StatusCardsProps) => {
           ></div>
         </div>
         <CardHeader className="pb-2 relative z-10">
-          <CardTitle className="text-sm font-medium text-white">DOWN SERVICES</CardTitle>
+          <CardTitle className="text-sm font-medium text-white">{t("downServices")}</CardTitle>
         </CardHeader>
         <CardContent className="flex items-center justify-between relative z-10">
           <span className="text-5xl font-bold text-white">{downServices}</span>
@@ -106,7 +108,7 @@ export const StatusCards = ({ services }: StatusCardsProps) => {
           ></div>
         </div>
         <CardHeader className="pb-2 relative z-10">
-          <CardTitle className="text-sm font-medium text-white">PAUSED SERVICES</CardTitle>
+          <CardTitle className="text-sm font-medium text-white">{t("pausedServices")}</CardTitle>
         </CardHeader>
         <CardContent className="flex items-center justify-between relative z-10">
           <span className="text-5xl font-bold text-white">{pausedServices}</span>
@@ -138,7 +140,7 @@ export const StatusCards = ({ services }: StatusCardsProps) => {
           ></div>
         </div>
         <CardHeader className="pb-2 relative z-10">
-          <CardTitle className="text-sm font-medium text-white">WARNING SERVICES</CardTitle>
+          <CardTitle className="text-sm font-medium text-white">{t("warningServices")}</CardTitle>
         </CardHeader>
         <CardContent className="flex items-center justify-between relative z-10">
           <span className="text-5xl font-bold text-white">{warningServices}</span>

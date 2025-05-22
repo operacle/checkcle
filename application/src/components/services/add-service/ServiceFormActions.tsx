@@ -1,5 +1,6 @@
 
 import { Button } from "@/components/ui/button";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { Loader2 } from "lucide-react";
 import { MouseEvent } from "react";
 
@@ -21,6 +22,8 @@ export function ServiceFormActions({
     }
   };
 
+  const { t } = useLanguage();
+
   return (
     <div className="flex justify-end gap-3 pt-2">
       <Button 
@@ -30,7 +33,7 @@ export function ServiceFormActions({
         disabled={isSubmitting}
         className="border-gray-700 text-gray-300 hover:bg-gray-800 hover:text-white"
       >
-        Cancel
+        {t("cancel")}
       </Button>
       <Button 
         type="submit" 
@@ -40,7 +43,7 @@ export function ServiceFormActions({
         {isSubmitting ? (
           <>
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            Processing...
+            {t("processing")}...
           </>
         ) : (
           submitLabel

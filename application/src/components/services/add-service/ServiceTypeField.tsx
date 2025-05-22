@@ -4,19 +4,21 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Globe } from "lucide-react";
 import { UseFormReturn } from "react-hook-form";
 import { ServiceFormData } from "./types";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface ServiceTypeFieldProps {
   form: UseFormReturn<ServiceFormData>;
 }
 
 export function ServiceTypeField({ form }: ServiceTypeFieldProps) {
+  const { t } = useLanguage();
   return (
     <FormField
       control={form.control}
       name="type"
       render={({ field }) => (
         <FormItem>
-          <FormLabel>Service Type</FormLabel>
+          <FormLabel>{t("serviceType")}</FormLabel>
           <FormControl>
             <Select 
               onValueChange={field.onChange} 
@@ -41,7 +43,7 @@ export function ServiceTypeField({ form }: ServiceTypeFieldProps) {
                       <span>HTTP/S</span>
                     </div>
                     <p className="text-xs text-gray-400 mt-1">
-                      Monitor websites and REST APIs with HTTP/HTTPS protocol
+                      {t("MonitorWebsitesAndRESTAPIsWithHTTPHTTPSProtocol")}
                     </p>
                   </div>
                 </SelectItem>

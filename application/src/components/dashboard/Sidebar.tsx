@@ -47,8 +47,8 @@ export const Sidebar = ({
   const mainIconSize = "h-6 w-6";
   
   return <div className={`${collapsed ? 'w-16' : 'w-64'} ${theme === 'dark' ? 'bg-[#121212] border-[#1e1e1e]' : 'bg-sidebar border-sidebar-border'} border-r flex flex-col transition-all duration-300 h-full`}>
-      <div className={`p-4 ${theme === 'dark' ? 'border-[#1e1e1e]' : 'border-sidebar-border'} border-b flex items-center ${collapsed ? 'justify-center' : ''}`}>
-        <div className="h-8 w-8 bg-green-500 rounded flex items-center justify-center mr-2">
+      <div className={`p-4 space-x-2 ${theme === 'dark' ? 'border-[#1e1e1e]' : 'border-sidebar-border'} border-b flex items-center ${collapsed ? 'justify-center' : ''}`}>
+        <div className="h-8 w-8 bg-green-500 rounded flex items-center justify-center">
           <span className="text-white font-bold">C</span>
         </div>
         {!collapsed && <h1 className="text-xl font-semibold">CheckCle App</h1>}

@@ -27,7 +27,37 @@ export const enTranslations = {
   dataRetention: "Data Retention",
   backupSettings: "Backup Settings",
   aboutSystem: "About System",
+  // Uptime Monitoring Content
+  currentlyMonitoring: "Currently Monitoring",
+  upServices: "UP SERVICES",
+  downServices: "DOWN SERVICES",
+  pausedServices: "PAUSED SERVICES",
+  warningServices: "WARNING SERVICES",
+  // Create Service Form
+  createNewService: "Create New Service",
+  fillInTheDetailsToCreateANewServiceToMonitor: "Fill in the details to create a new service to monitor.",
+  newService: "New Service",
+  serviceURL: "Service URL",
+  heartbeatInterval: "Heartbeat Interval",
+  maximumRetries: "Maximum Retries",
+  alertTemplate: "Alert Template",
+  createService: "Create Service",
+  default: "Default",
+  processing: "Processing",
+  errorLoadingServiceData: "Error loading service data.",
+  retry: "Retry",
+  MonitorWebsitesAndRESTAPIsWithHTTPHTTPSProtocol: "Monitor websites and REST APIs with HTTP/HTTPS protocol",
+
+  // Request Message
+  serviceNameIsRequired: "Service name is required",
+  serviceTypeIsRequired: "Service type is required",
+  serviceURLIsRequired: "Service URL is required",
+  heartbeatIntervalIsRequired: "Heartbeat interval is required",
+  maximumRetriesIsRequired: "Maximum retries is required",
+
   // Service table headers
+  overview: "Overview",
+  allType: "All Types",
   serviceName: "Service Name",
   serviceType: "Service Type",
   serviceStatus: "Service Status",

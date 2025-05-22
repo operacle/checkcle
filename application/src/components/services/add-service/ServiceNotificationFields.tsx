@@ -7,6 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import { templateService } from "@/services/templateService";
 import { alertConfigService, AlertConfiguration } from "@/services/alertConfigService";
 import { useState, useEffect } from "react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface ServiceNotificationFieldsProps {
   form: UseFormReturn<ServiceFormData>;
@@ -18,6 +19,8 @@ export function ServiceNotificationFields({ form }: ServiceNotificationFieldsPro
   // Get the current form values for debugging
   const notificationChannel = form.watch("notificationChannel");
   const alertTemplate = form.watch("alertTemplate");
+
+  const { t } = useLanguage();
   
   console.log("Current notification values:", { 
     notificationChannel, 
@@ -71,7 +74,7 @@ export function ServiceNotificationFields({ form }: ServiceNotificationFieldsPro
           
           return (
             <FormItem>
-              <FormLabel>Notification Channel</FormLabel>
+              <FormLabel>{t("notificationChannel")}</FormLabel>
               <FormControl>
                 <Select 
                   onValueChange={(value) => {
@@ -84,7 +87,7 @@ export function ServiceNotificationFields({ form }: ServiceNotificationFieldsPro
                     <SelectValue placeholder="Select a notification channel" />
                   </SelectTrigger>
                   <SelectContent className="bg-gray-900 text-white border-gray-700">
-                    <SelectItem value="none">None</SelectItem>
+                    <SelectItem value="none">{t("none")}</SelectItem>
                     {alertConfigs.map((config) => (
                       <SelectItem key={config.id} value={config.id || ""}>
                         {config.notify_name} ({config.notification_type})
@@ -108,7 +111,7 @@ export function ServiceNotificationFields({ form }: ServiceNotificationFieldsPro
           
           return (
             <FormItem>
-              <FormLabel>Alert Template</FormLabel>
+              <FormLabel>{t("alertTemplate")}</FormLabel>
               <FormControl>
                 <Select 
                   onValueChange={(value) => {
@@ -121,7 +124,7 @@ export function ServiceNotificationFields({ form }: ServiceNotificationFieldsPro
                     <SelectValue placeholder="Select an alert template" />
                   </SelectTrigger>
                   <SelectContent className="bg-gray-900 text-white border-gray-700">
-                    <SelectItem value="default">Default</SelectItem>
+                    <SelectItem value="default">{t("default")}</SelectItem>
                     {templates?.map((template) => (
                       <SelectItem key={template.id} value={template.id}>
                         {template.name}

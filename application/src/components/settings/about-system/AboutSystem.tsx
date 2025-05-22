@@ -32,18 +32,13 @@ export const AboutSystem: React.FC = () => {
               <ServerIcon className={`h-5 w-5 ${theme === 'dark' ? 'text-sky-400' : 'text-sky-600'}`} />
               <span className="font-thin text-xl">{t('systemDescription')}</span>
             </CardTitle>
-            <CardDescription className="font-medium text-base">{systemName || 'ReamStack'}</CardDescription>
           </CardHeader>
           <CardContent className="space-y-6 pt-6">
             <div className="flex flex-col space-y-4">
-              <p className="text-base leading-relaxed">
-                {t('systemVersion')} <span className="font-semibold">1.0.0</span> {t('isAModern')} {t('serverMonitoring')} {t('solution')} {t('designedFor')} {t('enterpriseUse')}. {t('providesRealtime')} {t('uptimeTracking')}, {t('performanceAnalytics')}, {t('andAlertNotifications')}.
-              </p>
-              
               <div className="flex flex-col space-y-3 pt-2">
                 <div className="flex justify-between items-center">
                   <span className="text-muted-foreground">{t('systemVersion')}</span>
-                  <span className="text-foreground font-medium">{t('version')} 1.0.0</span>
+                  <span className="text-foreground font-medium">{t('version')} 1.1.0</span>
                 </div>
                 <Separator className="my-1" />
                 <div className="flex justify-between items-center">
@@ -53,7 +48,7 @@ export const AboutSystem: React.FC = () => {
                 <Separator className="my-1" />
                 <div className="flex justify-between items-center">
                   <span className="text-muted-foreground">{t('releasedOn')}</span>
-                  <span className="text-foreground font-medium">January 15, 2025</span>
+                  <span className="text-foreground font-medium">May 16, 2025</span>
                 </div>
               </div>
             </div>

@@ -1,0 +1,29 @@
+
+import { CommonTranslations } from '../types/common';
+
+export const commonTranslations: CommonTranslations = {
+  welcome: "សូមស្វាគមន៍",
+  logout: "ចាកចេញ",
+  language: "ភាសា",
+  english: "អង់គ្លេស",
+  khmer: "ខ្មែរ",
+  german: "Deutsch",
+  goodMorning: "អរុណសួស្តី",
+  goodAfternoon: "ទិវាសួស្តី",
+  goodEvening: "សាយណ្ហសួស្តី",
+  profile: "ប្រវត្តិរូប",
+  settings: "ការកំណត់",
+  documentation: "ឯកសារ",
+  notifications: "ការជូនដំណឹង",
+  close: "បិទ",
+  cancel: "បោះបង់",
+  view: "មើល",
+  edit: "កែសម្រួល",
+  delete: "លុប",
+  status: "ស្ថានភាព",
+  time: "ពេលវេលា",
+  title: "ចំណងជើង",
+  description: "ការពិពណ៌នា",
+  success: "ជោគជ័យ",
+  error: "កំហុស",
+};

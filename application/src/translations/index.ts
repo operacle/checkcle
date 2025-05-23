@@ -1,7 +1,6 @@
-
-import { enTranslations } from './en';
-import { kmTranslations } from './km';
-import { deTranslations } from './de';
+import enTranslations from './en';
+import kmTranslations from './km';
+import deTranslations from './de';
 
 export type Language = "en" | "km" | "de";
 
@@ -11,4 +10,6 @@ export const translations = {
   de: deTranslations,
 };
 
-export type TranslationKey = keyof typeof enTranslations;
+// Type for accessing translations by module and key
+export type TranslationModule = keyof typeof enTranslations;
+export type TranslationKey<M extends TranslationModule> = keyof typeof enTranslations[M];

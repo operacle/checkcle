@@ -7,6 +7,7 @@ import { ServicesTranslations } from './services';
 import { MaintenanceTranslations } from './maintenance';
 import { IncidentTranslations } from './incident';
 import { SSLTranslations } from './ssl';
+import { SettingsTranslations } from './settings';
 
 export interface Translations {
   common: CommonTranslations;
@@ -17,4 +18,5 @@ export interface Translations {
   maintenance: MaintenanceTranslations;
   incident: IncidentTranslations;
   ssl: SSLTranslations;
+  settings: SettingsTranslations;
 }

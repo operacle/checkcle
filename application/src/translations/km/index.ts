@@ -8,8 +8,9 @@ import { servicesTranslations } from './services';
 import { maintenanceTranslations } from './maintenance';
 import { incidentTranslations } from './incident';
 import { sslTranslations } from './ssl';
+import { settingsTranslations } from './settings';
 
-const kmTranslations: Translations = {
+const enTranslations: Translations = {
   common: commonTranslations,
   menu: menuTranslations,
   login: loginTranslations,
@@ -17,7 +18,8 @@ const kmTranslations: Translations = {
   services: servicesTranslations,
   maintenance: maintenanceTranslations,
   incident: incidentTranslations,
-  ssl: sslTranslations
+  ssl: sslTranslations,
+  settings: settingsTranslations
 };
 
-export default kmTranslations;
+export default enTranslations;

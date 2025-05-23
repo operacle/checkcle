@@ -8,6 +8,7 @@ import { servicesTranslations } from './services';
 import { maintenanceTranslations } from './maintenance';
 import { incidentTranslations } from './incident';
 import { sslTranslations } from './ssl';
+import { settingsTranslations } from './settings';
 
 const enTranslations: Translations = {
   common: commonTranslations,
@@ -17,7 +18,8 @@ const enTranslations: Translations = {
   services: servicesTranslations,
   maintenance: maintenanceTranslations,
   incident: incidentTranslations,
-  ssl: sslTranslations
+  ssl: sslTranslations,
+  settings: settingsTranslations
 };
 
 export default enTranslations;

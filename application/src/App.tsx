@@ -16,6 +16,7 @@ import Settings from "./pages/Settings";
 import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
 import SslDomain from "./pages/SslDomain";
+import ScheduleIncident from "./pages/ScheduleIncident";
 
 // Create a Protected route component
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
@@ -99,6 +100,14 @@ const App = () => {
                   element={
                     <ProtectedRoute>
                       <SslDomain />
+                    </ProtectedRoute>
+                  } 
+                />
+                <Route 
+                  path="/schedule-incident" 
+                  element={
+                    <ProtectedRoute>
+                      <ScheduleIncident />
                     </ProtectedRoute>
                   } 
                 />

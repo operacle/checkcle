@@ -4,9 +4,10 @@ import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { UseFormReturn } from "react-hook-form";
-import UserProfilePictureField from "./UserProfilePictureField";
-import UserTextField from "./UserTextField";
-import UserToggleField from "./UserToggleField";
+import { UserProfilePictureField } from "./";
+import { UserTextField } from "./";
+import { UserToggleField } from "./";
+import { UserRoleField } from "./";
 import { DialogFooter } from "@/components/ui/dialog";
 
 interface AddUserFormProps {
@@ -44,11 +45,10 @@ const AddUserForm = ({ form, onSubmit, isSubmitting }: AddUserFormProps) => {
             placeholder="Enter username"
           />
           
-          <UserTextField
+          <UserRoleField
             control={form.control}
             name="role"
             label="Role"
-            placeholder="Enter role (e.g. admin, user)"
           />
           
           <UserTextField

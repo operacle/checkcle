@@ -1,6 +1,12 @@
 
 import * as z from "zod";
 
+// Define the available roles
+export const userRoles = [
+  { label: "Admin", value: "admin" },
+  { label: "Super Admin", value: "superadmin" }
+];
+
 export const userFormSchema = z.object({
   full_name: z.string().min(2, {
     message: "Name must be at least 2 characters.",
@@ -12,7 +18,9 @@ export const userFormSchema = z.object({
     message: "Username must be at least 3 characters.",
   }),
   isActive: z.boolean().optional(),
-  role: z.string().optional(),
+  role: z.string().min(1, {
+    message: "Please select a role",
+  }),
   avatar: z.string().optional(),
 });
 

@@ -24,6 +24,24 @@ export interface GeneralSettings {
   enable_sms_notifications?: boolean;
   enable_two_factor?: boolean;
   enable_audit_logs?: boolean;
+  
+  // New fields for additional settings
+  meta?: {
+    appName?: string;
+    appURL?: string;
+    senderName?: string;
+    senderAddress?: string;
+    hideControls?: boolean;
+  };
+  smtp?: {
+    enabled?: boolean;
+    port?: number;
+    host?: string;
+    username?: string;
+    authMethod?: string;
+    tls?: boolean;
+    localName?: string;
+  };
 }
 
 export const settingsService = {
@@ -48,6 +66,17 @@ export const settingsService = {
     } catch (error) {
       console.error("Failed to update general settings:", error);
       return null;
+    }
+  },
+  
+  async testEmailConnection(smtpConfig: any): Promise<boolean> {
+    try {
+      // In a real application, we would send a test email here
+      // For now, let's simulate a successful connection if the host is provided
+      return !!smtpConfig.host;
+    } catch (error) {
+      console.error("Failed to test email connection:", error);
+      return false;
     }
   }
 };

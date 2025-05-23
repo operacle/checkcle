@@ -18,6 +18,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import UserTextField from "./form-fields/UserTextField";
 import UserToggleField from "./form-fields/UserToggleField";
 import UserProfilePictureField from "./form-fields/UserProfilePictureField";
+import UserRoleField from "./form-fields/UserRoleField";
 
 interface EditUserDialogProps {
   isOpen: boolean;
@@ -42,15 +43,16 @@ const EditUserDialog = ({
   
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogContent className="sm:max-w-[700px] w-[95vw]">
-        <DialogHeader>
+      <DialogContent className="sm:max-w-[700px] w-[95vw] max-h-[95vh] flex flex-col">
+        <DialogHeader className="flex-shrink-0">
           <DialogTitle>Edit User</DialogTitle>
           <DialogDescription>
             Update user information
           </DialogDescription>
         </DialogHeader>
-        <ScrollArea className="h-[60vh]">
-          <div className="p-4">
+        
+        <ScrollArea className="flex-1 overflow-auto">
+          <div className="p-1">
             {error && (
               <Alert variant="destructive" className="mb-4">
                 <AlertCircle className="h-4 w-4" />
@@ -85,11 +87,10 @@ const EditUserDialog = ({
                     placeholder="Enter username"
                   />
                   
-                  <UserTextField
+                  <UserRoleField
                     control={form.control}
                     name="role"
                     label="Role"
-                    placeholder="Enter role (e.g. admin, user)"
                   />
                 </div>
                 
@@ -99,23 +100,34 @@ const EditUserDialog = ({
                   label="Active Status"
                   description="User will be able to access the system"
                 />
-
-                <DialogFooter className="pt-4">
-                  <Button type="submit" disabled={isSubmitting}>
-                    {isSubmitting ? (
-                      <>
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        Updating...
-                      </>
-                    ) : (
-                      "Update User"
-                    )}
-                  </Button>
-                </DialogFooter>
               </form>
             </Form>
           </div>
         </ScrollArea>
+
+        <DialogFooter className="flex-shrink-0 pt-4 border-t">
+          <Button 
+            type="button" 
+            variant="outline" 
+            onClick={() => setIsOpen(false)}
+            disabled={isSubmitting}
+          >
+            Cancel
+          </Button>
+          <Button 
+            onClick={form.handleSubmit(onSubmit)} 
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Updating...
+              </>
+            ) : (
+              "Update User"
+            )}
+          </Button>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

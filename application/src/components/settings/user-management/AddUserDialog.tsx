@@ -22,15 +22,15 @@ interface AddUserDialogProps {
 const AddUserDialog = ({ isOpen, setIsOpen, form, onSubmit, isSubmitting }: AddUserDialogProps) => {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogContent className="sm:max-w-[700px] w-[95vw]">
-        <DialogHeader>
+      <DialogContent className="sm:max-w-[700px] w-[95vw] max-h-[95vh] flex flex-col">
+        <DialogHeader className="flex-shrink-0">
           <DialogTitle>Add New User</DialogTitle>
           <DialogDescription>
             Create a new user account
           </DialogDescription>
         </DialogHeader>
-        <ScrollArea className="h-[60vh]">
-          <div className="p-4">
+        <ScrollArea className="flex-1 overflow-auto">
+          <div className="p-1">
             <AddUserForm 
               form={form} 
               onSubmit={onSubmit} 

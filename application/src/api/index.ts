@@ -1,6 +1,7 @@
 
 // API routes handler
 import realtime from './realtime';
+import settingsApi from './settings';
 
 /**
  * Simple API router for client-side application
@@ -16,6 +17,9 @@ const api = {
     if (path === '/api/realtime') {
       console.log("Routing to realtime handler");
       return await realtime(body);
+    } else if (path === '/api/settings') {
+      console.log("Routing to settings handler");
+      return await settingsApi(body);
     }
     
     // Return 404 for unknown routes

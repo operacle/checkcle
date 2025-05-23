@@ -11,19 +11,38 @@ export interface AuthUser {
   email: string;
   name?: string;
   avatar?: string;
+  role?: string;  // Added role property
 }
 
 export const authService = {
   async login({ email, password }: LoginCredentials): Promise<AuthUser> {
     try {
-      const authData = await pb.collection('users').authWithPassword(email, password);
-      
-      return {
-        id: authData.record.id,
-        email: authData.record.email,
-        name: authData.record.full_name || authData.record.name,
-        avatar: authData.record.avatar
-      };
+      // First try to login as a regular admin user
+      try {
+        console.log("Attempting to login as admin user");
+        const authData = await pb.collection('users').authWithPassword(email, password);
+        
+        return {
+          id: authData.record.id,
+          email: authData.record.email,
+          name: authData.record.full_name || authData.record.name,
+          avatar: authData.record.avatar,
+          role: authData.record.role || "admin"
+        };
+      } catch (error) {
+        console.log("Failed to login as admin, trying as superadmin", error);
+        
+        // If regular user login fails, try superadmin
+        const authData = await pb.collection('_superusers').authWithPassword(email, password);
+        
+        return {
+          id: authData.record.id,
+          email: authData.record.email,
+          name: authData.record.full_name || authData.record.name,
+          avatar: authData.record.avatar,
+          role: "superadmin"
+        };
+      }
     } catch (error) {
       console.error('Login failed:', error);
       throw new Error('Authentication failed. Please check your credentials.');
@@ -46,13 +65,17 @@ export const authService = {
     // Log the full user data for debugging
     console.log("Raw user data from authStore:", userData);
     
+    // Determine if this is a superadmin by checking the collection name
+    const isSuperAdmin = userData.collectionName === '_superusers';
+    
     // The avatar will be kept as is - either the full path from Pocketbase
     // or we'll handle display in the UI components
     return { 
       id: userData.id, 
       email: userData.email, 
       name: userData.full_name || userData.name, 
-      avatar: userData.avatar 
+      avatar: userData.avatar,
+      role: isSuperAdmin ? "superadmin" : (userData.role || "admin")
     };
   },
 

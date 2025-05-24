@@ -1,5 +1,5 @@
 
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { maintenanceService, MaintenanceItem } from '@/services/maintenance';
 import { useToast } from '@/hooks/use-toast';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -16,7 +16,10 @@ export const useMaintenanceData = ({ refreshTrigger = 0 }: UseMaintenanceDataPro
   const [filter, setFilter] = useState("upcoming");
   const [error, setError] = useState<string | null>(null);
   const [initialized, setInitialized] = useState(false);
-  const [lastFetchTime, setLastFetchTime] = useState(0);
+  
+  // Refs for cleanup and request management
+  const mountedRef = useRef(true);
+  const currentRequestRef = useRef<Promise<void> | null>(null);
 
   // Memoize categorized data to prevent unnecessary recalculations
   const categorizedData = useMemo(() => {
@@ -48,80 +51,91 @@ export const useMaintenanceData = ({ refreshTrigger = 0 }: UseMaintenanceDataPro
     return { upcoming, ongoing, completed };
   }, [allMaintenanceData]);
 
-  // Optimized fetch function with improved debouncing
+  // Simple fetch function - only called when explicitly requested
   const fetchMaintenanceData = useCallback(async (force = false) => {
-    // Prevent excessive fetching with improved debounce logic
-    const now = Date.now();
-    if (!force && now - lastFetchTime < 10000 && lastFetchTime > 0 && initialized) {
-      console.log("Skipping fetch - recently fetched (within 10s)");
+    // Check if component is still mounted
+    if (!mountedRef.current) return;
+    
+    // Prevent duplicate requests
+    if (currentRequestRef.current) {
+      console.log("Request already in progress, waiting...");
+      await currentRequestRef.current;
       return;
     }
     
-    // Only show loading state for initial load, not refreshes
-    if (!initialized) {
+    // Only show loading state for initial load or forced refresh
+    if (!initialized || force) {
       setLoading(true);
     }
     
     setError(null);
-    setLastFetchTime(now);
     
-    try {
-      console.log("Fetching maintenance data from service...");
-      const data = await maintenanceService.getMaintenanceRecords();
-      console.log("Fetched maintenance data, count:", data.length);
-      
-      // Log a sample of the first item's assigned_users for debugging
-      if (data.length > 0) {
-        console.log("Sample maintenance item assigned_users:", data[0].id, data[0].assigned_users);
-      }
-      
-      // Update state with fetched data
-      setAllMaintenanceData(data);
-      setInitialized(true);
-    } catch (error) {
-      console.error('Error fetching maintenance data:', error);
-      setError('Failed to load maintenance data');
-      toast({
-        title: t('error'),
-        description: t('errorFetchingMaintenanceData'),
-        variant: 'destructive',
-      });
-    } finally {
-      setLoading(false);
-    }
-  }, [t, toast, lastFetchTime, initialized]);
-
-  // Initial fetch on mount with proper cleanup
-  useEffect(() => {
-    console.log("useMaintenanceData hook mounted, fetching data");
-    let isMounted = true;
-    
-    const fetchData = async () => {
+    const requestPromise = (async () => {
       try {
-        await fetchMaintenanceData(true);
+        console.log("Fetching maintenance data...", force ? "(forced)" : "");
+        const data = await maintenanceService.getMaintenanceRecords();
+        
+        // Check if component is still mounted before updating state
+        if (!mountedRef.current) return;
+        
+        console.log(`Fetched ${data.length} maintenance records`);
+        
+        // Update state with fetched data
+        setAllMaintenanceData(data);
+        setInitialized(true);
+        
+        // Clear any previous error
+        if (error) {
+          setError(null);
+        }
+        
       } catch (err) {
-        console.error("Error in initial fetch:", err);
+        console.error('Error fetching maintenance data:', err);
+        
+        // Only update error state if component is still mounted
+        if (!mountedRef.current) return;
+        
+        const errorMessage = 'Failed to load maintenance data. Please try again.';
+        setError(errorMessage);
+        
+        // Show toast for errors
+        toast({
+          title: t('error'),
+          description: t('errorFetchingMaintenanceData'),
+          variant: 'destructive',
+        });
+      } finally {
+        // Only update loading state if component is still mounted
+        if (mountedRef.current) {
+          setLoading(false);
+        }
+        currentRequestRef.current = null;
       }
-    };
+    })();
+
+    currentRequestRef.current = requestPromise;
+    await requestPromise;
+  }, [t, toast, error, initialized]);
+
+  // Initial fetch on mount - NO AUTOMATIC POLLING
+  useEffect(() => {
+    console.log("useMaintenanceData hook mounted, fetching initial data");
+    mountedRef.current = true;
     
-    fetchData();
-    
-    // Set up polling with longer interval (5 minutes instead of 3)
-    const intervalId = setInterval(() => {
-      if (isMounted) fetchMaintenanceData(false);
-    }, 300000); // 5 minutes
+    // Only fetch initial data, no polling
+    fetchMaintenanceData(true);
     
     return () => {
-      isMounted = false;
-      clearInterval(intervalId);
+      mountedRef.current = false;
+      currentRequestRef.current = null;
     };
-  }, [fetchMaintenanceData]);
+  }, []); // Remove fetchMaintenanceData from dependencies to prevent re-runs
 
-  // Handle refresh trigger changes
+  // Handle refresh trigger changes - ONLY when explicitly triggered
   useEffect(() => {
     if (refreshTrigger > 0) {
-      console.log("Refresh trigger changed, forcing data fetch");
-      fetchMaintenanceData(true);
+      console.log("Manual refresh triggered, forcing data fetch");
+      fetchMaintenanceData(true); // Force refresh to bypass cache
     }
   }, [refreshTrigger, fetchMaintenanceData]);
 

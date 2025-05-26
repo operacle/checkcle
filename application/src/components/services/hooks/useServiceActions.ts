@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
@@ -24,6 +23,7 @@ export function useServiceActions(initialServices: Service[]) {
   };
 
   const handleViewDetail = (service: Service) => {
+    console.log(`Navigating to service detail for service ID: ${service.id}`);
     navigate(`/service/${service.id}`);
   };
   

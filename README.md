@@ -24,21 +24,22 @@ CheckCle is an Open Source solution for seamless, real-time monitoring of full-s
 
 ## #️⃣ Getting Started
 
-### Installation with Docker Compose
+### Installation with Docker Run and Compose
 1. Copy ready docker run command
 ```bash 
-# Create Docker Volume for data persistence
-
-docker volume create pb_data
-
-
-# Docker Run Command
-
-docker run --name checkcle --restart unless-stopped -p 8090:8090 -v pb_data:/app/pb_data --ulimit nofile=4096:8192 operacle/checkcle:latest
+docker run -d \
+  --name checkcle \
+  --restart unless-stopped \
+  -p 8090:8090 \
+  -v /opt/pb_data:/mnt/pb_data \
+  --ulimit nofile=4096:8192 \
+  operacle/checkcle:latest
 
 ```
 2. Docker Compose - Recommended
 ```bash 
+
+version: '3.9'
 
 services:
   checkcle:
@@ -48,14 +49,11 @@ services:
     ports:
       - "8090:8090"  # Web Application
     volumes:
-      - pb_data:/app/pb_data  # Ensure persistent data across rebuilds
+      - /opt/pb_data:/mnt/pb_data  # Host directory mapped to container path
     ulimits:
       nofile:
         soft: 4096
         hard: 8192
-
-volumes:
-  pb_data:  # Docker-managed volume for data persistence
 
 ```
 3. Admin Web Management
@@ -64,12 +62,12 @@ volumes:
     User: admin@example.com
     Passwd: Admin123456
     
-4. Follow the Quick Start Guide at https://docs.checkcle.com (Coming Soon)
+4. Follow the Quick Start Guide at https://docs.checkcle.io
 
 ###
-![Uptime Monitoring](https://pub-4a4062303020445f8f289a2fee84f9e8.r2.dev/images/checkcle-collapse-black.png)
 ![checkcle-collapse-black](https://pub-4a4062303020445f8f289a2fee84f9e8.r2.dev/images/checkcle-black.png)
 ![Service Detail Page](https://pub-4a4062303020445f8f289a2fee84f9e8.r2.dev/images/checkcle-detailpage.png)
+![Schedule Maintenance](https://pub-4a4062303020445f8f289a2fee84f9e8.r2.dev/images/maintenance-dahboard.png)
 
 ## 📝 Development Roadmap
 
@@ -80,15 +78,16 @@ volumes:
 - [x] Docker containerization 
 - [x] CheckCle Website
 - [x] CheckCle Demo Server
-- [x] SSL & Domain Monitoring - added in release of https://github.com/operacle/checkcle/releases/tag/v1.1.0
+- [x] SSL & Domain Monitoring
+- [x] Schedule Maintenance 
+- [x] Incident Management
 - [ ] Uptime monitoring (PING - Inprogress)
 - [ ] Infrastructure Server Monitoring
-- [ ] Schedule Maintenance & Incident Management
 - [ ] Operational Status / Public Status Pages
 - [ ] Uptime monitoring (TCP, PING, DNS)
 - [ ] User Permission Roles & Service Group
 - [ ] Notifications (Email/Slack/Discord/Signal)  
-- [ ] Open-source release with full documentation 
+- [x] Open-source release with full documentation 
 
 ## 🌟 CheckCle for Communities?
 - **Built with Passion**: Created by an open-source enthusiast for the community
@@ -111,6 +110,7 @@ Here are some ways you can help improve CheckCle:
 
 ## 🌍 Stay Connected
 - Website: [checkcle.io](https://checkcle.io)
+- Documentation: [docs.checkcle.io](https://docs.checkcle.io)
 - GitHub Repository: ⭐ [CheckCle](https://github.com/operacle/checkcle.git)
 - Community Channels: Engage via discussions and issues!
 - Discord: Join our community [@discord](https://discord.gg/xs9gbubGwX)

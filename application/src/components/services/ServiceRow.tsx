@@ -43,22 +43,22 @@ export const ServiceRow = ({
       className={`border-b ${theme === 'dark' ? 'border-gray-800 hover:bg-gray-900/60' : 'border-gray-200 hover:bg-gray-50'} cursor-pointer`}
       onClick={handleRowClick}
     >
-      <TableCell className="font-medium py-4" onClick={(e) => e.stopPropagation()}>
+      <TableCell className="font-medium py-4">
         <ServiceRowHeader service={service} />
       </TableCell>
-      <TableCell onClick={(e) => e.stopPropagation()} className={`text-base py-4 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
+      <TableCell className={`text-base py-4 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
         {service.type}
       </TableCell>
-      <TableCell onClick={(e) => e.stopPropagation()} className="py-4">
+      <TableCell className="py-4">
         <StatusBadge status={service.status} size="md" />
       </TableCell>
-      <TableCell onClick={(e) => e.stopPropagation()} className="py-4">
+      <TableCell className="py-4">
         <ServiceRowResponseTime responseTime={service.responseTime} />
       </TableCell>
-      <TableCell className="w-52 py-4" onClick={(e) => e.stopPropagation()}>
+      <TableCell className="w-52 py-4">
         <UptimeBar uptime={service.uptime} status={service.status} serviceId={service.id} />
       </TableCell>
-      <TableCell onClick={(e) => e.stopPropagation()} className="py-4">
+      <TableCell className="py-4">
         <LastCheckedTime 
           lastCheckedTime={displayTimestamp} 
           status={service.status} 

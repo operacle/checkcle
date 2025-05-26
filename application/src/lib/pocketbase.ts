@@ -1,16 +1,17 @@
 import PocketBase from 'pocketbase';
 
-// Auto-detect base URL from browser location
+// Dynamically detect API base URL from current host (for use in browser)
 const dynamicBaseUrl =
   typeof window !== 'undefined'
-    ? window.location.origin
+    ? `${window.location.protocol}//${window.location.hostname}:8090`
     : 'http://localhost:8090';
 
-// Define API endpoints
+// Define available API endpoints
 export const API_ENDPOINTS = {
   REMOTE: dynamicBaseUrl
 };
 
+// Get the current endpoint from localStorage or use remote as default
 export const getCurrentEndpoint = (): string => {
   if (typeof window !== 'undefined') {
     const savedEndpoint = localStorage.getItem('pocketbase_endpoint');
@@ -19,19 +20,26 @@ export const getCurrentEndpoint = (): string => {
   return API_ENDPOINTS.REMOTE;
 };
 
+// Set the API endpoint and reinitialize PocketBase
 export const setApiEndpoint = (endpoint: string): void => {
   if (typeof window !== 'undefined') {
     localStorage.setItem('pocketbase_endpoint', endpoint);
-    window.location.reload();
+    window.location.reload(); // Reload to reinitialize PocketBase with new endpoint
   }
 };
 
+// Initialize the PocketBase client with the current API URL
 export const pb = new PocketBase(getCurrentEndpoint());
 
-export const isAuthenticated = () => pb.authStore.isValid;
+// Helper to check if user is authenticated
+export const isAuthenticated = () => {
+  return pb.authStore.isValid;
+};
 
+// Export the auth store for use in components
 export const authStore = pb.authStore;
 
+// Configure PocketBase to persist authentication between page reloads
 if (typeof window !== 'undefined') {
   const storedAuthData = localStorage.getItem('pocketbase_auth');
   if (storedAuthData) {
@@ -44,15 +52,13 @@ if (typeof window !== 'undefined') {
     }
   }
 
+  // Subscribe to authStore changes to persist authentication
   pb.authStore.onChange(() => {
     if (pb.authStore.isValid) {
-      localStorage.setItem(
-        'pocketbase_auth',
-        JSON.stringify({
-          token: pb.authStore.token,
-          model: pb.authStore.model
-        })
-      );
+      localStorage.setItem('pocketbase_auth', JSON.stringify({
+        token: pb.authStore.token,
+        model: pb.authStore.model
+      }));
     } else {
       localStorage.removeItem('pocketbase_auth');
     }

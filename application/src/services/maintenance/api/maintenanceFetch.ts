@@ -19,7 +19,6 @@ export const fetchAllMaintenanceRecords = async (forceRefresh = false): Promise<
     // If forced refresh, clear cache first
     if (forceRefresh) {
       clearCache();
-      console.log('Cache cleared for forced refresh');
     }
     
     // Return cached data if available and not forced refresh
@@ -29,14 +28,12 @@ export const fetchAllMaintenanceRecords = async (forceRefresh = false): Promise<
     
     // Request deduplication: if a request is already in progress, wait for it
     if (currentRequest) {
-      console.log('Request already in progress, waiting for completion');
       return await currentRequest;
     }
     
     // Strict rate limiting - prevent requests too close together (unless forced)
     const timeSinceLastRequest = now - lastRequestTime;
     if (timeSinceLastRequest < MIN_REQUEST_INTERVAL && !forceRefresh) {
-      console.log(`Rate limiting: ${Math.round((MIN_REQUEST_INTERVAL - timeSinceLastRequest) / 1000)}s remaining`);
       return getCachedRecords() || [];
     }
     
@@ -66,8 +63,6 @@ export const fetchAllMaintenanceRecords = async (forceRefresh = false): Promise<
  * Perform the actual API request
  */
 const performRequest = async (timestamp: number): Promise<MaintenanceItem[]> => {
-  console.log('Making API request for maintenance records...');
-  
   // Create abort controller for request timeout
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
@@ -95,7 +90,6 @@ const performRequest = async (timestamp: number): Promise<MaintenanceItem[]> => 
     // Update cache
     updateCache(normalizedData, timestamp);
     
-    console.log(`Successfully fetched ${normalizedData.length} maintenance records`);
     return normalizedData;
     
   } catch (error) {

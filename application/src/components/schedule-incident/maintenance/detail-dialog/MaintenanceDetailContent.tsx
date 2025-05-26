@@ -25,7 +25,6 @@ export const MaintenanceDetailContent = ({
     queryKey: ['users'],
     queryFn: async () => {
       const usersList = await userService.getUsers();
-      console.log("Fetched users for maintenance detail:", usersList);
       return usersList || [];
     },
     enabled: true
@@ -36,7 +35,6 @@ export const MaintenanceDetailContent = ({
     queryKey: ['notificationChannels'],
     queryFn: async () => {
       const channels = await alertConfigService.getAlertConfigurations();
-      console.log("Fetched notification channels:", channels);
       return channels || [];
     },
     enabled: true
@@ -45,9 +43,6 @@ export const MaintenanceDetailContent = ({
   // Process user information when users data is available
   useEffect(() => {
     if (users.length > 0 && maintenance) {
-      console.log("Processing maintenance data with users:", maintenance);
-      console.log("Maintenance assigned_users:", maintenance.assigned_users);
-      
       // Create a copy of the maintenance object for modifications
       const enhancedMaintenance = { ...maintenance };
       
@@ -58,7 +53,6 @@ export const MaintenanceDetailContent = ({
         // Step 1: Extract user IDs from various formats
         if (Array.isArray(maintenance.assigned_users)) {
           userIds = maintenance.assigned_users;
-          console.log("Assigned users is an array:", userIds);
         } else if (typeof maintenance.assigned_users === 'string') {
           // Try parsing the string to extract user IDs
           try {
@@ -67,34 +61,28 @@ export const MaintenanceDetailContent = ({
             if (Array.isArray(parsedData)) {
               // Direct array format
               userIds = parsedData;
-              console.log("Parsed assigned_users from JSON array:", userIds);
             } else if (typeof parsedData === 'string') {
               // Nested JSON string
               try {
                 const nestedData = JSON.parse(parsedData);
                 if (Array.isArray(nestedData)) {
                   userIds = nestedData;
-                  console.log("Parsed assigned_users from nested JSON:", userIds);
                 }
               } catch (e) {
                 // If nested parsing fails, treat as single ID
                 userIds = [parsedData];
-                console.log("Using parsed string as single ID:", userIds);
               }
             } else {
               // Unknown format, use as is
               userIds = [String(parsedData)];
-              console.log("Using parsed data as single ID:", userIds);
             }
           } catch (e) {
             // If JSON parsing fails, try comma splitting
             if (maintenance.assigned_users.includes(',')) {
               userIds = maintenance.assigned_users.split(',').map(id => id.trim()).filter(Boolean);
-              console.log("Split assigned_users by comma:", userIds);
             } else {
               // Single ID
               userIds = [maintenance.assigned_users];
-              console.log("Using string as single ID:", userIds);
             }
           }
         }
@@ -107,20 +95,15 @@ export const MaintenanceDetailContent = ({
           cleanId = cleanId.replace(/[\[\]"'\\]/g, '');
           return cleanId;
         }).filter(Boolean);
-        
-        console.log("Cleaned user IDs:", userIds);
           
         // Step 3: Find matching users from the users array
         if (userIds.length > 0) {
           const matchedUsers = users.filter(user => userIds.includes(user.id));
-          console.log("Matched assigned users:", matchedUsers);
           setAssignedUsers(matchedUsers);
         } else {
-          console.log("No user IDs found in assigned_users");
           setAssignedUsers([]);
         }
       } else {
-        console.log("No assigned users found in maintenance data");
         setAssignedUsers([]);
       }
       
@@ -138,24 +121,15 @@ export const MaintenanceDetailContent = ({
         const channelId = maintenance.notification_channel_id || maintenance.notification_id;
         
         if (channelId && notificationChannels.length > 0) {
-          console.log("Looking for notification channel with ID:", channelId);
-          console.log("Available notification channels:", notificationChannels.map(c => ({ id: c.id, name: c.notify_name })));
-          
           const channel = notificationChannels.find(ch => ch.id === channelId);
           if (channel) {
-            console.log("Found notification channel:", channel);
             enhancedMaintenance.notification_channel_name = `${channel.notify_name} (${channel.notification_type})`;
           } else {
-            console.log("No matching notification channel found for ID:", channelId);
             enhancedMaintenance.notification_channel_name = `Channel ID: ${channelId}`;
           }
-        } else {
-          console.log("No channel ID available or no notification channels loaded");
         }
       }
       
-      console.log("Enhanced maintenance with details:", enhancedMaintenance);
-      console.log("Assigned users for display:", assignedUsers);
       setMaintenanceWithDetails(enhancedMaintenance);
     }
   }, [maintenance, users, notificationChannels]);

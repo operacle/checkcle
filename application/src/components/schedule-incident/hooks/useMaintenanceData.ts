@@ -58,7 +58,6 @@ export const useMaintenanceData = ({ refreshTrigger = 0 }: UseMaintenanceDataPro
     
     // Prevent duplicate requests
     if (currentRequestRef.current) {
-      console.log("Request already in progress, waiting...");
       await currentRequestRef.current;
       return;
     }
@@ -72,13 +71,10 @@ export const useMaintenanceData = ({ refreshTrigger = 0 }: UseMaintenanceDataPro
     
     const requestPromise = (async () => {
       try {
-        console.log("Fetching maintenance data...", force ? "(forced)" : "");
         const data = await maintenanceService.getMaintenanceRecords();
         
         // Check if component is still mounted before updating state
         if (!mountedRef.current) return;
-        
-        console.log(`Fetched ${data.length} maintenance records`);
         
         // Update state with fetched data
         setAllMaintenanceData(data);
@@ -119,7 +115,6 @@ export const useMaintenanceData = ({ refreshTrigger = 0 }: UseMaintenanceDataPro
 
   // Initial fetch on mount - NO AUTOMATIC POLLING
   useEffect(() => {
-    console.log("useMaintenanceData hook mounted, fetching initial data");
     mountedRef.current = true;
     
     // Only fetch initial data, no polling
@@ -134,7 +129,6 @@ export const useMaintenanceData = ({ refreshTrigger = 0 }: UseMaintenanceDataPro
   // Handle refresh trigger changes - ONLY when explicitly triggered
   useEffect(() => {
     if (refreshTrigger > 0) {
-      console.log("Manual refresh triggered, forcing data fetch");
       fetchMaintenanceData(true); // Force refresh to bypass cache
     }
   }, [refreshTrigger, fetchMaintenanceData]);

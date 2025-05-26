@@ -61,14 +61,12 @@ const getCompletedMaintenance = async (): Promise<MaintenanceItem[]> => {
 const createMaintenance = async (data: CreateMaintenanceInput): Promise<void> => {
   await createMaintenanceRecord(data);
   clearMaintenanceCache(); // Force cache refresh after creation
-  console.log('Maintenance created and cache cleared');
 };
 
 // Update an existing maintenance record
 const updateMaintenanceRecord = async (id: string, data: Partial<MaintenanceItem>): Promise<void> => {
   await updateMaintenance(id, data);
   clearMaintenanceCache(); // Force cache refresh after update
-  console.log('Maintenance updated and cache cleared');
 };
 
 // Refresh cache manually

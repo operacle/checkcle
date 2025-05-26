@@ -13,14 +13,7 @@ const CACHE_EXPIRY_MS = 600000; // 10 minutes cache expiry (increased significan
  */
 export const isCacheValid = (): boolean => {
   const now = Date.now();
-  const isValid = !!(cachedMaintenanceRecords && now - lastFetchTimestamp < CACHE_EXPIRY_MS);
-  
-  // Minimal logging to reduce console spam
-  if (isValid) {
-    console.log("Using cached maintenance data");
-  }
-  
-  return isValid;
+  return !!(cachedMaintenanceRecords && now - lastFetchTimestamp < CACHE_EXPIRY_MS);
 };
 
 /**
@@ -28,7 +21,6 @@ export const isCacheValid = (): boolean => {
  */
 export const getCachedRecords = () => {
   if (cachedMaintenanceRecords) {
-    console.log("Returning cached maintenance records:", cachedMaintenanceRecords.length);
     return [...cachedMaintenanceRecords]; // Return a copy to prevent mutation
   }
   return null;
@@ -40,7 +32,6 @@ export const getCachedRecords = () => {
 export const updateCache = (data: MaintenanceItem[], timestamp?: number): void => {
   cachedMaintenanceRecords = data;
   lastFetchTimestamp = timestamp || Date.now();
-  console.log("Maintenance cache updated with", data.length, "records");
 };
 
 /**
@@ -49,7 +40,6 @@ export const updateCache = (data: MaintenanceItem[], timestamp?: number): void =
 export const clearCache = (): void => {
   cachedMaintenanceRecords = null;
   lastFetchTimestamp = 0;
-  console.log("Maintenance cache cleared");
 };
 
 /**

@@ -1,35 +1,34 @@
-
 import { SettingsTranslations } from '../types/settings';
 
 export const settingsTranslations: SettingsTranslations = {
   // Tabs
-  systemSettings: "System Settings",
-  mailSettings: "Mail Settings",
-  
+  systemSettings: "Systemeinstellungen",
+  mailSettings: "E-Mail-Einstellungen",
+
   // System Settings
-  appName: "Application Name",
-  appURL: "Application URL",
-  senderName: "Sender Name",
-  senderEmail: "Sender Email Address",
-  hideControls: "Hide Controls",
-  
+  appName: "Anwendungsname",
+  appURL: "Anwendungs-URL",
+  senderName: "Absendername",
+  senderEmail: "Absender-E-Mail-Adresse",
+  hideControls: "Steuerelemente ausblenden",
+
   // Mail Settings
-  smtpSettings: "SMTP Configuration",
-  smtpEnabled: "Enable SMTP",
-  smtpHost: "SMTP Host",
-  smtpPort: "SMTP Port",
-  smtpUsername: "SMTP Username",
-  smtpAuthMethod: "Authentication Method",
-  enableTLS: "Enable TLS",
-  localName: "Local Name",
-  
+  smtpSettings: "SMTP-Konfiguration",
+  smtpEnabled: "SMTP aktivieren",
+  smtpHost: "SMTP-Host",
+  smtpPort: "SMTP-Port",
+  smtpUsername: "SMTP-Benutzername",
+  smtpAuthMethod: "Authentifizierungsmethode",
+  enableTLS: "TLS aktivieren",
+  localName: "Lokaler Name",
+
   // Actions and status
-  save: "Save Changes",
-  saving: "Saving...",
-  settingsUpdated: "Settings updated successfully",
-  errorSavingSettings: "Error saving settings",
-  testConnection: "Test Connection",
-  testingConnection: "Testing Connection...",
-  connectionSuccess: "Connection successful",
-  connectionFailed: "Connection failed"
+  save: "Änderungen speichern",
+  saving: "Speichere...",
+  settingsUpdated: "Einstellungen erfolgreich aktualisiert",
+  errorSavingSettings: "Fehler beim Speichern der Einstellungen",
+  testConnection: "Verbindung testen",
+  testingConnection: "Verbindung wird getestet...",
+  connectionSuccess: "Verbindung erfolgreich",
+  connectionFailed: "Verbindung fehlgeschlagen"
 };

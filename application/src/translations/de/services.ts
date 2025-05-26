@@ -9,5 +9,5 @@ export const servicesTranslations: ServicesTranslations = {
   responseTime: "Antwortzeit",
   uptime: "Betriebszeit",
   lastChecked: "Zuletzt überprüft",
-  noServices: "No services match your filter criteria.",
+  noServices: "Keine Dienste entsprechen Ihren Filterkriterien.",
 };

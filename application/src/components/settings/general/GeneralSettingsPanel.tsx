@@ -1,14 +1,15 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Settings, Mail } from "lucide-react";
+import { Settings, Mail, ShieldAlert } from "lucide-react";
 import { Form } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useSystemSettings } from "@/hooks/useSystemSettings";
 import { GeneralSettings } from "@/services/settingsService";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { authService } from "@/services/authService";
 import SystemSettingsTab from './SystemSettingsTab';
 import MailSettingsTab from './MailSettingsTab';
 import { GeneralSettingsPanelProps } from './types';
@@ -17,6 +18,10 @@ const GeneralSettingsPanel: React.FC<GeneralSettingsPanelProps> = () => {
   const { t } = useLanguage();
   const [isEditing, setIsEditing] = useState(false);
   const [activeTab, setActiveTab] = useState("system");
+  
+  // Get current user to check permissions
+  const currentUser = authService.getCurrentUser();
+  const isSuperAdmin = currentUser?.role === "superadmin";
   
   const {
     settings,
@@ -50,7 +55,7 @@ const GeneralSettingsPanel: React.FC<GeneralSettingsPanelProps> = () => {
   });
 
   useEffect(() => {
-    if (settings) {
+    if (settings && isSuperAdmin) {
       // Initialize form with existing settings, using system_name for appName if meta.appName is not set
       const appName = settings.meta?.appName || settings.system_name || '';
       
@@ -74,7 +79,7 @@ const GeneralSettingsPanel: React.FC<GeneralSettingsPanelProps> = () => {
         }
       });
     }
-  }, [settings, form]);
+  }, [settings, form, isSuperAdmin]);
 
   const handleSave = async (formData: GeneralSettings) => {
     try {
@@ -134,6 +139,27 @@ const GeneralSettingsPanel: React.FC<GeneralSettingsPanelProps> = () => {
     }
   };
 
+  // Show permission notice for admin users
+  if (!isSuperAdmin) {
+    return (
+      <div className="p-4">
+        <Card>
+          <CardHeader>
+            <CardTitle>{t("generalSettings", "menu")}</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <Alert className="border-blue-200 bg-blue-50 dark:bg-blue-950 dark:border-blue-800">
+              <ShieldAlert className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+              <AlertDescription className="text-blue-700 dark:text-blue-300">
+                <span className="font-medium">Permission Notice:</span> As an admin user, you do not have access to view or modify system and mail settings. These settings can only be accessed and modified by Super Admins. Contact your Super Admin if you need to make changes to system configuration or mail settings.
+              </AlertDescription>
+            </Alert>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
   if (isLoading) {
     return <div className="p-4">Loading settings...</div>;
   }
@@ -147,9 +173,6 @@ const GeneralSettingsPanel: React.FC<GeneralSettingsPanelProps> = () => {
       <Card>
         <CardHeader>
           <CardTitle>{t("generalSettings", "menu")}</CardTitle>
-          <CardDescription>
-            {t("monitorSSLCertificates", "ssl")}
-          </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <Form {...form}>

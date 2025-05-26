@@ -2,6 +2,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from "@/components/ui/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { authService } from "@/services/authService";
 import { GeneralSettings } from "@/services/settingsService";
 
 interface ApiResponse {
@@ -14,7 +15,11 @@ export function useSystemSettings() {
   const queryClient = useQueryClient();
   const { t } = useLanguage();
   
-  // Fetch settings from API
+  // Check if user is super admin
+  const currentUser = authService.getCurrentUser();
+  const isSuperAdmin = currentUser?.role === "superadmin";
+  
+  // Fetch settings from API - only if user is super admin
   const { 
     data: settings,
     isLoading,
@@ -56,7 +61,8 @@ export function useSystemSettings() {
         });
         return null;
       }
-    }
+    },
+    enabled: isSuperAdmin, // Only run query if user is super admin
   });
 
   // Update settings mutation

@@ -48,7 +48,7 @@ const SystemSettingsTab: React.FC<SettingsTabProps> = ({ form, isEditing, settin
                   <Input 
                     {...field} 
                     disabled={!isEditing}
-                    placeholder="https://pb-api.k8sops.asia"
+                    placeholder="https://localhost:8090"
                     className="bg-background border-input text-foreground placeholder:text-muted-foreground disabled:bg-muted disabled:text-muted-foreground"
                   />
                 </FormControl>

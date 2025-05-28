@@ -85,7 +85,8 @@ services:
 - [ ] Infrastructure Server Monitoring
 - [ ] Operational Status / Public Status Pages
 - [ ] Uptime monitoring (TCP, PING, DNS)
-- [ ] User Permission Roles & Service Group
+- [x] System Setting Panel and Mail Settings
+- [x] User Permission Roles
 - [ ] Notifications (Email/Slack/Discord/Signal)  
 - [x] Open-source release with full documentation 
 
@@ -121,5 +122,9 @@ Here are some ways you can help improve CheckCle:
 CheckCle is released under the MIT License.
 
 ---
+
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=operacle/checkcle&type=Date)](https://www.star-history.com/#operacle/checkcle&Date)
 
 Stay informed, stay online, with CheckCle! 🌐

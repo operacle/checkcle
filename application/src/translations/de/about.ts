@@ -12,9 +12,9 @@ export const aboutTranslations: AboutTranslations = {
   viewDocumentation: "Dokumentation ansehen",
   followOnX: "Auf X folgen",
   joinDiscord: "Discord beitreten",
-  quickActions: "Quick Actions",
-  quickActionsDescription: "Access common monitoring operations and features quickly. Select an action below to get started.",
-  quickTips: "Quick Tips",
+  quickActions: "Schnelle Aktionen",
+  quickActionsDescription: "Greifen Sie schnell auf gängige Überwachungsvorgänge und -funktionen zu. Wählen Sie unten eine Aktion aus, um loszulegen.",
+  quickTips: "Schnelle Tipps",
 };
 
 

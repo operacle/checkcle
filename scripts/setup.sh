@@ -2,82 +2,59 @@
 
 set -e
 
-echo "🚀 Starting Checkcle Installation..."
+REPO_URL="https://github.com/operacle/checkcle.git"
+CLONE_DIR="/opt/checkcle"
+DATA_DIR="/opt/pb_data"
+PORT=8090
 
-# Check if npm is installed
-if ! command -v npm &> /dev/null; then
-    echo "📦 npm is not installed. Installing Node.js and npm..."
-    
-    # Install Node.js and npm (Ubuntu/Debian-based systems)
-    curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
-    sudo apt-get install -y nodejs
+echo "🚀 Installing Checkcle from $REPO_URL"
+
+# Step 1: Check if port 8090 is already in use
+if lsof -i :"$PORT" &>/dev/null; then
+  echo "❗ ERROR: Port $PORT is already in use. Please free the port or change the Docker Compose configuration."
+  exit 1
 fi
 
-# Clone the repo
-if [ ! -d "checkcle" ]; then
-    echo "📁 Cloning repository..."
-    git clone https://github.com/operacle/checkcle.git
+# Step 2: Ensure Docker is installed
+if ! command -v docker &> /dev/null; then
+  echo "🔧 Docker not found. Installing Docker..."
+  curl -fsSL https://get.docker.com | sh
 fi
 
-cd checkcle
+# Step 3: Ensure Docker Compose v2 is available
+if ! docker compose version &> /dev/null; then
+  echo "❗ Docker Compose v2 not found. Please install Docker Compose v2 and rerun this script."
+  exit 1
+fi
 
-# Set up paths
-PROJECT_DIR=$(pwd)
-APP_DIR="$PROJECT_DIR/application"
-PB_DIR="$PROJECT_DIR/server"
-PB_BINARY="$PB_DIR/pocketbase"
+# Step 4: Clone the repository
+if [ -d "$CLONE_DIR" ]; then
+  echo "📁 Directory $CLONE_DIR already exists. Pulling latest changes..."
+  git -C "$CLONE_DIR" pull
+else
+  echo "📥 Cloning repo to $CLONE_DIR"
+  git clone "$REPO_URL" "$CLONE_DIR"
+fi
 
-# Install web dependencies
-echo "📦 Installing Web Application dependencies..."
-cd "$APP_DIR"
-npm install
+# Step 5: Create data volume directory if it doesn’t exist
+if [ ! -d "$DATA_DIR" ]; then
+  echo "📁 Creating data volume directory at $DATA_DIR"
+  sudo mkdir -p "$DATA_DIR"
+  sudo chown "$(whoami)":"$(whoami)" "$DATA_DIR"
+fi
 
-# Create systemd service for frontend
-echo "🛠️ Setting up systemd service for Web Application..."
-sudo tee /etc/systemd/system/checkcle-web.service > /dev/null <<EOF
-[Unit]
-Description=Checkcle Web Application
-After=network.target
+# Step 6: Start the service
+cd "$CLONE_DIR"
+echo "📦 Starting Checkcle service with Docker Compose..."
+docker compose up -d
 
-[Service]
-Type=simple
-WorkingDirectory=$APP_DIR
-ExecStart=/usr/bin/npm run dev
-Restart=on-failure
-User=$USER
-Environment=NODE_ENV=development
-
-[Install]
-WantedBy=multi-user.target
-EOF
-
-# Create systemd service for PocketBase
-echo "🛠️ Setting up systemd service for PocketBase..."
-sudo tee /etc/systemd/system/checkcle-pb.service > /dev/null <<EOF
-[Unit]
-Description=Checkcle PocketBase Server
-After=network.target
-
-[Service]
-Type=simple
-WorkingDirectory=$PB_DIR
-ExecStart=$PB_BINARY serve --dir pb_data
-Restart=on-failure
-User=$USER
-
-[Install]
-WantedBy=multi-user.target
-EOF
-
-# Reload systemd and start services
-echo "🔄 Enabling and starting services..."
-sudo systemctl daemon-reexec
-sudo systemctl daemon-reload
-sudo systemctl enable --now checkcle-web
-sudo systemctl enable --now checkcle-pb
-
+# Step 7: Show success output
 echo ""
-echo "✅ All done!"
-echo "🌐 Admin Panel: http://0.0.0.0:8090"
+echo "✅ Checkcle has been successfully installed and started."
+echo ""
+echo "🛠️  Admin Web Management"
+echo "🔗 Default URL: http://0.0.0.0:$PORT"
 echo "👤 User: admin@example.com"
 echo "🔑 Passwd: Admin123456"
+echo ""
+echo "📌 Make sure port $PORT is accessible from your host system or cloud firewall."

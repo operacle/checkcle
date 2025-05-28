@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
@@ -10,6 +9,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Eye, EyeOff } from "lucide-react";
 import { pb } from "@/lib/pocketbase";
 import { authService } from "@/services/authService";
+import { useNavigate } from "react-router-dom";
 
 // Password change form schema
 const passwordFormSchema = z.object({
@@ -34,6 +34,7 @@ export function ChangePasswordForm({ userId }: ChangePasswordFormProps) {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   
   const { toast } = useToast();
+  const navigate = useNavigate();
   
   const form = useForm<PasswordFormValues>({
     resolver: zodResolver(passwordFormSchema),
@@ -44,12 +45,35 @@ export function ChangePasswordForm({ userId }: ChangePasswordFormProps) {
     },
   });
 
+  // Function to determine which collection the user belongs to
+  const getUserCollection = async (userId: string): Promise<string> => {
+    try {
+      // First try to find the user in the regular users collection
+      await pb.collection('users').getOne(userId);
+      return 'users';
+    } catch (error) {
+      try {
+        // If not found, try the superadmin collection
+        await pb.collection('_superusers').getOne(userId);
+        return '_superusers';
+      } catch (error) {
+        throw new Error('User not found in any collection');
+      }
+    }
+  };
+
   async function onSubmit(data: PasswordFormValues) {
     setIsSubmitting(true);
     
     try {
+      console.log("Starting password change for user:", userId);
+      
+      // Determine which collection the user belongs to
+      const collection = await getUserCollection(userId);
+      console.log("User found in collection:", collection);
+      
       // PocketBase requires the old password along with the new one
-      await pb.collection('users').update(userId, {
+      await pb.collection(collection).update(userId, {
         oldPassword: data.currentPassword,
         password: data.newPassword,
         passwordConfirm: data.confirmPassword,
@@ -60,17 +84,31 @@ export function ChangePasswordForm({ userId }: ChangePasswordFormProps) {
       
       toast({
         title: "Password updated",
-        description: "Your password has been changed successfully.",
+        description: "Your password has been changed successfully. You will be logged out in 3 seconds for security.",
       });
       
       // Reset the form
       form.reset();
+      
+      // Auto logout after successful password change
+      setTimeout(() => {
+        console.log("Auto logout after password change");
+        authService.logout();
+        navigate("/login");
+      }, 3000);
+      
     } catch (error) {
       console.error("Password change error:", error);
       
       let errorMessage = "Failed to update password. Please try again.";
       if (error instanceof Error) {
-        errorMessage = error.message;
+        if (error.message.includes("Failed to authenticate")) {
+          errorMessage = "Current password is incorrect. Please try again.";
+        } else if (error.message.includes("User not found")) {
+          errorMessage = "User account not found. Please contact your administrator.";
+        } else {
+          errorMessage = error.message;
+        }
       }
       
       toast({

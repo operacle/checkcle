@@ -4,6 +4,8 @@ import { useToast } from "@/hooks/use-toast";
 import { userService, User, UpdateUserData, CreateUserData } from "@/services/userService";
 import { UserFormValues, NewUserFormValues } from "../userForms";
 import { avatarOptions } from "../avatarOptions";
+import { authService } from "@/services/authService";
+import { useNavigate } from "react-router-dom";
 
 export const useUserOperations = (
   fetchUsers: () => Promise<void>,
@@ -15,6 +17,7 @@ export const useUserOperations = (
   newUserFormReset: (values: any) => void
 ) => {
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const handleDeleteUser = async (userToDelete: User | null) => {
     if (!userToDelete) return;
@@ -47,6 +50,11 @@ export const useUserOperations = (
     setUpdateError(null);
 
     try {
+      // Get current logged-in user to check if we're editing ourselves
+      const loggedInUser = authService.getCurrentUser();
+      const isEditingSelf = loggedInUser?.id === currentUser.id;
+      const isEmailChanged = data.email !== currentUser.email;
+      
       // Create update object with only the fields we want to update
       const updateData: UpdateUserData = {
         full_name: data.full_name,
@@ -57,7 +65,6 @@ export const useUserOperations = (
       };
       
       // For avatar, only include if it's different from current one
-      // Note: We're still sending the avatar path, but our updated userService will handle it properly
       if (data.avatar && data.avatar !== currentUser.avatar) {
         updateData.avatar = data.avatar;
       }
@@ -66,9 +73,26 @@ export const useUserOperations = (
       
       await userService.updateUser(currentUser.id, updateData);
       
-      // After successful update, refresh the auth user data if this is the current user
-      // In a real app, you'd check if the updated user is the current logged-in user
+      // Handle email change for current user
+      if (isEditingSelf && isEmailChanged) {
+        toast({
+          title: "Email changed successfully",
+          description: "You will be logged out for security reasons. Please log in again with your new email.",
+          variant: "default",
+        });
+        
+        setIsDialogOpen(false);
+        
+        // Auto-logout after 2 seconds if editing own email
+        setTimeout(() => {
+          authService.logout();
+          navigate("/login");
+        }, 2000);
+        
+        return; // Don't continue with normal flow
+      }
       
+      // Normal success flow for other users or non-email changes
       toast({
         title: "User updated",
         description: `${data.full_name || data.username}'s profile has been updated.`,

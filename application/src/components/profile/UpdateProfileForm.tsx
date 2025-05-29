@@ -11,6 +11,7 @@ import { useToast } from "@/hooks/use-toast";
 import { authService } from "@/services/authService";
 import { AlertCircle, CheckCircle } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { useNavigate } from "react-router-dom";
 
 // Profile update form schema
 const profileFormSchema = z.object({
@@ -33,10 +34,10 @@ interface UpdateProfileFormProps {
 
 export function UpdateProfileForm({ user }: UpdateProfileFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [emailChangeRequested, setEmailChangeRequested] = useState(false);
   const [updateError, setUpdateError] = useState<string | null>(null);
   const [updateSuccess, setUpdateSuccess] = useState<string | null>(null);
   const { toast } = useToast();
+  const navigate = useNavigate();
   
   // Initialize the form with current user data
   const form = useForm<ProfileFormValues>({
@@ -52,7 +53,6 @@ export function UpdateProfileForm({ user }: UpdateProfileFormProps) {
     setIsSubmitting(true);
     setUpdateError(null);
     setUpdateSuccess(null);
-    setEmailChangeRequested(false);
     
     try {
       console.log("Submitting profile update with data:", data);
@@ -75,19 +75,25 @@ export function UpdateProfileForm({ user }: UpdateProfileFormProps) {
       // Update user data using the userService
       await userService.updateUser(user.id, updateData);
       
-      // Refresh user data in auth context
-      await authService.refreshUserData();
-      
-      // If email was changed, show a specific message
+      // If email was changed, show success message and auto-logout
       if (isEmailChanged) {
-        setEmailChangeRequested(true);
-        setUpdateSuccess("A verification email has been sent to your new email address. Please check your inbox to complete the change.");
+        setUpdateSuccess("Email changed successfully! You will be logged out for security reasons. Please log in again with your new email.");
+        
         toast({
-          title: "Email verification sent",
-          description: "A verification email has been sent to your new email address. Please check your inbox and follow the instructions to complete the change.",
+          title: "Email changed successfully",
+          description: "You will be logged out for security reasons. Please log in again with your new email.",
           variant: "default",
         });
+        
+        // Auto-logout after 3 seconds
+        setTimeout(() => {
+          authService.logout();
+          navigate("/login");
+        }, 3000);
       } else {
+        // Refresh user data in auth context for other field changes
+        await authService.refreshUserData();
+        
         setUpdateSuccess("Your profile information has been updated successfully.");
         toast({
           title: "Profile updated",
@@ -132,16 +138,6 @@ export function UpdateProfileForm({ user }: UpdateProfileFormProps) {
             </AlertDescription>
           </Alert>
         )}
-        
-        {emailChangeRequested && (
-          <Alert className="bg-yellow-50 border-yellow-200 text-yellow-800">
-            <AlertCircle className="h-4 w-4 text-yellow-600" />
-            <AlertDescription>
-              A verification email has been sent to your new email address. 
-              Please check your inbox and follow the instructions to complete the change.
-            </AlertDescription>
-          </Alert>
-        )}
 
         <FormField
           control={form.control}
@@ -183,7 +179,7 @@ export function UpdateProfileForm({ user }: UpdateProfileFormProps) {
               <FormMessage />
               {field.value !== user.email && (
                 <p className="text-xs text-muted-foreground mt-1">
-                  Changing your email requires verification. A verification email will be sent.
+                  Changing your email will log you out for security reasons. You will need to log in again with your new email.
                 </p>
               )}
             </FormItem>

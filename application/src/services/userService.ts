@@ -147,21 +147,10 @@ export const userService = {
       if (roleChange) {
         delete cleanData.role;
       }
-      
-      // Handle email updates separately
+
+      // Handle email updates with proper error handling
       const hasEmailChange = cleanData.email !== undefined;
       const emailToUpdate = hasEmailChange ? cleanData.email : null;
-      
-      // Remove email from regular update if it's being changed
-      if (hasEmailChange) {
-        console.log("Email change detected, will handle separately:", emailToUpdate);
-        delete cleanData.email;
-        
-        // For email changes, we should always set emailVisibility
-        if (cleanData.emailVisibility === undefined) {
-          cleanData.emailVisibility = true;
-        }
-      }
       
       let updatedUser: User | null = null;
       
@@ -194,7 +183,6 @@ export const userService = {
           ...cleanData
         };
         
-        // We need to create in the new collection and delete from the old one
         try {
           if (targetRole === "superadmin") {
             // Create in superadmin collection
@@ -217,7 +205,6 @@ export const userService = {
         }
       } else {
         // Regular update without changing collections
-        // Only perform the regular update if there are fields to update
         if (Object.keys(cleanData).length > 0) {
           console.log("Final update payload to PocketBase:", cleanData);
           
@@ -227,44 +214,28 @@ export const userService = {
             const updatedRecord = await pb.collection(collection).update(id, cleanData);
             updatedUser = convertToUserType(updatedRecord, isCurrentlySuperadmin ? "superadmin" : "admin");
             
-            console.log("PocketBase update response for regular fields:", updatedUser);
+            console.log("PocketBase update response:", updatedUser);
+            
+            // If email was updated successfully, show success message
+            if (hasEmailChange) {
+              console.log("Email updated successfully to:", emailToUpdate);
+            }
+            
           } catch (error) {
-            console.error("Error updating user regular fields:", error);
+            console.error("Error updating user:", error);
+            
+            // Provide more specific error messages for email issues
+            if (hasEmailChange && error instanceof Error) {
+              if (error.message.includes("email")) {
+                throw new Error("Email update failed. The email address may already be in use or invalid.");
+              }
+            }
+            
             throw error;
           }
         } else {
-          // If no other fields to update, get the current user
+          // If no fields to update, get the current user
           updatedUser = await this.getUser(id);
-        }
-      }
-      
-      // Now handle email change separately if needed
-      if (emailToUpdate && updatedUser) {
-        try {
-          console.log("Processing email change request for new email:", emailToUpdate);
-          
-          // For email changes, we need to directly update the email field instead of using requestEmailChange
-          // This is because requestEmailChange has permission issues when cross-collection requests are made
-          const collection = updatedUser.role === "superadmin" ? '_superusers' : 'users';
-          
-          console.log(`Updating email directly in ${collection} collection`);
-          
-          // Update the email directly in the user record
-          const emailUpdateData = {
-            email: emailToUpdate,
-            emailVisibility: true,
-            verified: false // Reset verification status when email changes
-          };
-          
-          const updatedRecord = await pb.collection(collection).update(id, emailUpdateData);
-          updatedUser = convertToUserType(updatedRecord, updatedUser.role === "superadmin" ? "superadmin" : "admin");
-          
-          console.log("Email updated successfully:", updatedUser);
-          
-        } catch (error) {
-          console.error("Failed to update email:", error);
-          // Don't throw error for email update failure, just log it
-          console.log("Email update failed, but other fields were updated successfully");
         }
       }
       

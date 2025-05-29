@@ -14,18 +14,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { format, subDays, subHours, subMonths, subWeeks, subYears } from "date-fns";
+import { format } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-export type DateRangeOption = '60min' | '24h' | '7d' | '30d' | '1y' | 'custom';
+export type DateRangeOption = '24h' | '7d' | '30d' | '1y' | 'custom';
 
 interface DateRangeFilterProps {
   onRangeChange: (startDate: Date, endDate: Date, option: DateRangeOption) => void;
   selectedOption?: DateRangeOption;
 }
 
-// Define a proper type for the date range
 interface DateRange {
   from: Date | undefined;
   to: Date | undefined;
@@ -45,57 +44,48 @@ export function DateRangeFilter({ onRangeChange, selectedOption = '24h' }: DateR
     
     const now = new Date();
     let startDate: Date;
+    let endDate: Date = new Date(now.getTime() + (5 * 60 * 1000)); // Add 5 minutes buffer to future
     
     switch (option) {
-      case '60min':
-        // Ensure we're getting exactly 60 minutes ago
-        startDate = new Date(now.getTime() - 60 * 60 * 1000);
-        console.log(`60min option selected: ${startDate.toISOString()} to ${now.toISOString()}`);
-        break;
       case '24h':
-        startDate = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+        startDate = new Date(now.getTime() - (24 * 60 * 60 * 1000));
         break;
       case '7d':
-        startDate = subDays(now, 7);
+        startDate = new Date(now.getTime() - (7 * 24 * 60 * 60 * 1000));
         break;
       case '30d':
-        startDate = subDays(now, 30);
+        startDate = new Date(now.getTime() - (30 * 24 * 60 * 60 * 1000));
         break;
       case '1y':
-        startDate = subYears(now, 1);
+        startDate = new Date(now.getTime() - (365 * 24 * 60 * 60 * 1000));
         break;
       case 'custom':
-        // Don't trigger onRangeChange for custom until both dates are selected
         setIsCalendarOpen(true);
         return;
       default:
-        startDate = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+        startDate = new Date(now.getTime() - (24 * 60 * 60 * 1000)); // Default to 24 hours
     }
     
-    console.log(`DateRangeFilter: Option changed to ${option}, date range: ${startDate.toISOString()} to ${now.toISOString()}`);
-    onRangeChange(startDate, now, option);
+    console.log(`DateRangeFilter: ${option} selected, range: ${startDate.toISOString()} to ${endDate.toISOString()}`);
+    onRangeChange(startDate, endDate, option);
   };
 
-  // Handle custom date range selection
   const handleCustomRangeSelect = (range: DateRange | undefined) => {
-    if (!range) {
+    if (!range || !range.from || !range.to) {
       return;
     }
     
     setCustomDateRange(range);
     
-    if (range.from && range.to) {
-      // Ensure that we have both from and to dates before triggering the change
-      const startOfDay = new Date(range.from);
-      startOfDay.setHours(0, 0, 0, 0);
-      
-      const endOfDay = new Date(range.to);
-      endOfDay.setHours(23, 59, 59, 999);
-      
-      console.log(`DateRangeFilter: Custom range selected: ${startOfDay.toISOString()} to ${endOfDay.toISOString()}`);
-      onRangeChange(startOfDay, endOfDay, 'custom');
-      setIsCalendarOpen(false);
-    }
+    const startOfDay = new Date(range.from);
+    startOfDay.setHours(0, 0, 0, 0);
+    
+    const endOfDay = new Date(range.to);
+    endOfDay.setHours(23, 59, 59, 999);
+    
+    console.log(`Custom range: ${startOfDay.toISOString()} to ${endOfDay.toISOString()}`);
+    onRangeChange(startOfDay, endOfDay, 'custom');
+    setIsCalendarOpen(false);
   };
 
   return (
@@ -105,7 +95,6 @@ export function DateRangeFilter({ onRangeChange, selectedOption = '24h' }: DateR
           <SelectValue placeholder="Select time range" />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="60min">Last 60 minutes</SelectItem>
           <SelectItem value="24h">Last 24 hours</SelectItem>
           <SelectItem value="7d">Last 7 days</SelectItem>
           <SelectItem value="30d">Last 30 days</SelectItem>

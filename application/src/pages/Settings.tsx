@@ -9,6 +9,7 @@ import UserManagement from "@/components/settings/user-management";
 import { NotificationSettings } from "@/components/settings/notification-settings";
 import { AlertsTemplates } from "@/components/settings/alerts-templates";
 import { AboutSystem } from "@/components/settings/about-system";
+import DataRetentionSettings from "@/components/settings/data-retention/DataRetentionSettings";
 
 const Settings = () => {
   // State for sidebar collapse functionality
@@ -58,6 +59,7 @@ const Settings = () => {
           {activePanel === "users" && <UserManagement />}
           {activePanel === "notifications" && <NotificationSettings />}
           {activePanel === "templates" && <AlertsTemplates />}
+          {activePanel === "data-retention" && <DataRetentionSettings />}
           {activePanel === "about" && <AboutSystem />}
         </div>
       </div>

@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Progress } from "@/components/ui/progress";
 import { Check, X, AlertTriangle, Pause, Clock, Info, RefreshCcw } from "lucide-react";
@@ -17,17 +16,18 @@ import { Button } from "@/components/ui/button";
 interface UptimeBarProps {
   uptime: number;
   status: string;
-  serviceId?: string; // Optional serviceId to fetch history
+  serviceId?: string;
+  interval?: number; // Service monitoring interval in seconds
 }
 
-export const UptimeBar = ({ uptime, status, serviceId }: UptimeBarProps) => {
+export const UptimeBar = ({ uptime, status, serviceId, interval = 60 }: UptimeBarProps) => {
   const { theme } = useTheme();
   const [historyItems, setHistoryItems] = useState<UptimeData[]>([]);
   
   // Fetch real uptime history data if serviceId is provided with improved caching and error handling
   const { data: uptimeData, isLoading, error, isFetching, refetch } = useQuery({
     queryKey: ['uptimeHistory', serviceId],
-    queryFn: () => serviceId ? uptimeService.getUptimeHistory(serviceId, 20) : Promise.resolve([]),
+    queryFn: () => serviceId ? uptimeService.getUptimeHistory(serviceId, 50) : Promise.resolve([]),
     enabled: !!serviceId,
     refetchInterval: 30000, // Refresh every 30 seconds
     staleTime: 15000, // Consider data fresh for 15 seconds
@@ -36,10 +36,45 @@ export const UptimeBar = ({ uptime, status, serviceId }: UptimeBarProps) => {
     retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 10000), // Exponential backoff with max 10s
   });
   
+  // Filter uptime data to respect the service interval
+  const filterUptimeDataByInterval = (data: UptimeData[], intervalSeconds: number): UptimeData[] => {
+    if (!data || data.length === 0) return [];
+    
+    // Sort data by timestamp (newest first)
+    const sortedData = [...data].sort((a, b) => 
+      new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+    );
+    
+    const filtered: UptimeData[] = [];
+    let lastIncludedTime: number | null = null;
+    const intervalMs = intervalSeconds * 1000; // Convert to milliseconds
+    
+    // Include the most recent record first
+    if (sortedData.length > 0) {
+      filtered.push(sortedData[0]);
+      lastIncludedTime = new Date(sortedData[0].timestamp).getTime();
+    }
+    
+    // Filter subsequent records to maintain proper interval spacing
+    for (let i = 1; i < sortedData.length && filtered.length < 20; i++) {
+      const currentTime = new Date(sortedData[i].timestamp).getTime();
+      
+      // Only include if enough time has passed since the last included record
+      if (lastIncludedTime && (lastIncludedTime - currentTime) >= intervalMs) {
+        filtered.push(sortedData[i]);
+        lastIncludedTime = currentTime;
+      }
+    }
+    
+    return filtered;
+  };
+  
   // Update history items when data changes
   useEffect(() => {
     if (uptimeData && uptimeData.length > 0) {
-      setHistoryItems(uptimeData);
+      // Filter data based on the service interval
+      const filteredData = filterUptimeDataByInterval(uptimeData, interval);
+      setHistoryItems(filteredData);
     } else if (status === "paused" || (uptimeData && uptimeData.length === 0)) {
       // For paused services with no history, or empty history data, show all as paused
       const statusValue = (status === "up" || status === "down" || status === "warning" || status === "paused") 
@@ -49,13 +84,13 @@ export const UptimeBar = ({ uptime, status, serviceId }: UptimeBarProps) => {
       const placeholderHistory: UptimeData[] = Array(20).fill(null).map((_, index) => ({
         id: `placeholder-${index}`,
         serviceId: serviceId || "",
-        timestamp: new Date().toISOString(),
+        timestamp: new Date(Date.now() - (index * interval * 1000)).toISOString(),
         status: statusValue as "up" | "down" | "warning" | "paused",
         responseTime: 0
       }));
       setHistoryItems(placeholderHistory);
     }
-  }, [uptimeData, serviceId, status]);
+  }, [uptimeData, serviceId, status, interval]);
 
   // Get appropriate color classes for each status type
   const getStatusColor = (itemStatus: string) => {
@@ -153,13 +188,19 @@ export const UptimeBar = ({ uptime, status, serviceId }: UptimeBarProps) => {
                       (status === "up" || status === "down" || status === "warning" || status === "paused") ? 
                       status as "up" | "down" | "warning" | "paused" : "paused";
     
-    const paddingItems: UptimeData[] = Array(20 - displayItems.length).fill(null).map((_, index) => ({
-      id: `padding-${index}`,
-      serviceId: serviceId || "",
-      timestamp: new Date().toISOString(),
-      status: lastStatus,
-      responseTime: 0
-    }));
+    // Generate padding items with proper time spacing
+    const paddingItems: UptimeData[] = Array(20 - displayItems.length).fill(null).map((_, index) => {
+      const baseTime = lastItem ? new Date(lastItem.timestamp).getTime() : Date.now();
+      const timeOffset = (index + 1) * interval * 1000; // Respect the interval
+      
+      return {
+        id: `padding-${index}`,
+        serviceId: serviceId || "",
+        timestamp: new Date(baseTime - timeOffset).toISOString(),
+        status: lastStatus,
+        responseTime: 0
+      };
+    });
     displayItems.push(...paddingItems);
   }
 
@@ -201,7 +242,7 @@ export const UptimeBar = ({ uptime, status, serviceId }: UptimeBarProps) => {
             {Math.round(uptime)}% uptime
           </span>
           <span className="text-xs text-muted-foreground">
-            Last 20 checks
+            Last 20 checks 
           </span>
         </div>
       </div>

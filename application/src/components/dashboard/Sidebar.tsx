@@ -117,10 +117,10 @@ export const Sidebar = ({
                       <BookOpen className="h-4 w-4 mr-2" />
                       <span className="text-sm">{t("alertsTemplates")}</span>
                     </Link>
-                    <div className={getMenuItemClasses(false)}>
+                    <Link to={`/settings?panel=data-retention`} className={getMenuItemClasses(activeSettingsItem === 'data-retention')} onClick={() => handleSettingsItemClick('data-retention')}>
                       <Database className="h-4 w-4 mr-2" />
                       <span className="text-sm">{t("dataRetention")}</span>
-                    </div>
+                    </Link>
                     <Link to={`/settings?panel=about`} className={getMenuItemClasses(activeSettingsItem === 'about')} onClick={() => handleSettingsItemClick('about')}>
                       <Info className="h-4 w-4 mr-2" />
                       <span className="text-sm">{t("aboutSystem")}</span>

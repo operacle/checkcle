@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { DateRangeOption } from "../DateRangeFilter";
@@ -12,13 +11,17 @@ export const ServiceDetailContainer = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   
-  // Ensure we use exact timestamp for startDate
+  // Set default to 24h
   const [startDate, setStartDate] = useState<Date>(() => {
     const date = new Date();
-    date.setHours(date.getHours() - 24);
+    date.setHours(date.getHours() - 24); // Go back 24 hours
     return date;
   });
-  const [endDate, setEndDate] = useState<Date>(new Date());
+  const [endDate, setEndDate] = useState<Date>(() => {
+    const date = new Date();
+    date.setMinutes(date.getMinutes() + 5); // Add 5 minutes buffer to future
+    return date;
+  });
   const [selectedRange, setSelectedRange] = useState<DateRangeOption>('24h');
   
   // State for sidebar collapse functionality (shared with Dashboard)
@@ -91,14 +94,16 @@ export const ServiceDetailContainer = () => {
 
   // Handle date range filter changes
   const handleDateRangeChange = useCallback((start: Date, end: Date, option: DateRangeOption) => {
-    console.log(`Date range changed: ${start.toISOString()} to ${end.toISOString()}, option: ${option}`);
+    console.log(`ServiceDetailContainer: Date range changed: ${start.toISOString()} to ${end.toISOString()}, option: ${option}`);
     
+    // Update state which will trigger the useEffect in useServiceData
     setStartDate(start);
     setEndDate(end);
     setSelectedRange(option);
     
-    // Refetch uptime data with new date range, passing the selected range option
+    // Also explicitly fetch data with the new range to ensure immediate update
     if (id) {
+      console.log(`ServiceDetailContainer: Explicitly fetching data for service ${id} with new range`);
       fetchUptimeData(id, start, end, option);
     }
   }, [id, fetchUptimeData]);

@@ -25,10 +25,10 @@ export function AddServiceDialog({ open, onOpenChange }: AddServiceDialogProps) 
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="bg-black text-white border-gray-800 sm:max-w-[500px] max-h-[90vh] flex flex-col">
+      <DialogContent className="sm:max-w-[500px] max-h-[90vh] flex flex-col">
         <DialogHeader>
           <DialogTitle className="text-xl">Create New Service</DialogTitle>
-          <DialogDescription className="text-gray-400">
+          <DialogDescription>
             Fill in the details to create a new service to monitor.
           </DialogDescription>
         </DialogHeader>

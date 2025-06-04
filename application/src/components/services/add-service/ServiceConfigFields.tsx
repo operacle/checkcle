@@ -21,7 +21,6 @@ export function ServiceConfigFields({ form }: ServiceConfigFieldsProps) {
               <Input 
                 type="number" 
                 placeholder="60" 
-                className="bg-black border-gray-700" 
                 {...field} 
               />
             </FormControl>
@@ -39,7 +38,6 @@ export function ServiceConfigFields({ form }: ServiceConfigFieldsProps) {
               <Input 
                 type="number" 
                 placeholder="3" 
-                className="bg-black border-gray-700" 
                 {...field} 
               />
             </FormControl>

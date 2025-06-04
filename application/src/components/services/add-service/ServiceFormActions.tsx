@@ -28,14 +28,12 @@ export function ServiceFormActions({
         onClick={handleCancel}
         variant="outline"
         disabled={isSubmitting}
-        className="border-gray-700 text-gray-300 hover:bg-gray-800 hover:text-white"
       >
         Cancel
       </Button>
       <Button 
         type="submit" 
         disabled={isSubmitting}
-        className="bg-primary text-primary-foreground hover:bg-primary/90"
       >
         {isSubmitting ? (
           <>

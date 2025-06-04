@@ -20,7 +20,6 @@ export function ServiceBasicFields({ form }: ServiceBasicFieldsProps) {
             <FormControl>
               <Input 
                 placeholder="Service Name" 
-                className="bg-black border-gray-700" 
                 {...field} 
               />
             </FormControl>
@@ -38,7 +37,6 @@ export function ServiceBasicFields({ form }: ServiceBasicFieldsProps) {
             <FormControl>
               <Input 
                 placeholder="https://example.com" 
-                className="bg-black border-gray-700" 
                 {...field}
                 onChange={(e) => {
                   console.log("URL field changed:", e.target.value);

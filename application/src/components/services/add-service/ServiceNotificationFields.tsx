@@ -82,10 +82,10 @@ export function ServiceNotificationFields({ form }: ServiceNotificationFieldsPro
                   }} 
                   value={displayValue}
                 >
-                  <SelectTrigger className="bg-black border-gray-700">
+                  <SelectTrigger>
                     <SelectValue placeholder="Select a notification channel" />
                   </SelectTrigger>
-                  <SelectContent className="bg-gray-900 text-white border-gray-700">
+                  <SelectContent>
                     <SelectItem value="none">None</SelectItem>
                     {alertConfigs.map((config) => (
                       <SelectItem key={config.id} value={config.id || ""}>
@@ -119,10 +119,10 @@ export function ServiceNotificationFields({ form }: ServiceNotificationFieldsPro
                   }} 
                   value={displayValue}
                 >
-                  <SelectTrigger className="bg-black border-gray-700">
+                  <SelectTrigger>
                     <SelectValue placeholder="Select an alert template" />
                   </SelectTrigger>
-                  <SelectContent className="bg-gray-900 text-white border-gray-700">
+                  <SelectContent>
                     <SelectItem value="default">Default</SelectItem>
                     {templates?.map((template) => (
                       <SelectItem key={template.id} value={template.id}>

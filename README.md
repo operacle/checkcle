@@ -24,6 +24,10 @@ CheckCle is an Open Source solution for seamless, real-time monitoring of full-s
 
 ## #️⃣ Getting Started
 
+### Current Architecture Support
+* ✅ x86_64 PCs, laptops, servers (amd64)
+* ✅ Modern Raspberry Pi 3/4/5 with (64-bit OS), Apple Silicon Macs (arm64)
+
 ### Installation with Docker Run and Compose
 1. Copy ready docker run command
 ```bash 
@@ -71,24 +75,25 @@ services:
 
 ## 📝 Development Roadmap
 
-- [x] Health check & uptime monitoring (HTTP)
-- [x] Dashboard UI with live stats  
-- [x] Auth with Multi-users system (admin)
-- [x] Notifications (Telegram)
-- [x] Docker containerization 
-- [x] CheckCle Website
-- [x] CheckCle Demo Server
-- [x] SSL & Domain Monitoring
-- [x] Schedule Maintenance 
-- [x] Incident Management
+- ✅ Health check & uptime monitoring (HTTP)
+- ✅ Dashboard UI with live stats  
+- ✅ Auth with Multi-users system (admin)
+- ✅ Notifications (Telegram)
+- ✅ Docker containerization 
+- ✅ CheckCle Website
+- ✅ CheckCle Demo Server
+- ✅ SSL & Domain Monitoring
+- ✅ Schedule Maintenance 
+- ✅ Incident Management
 - [ ] Uptime monitoring (PING - Inprogress)
 - [ ] Infrastructure Server Monitoring
 - [ ] Operational Status / Public Status Pages
 - [ ] Uptime monitoring (TCP, PING, DNS)
-- [x] System Setting Panel and Mail Settings
-- [x] User Permission Roles
+- ✅ System Setting Panel and Mail Settings
+- ✅ User Permission Roles
 - [ ] Notifications (Email/Slack/Discord/Signal)  
-- [x] Open-source release with full documentation 
+- ✅ Data Retention & Automate Strink (Muti Options to Shrink Data & Database )
+- ✅ Open-source release with full documentation 
 
 ## 🌟 CheckCle for Communities?
 - **Built with Passion**: Created by an open-source enthusiast for the community

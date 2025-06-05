@@ -22,6 +22,21 @@ export interface SettingsTranslations {
   enableTLS: string;
   localName: string;
   
+  // Test Email
+  testEmail: string;
+  sendTestEmail: string;
+  emailTemplate: string;
+  verification: string;
+  passwordReset: string;
+  confirmEmailChange: string;
+  otp: string;
+  loginAlert: string;
+  authCollection: string;
+  selectCollection: string;
+  toEmailAddress: string;
+  enterEmailAddress: string;
+  sending: string;
+  
   // Actions and status
   save: string;
   saving: string;

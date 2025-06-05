@@ -24,6 +24,21 @@ export const settingsTranslations: SettingsTranslations = {
   enableTLS: "បើក TLS",
   localName: "ឈ្មោះមូលដ្ឋាន",
   
+  // Test Email
+  testEmail: "សាកល្បងអ៊ីមែល",
+  sendTestEmail: "ផ្ញើអ៊ីមែលសាកល្បង",
+  emailTemplate: "គំរូអ៊ីមែល",
+  verification: "ការផ្ទៀងផ្ទាត់",
+  passwordReset: "កំណត់ពាក្យសម្ងាត់ឡើងវិញ",
+  confirmEmailChange: "បញ្ជាក់ការផ្លាស់ប្តូរអ៊ីមែល",
+  otp: "លេខកូដ OTP",
+  loginAlert: "ការជូនដំណឹងចូលប្រព័ន្ធ",
+  authCollection: "បណ្តុំផ្ទៀងផ្ទាត់",
+  selectCollection: "ជ្រើសរើសបណ្តុំ",
+  toEmailAddress: "ទៅអាសយដ្ឋានអ៊ីមែល",
+  enterEmailAddress: "បញ្ចូលអាសយដ្ឋានអ៊ីមែល",
+  sending: "កំពុងផ្ញើ...",
+  
   // Actions and status
   save: "រក្សាទុកការផ្លាស់ប្ដូរ",
   saving: "កំពុងរក្សាទុក...",

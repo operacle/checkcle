@@ -24,6 +24,21 @@ export const settingsTranslations: SettingsTranslations = {
   enableTLS: "Enable TLS",
   localName: "Local Name",
   
+  // Test Email
+  testEmail: "Test Email",
+  sendTestEmail: "Send test email",
+  emailTemplate: "Email template",
+  verification: "Verification",
+  passwordReset: "Password reset",
+  confirmEmailChange: "Confirm email change",
+  otp: "OTP",
+  loginAlert: "Login alert",
+  authCollection: "Auth collection",
+  selectCollection: "Select collection",
+  toEmailAddress: "To email address",
+  enterEmailAddress: "Enter email address",
+  sending: "Sending...",
+  
   // Actions and status
   save: "Save Changes",
   saving: "Saving...",

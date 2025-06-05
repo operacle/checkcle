@@ -28,6 +28,7 @@ export const settingsTranslations: SettingsTranslations = {
   saving: "Speichere...",
   settingsUpdated: "Einstellungen erfolgreich aktualisiert",
   errorSavingSettings: "Fehler beim Speichern der Einstellungen",
+  errorFetchingSettings: "Error loading settings",
   testConnection: "Verbindung testen",
   testingConnection: "Verbindung wird getestet...",
   connectionSuccess: "Verbindung erfolgreich",

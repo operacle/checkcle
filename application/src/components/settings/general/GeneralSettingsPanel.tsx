@@ -29,8 +29,6 @@ const GeneralSettingsPanel: React.FC<GeneralSettingsPanelProps> = () => {
     error,
     updateSettings,
     isUpdating,
-    testEmailConnection,
-    isTestingConnection
   } = useSystemSettings();
 
   const form = useForm<GeneralSettings>({
@@ -96,15 +94,6 @@ const GeneralSettingsPanel: React.FC<GeneralSettingsPanelProps> = () => {
       setIsEditing(false);
     } catch (error) {
       console.error("Error updating settings:", error);
-    }
-  };
-
-  const handleTestConnection = async () => {
-    try {
-      const smtpConfig = form.getValues('smtp');
-      await testEmailConnection(smtpConfig);
-    } catch (error) {
-      console.error("Error testing connection:", error);
     }
   };
 
@@ -205,13 +194,10 @@ const GeneralSettingsPanel: React.FC<GeneralSettingsPanelProps> = () => {
                     form={form} 
                     isEditing={isEditing} 
                     settings={settings}
-                    handleTestConnection={handleTestConnection}
-                    isTestingConnection={isTestingConnection}
                   />
                 </TabsContent>
               </Tabs>
               
-              {/* Save and Cancel buttons - only show when editing */}
               {isEditing && (
                 <div className="flex justify-between mt-6">
                   <Button type="button" variant="outline" onClick={handleCancelClick} disabled={isUpdating}>
@@ -226,7 +212,6 @@ const GeneralSettingsPanel: React.FC<GeneralSettingsPanelProps> = () => {
           </Form>
         </CardContent>
         
-        {/* Edit button - only show when not editing and outside the form */}
         {!isEditing && (
           <CardFooter>
             <Button type="button" onClick={handleEditClick}>

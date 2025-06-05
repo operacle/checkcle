@@ -12,11 +12,12 @@ export interface SettingsTranslations {
   hideControls: string;
   
   // Mail Settings
-  smtpSettings: string;
+  smtpSettings?: string;
   smtpEnabled: string;
   smtpHost: string;
   smtpPort: string;
   smtpUsername: string;
+  smtpPassword: string;
   smtpAuthMethod: string;
   enableTLS: string;
   localName: string;
@@ -26,6 +27,7 @@ export interface SettingsTranslations {
   saving: string;
   settingsUpdated: string;
   errorSavingSettings: string;
+  errorFetchingSettings: string;
   testConnection: string;
   testingConnection: string;
   connectionSuccess: string;

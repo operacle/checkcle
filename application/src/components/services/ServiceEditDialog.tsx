@@ -51,10 +51,10 @@ export function ServiceEditDialog({ open, onOpenChange, service }: ServiceEditDi
         onOpenChange(newOpen);
       }
     }}>
-      <DialogContent className="bg-black text-white border-gray-800 sm:max-w-[500px] max-h-[90vh] flex flex-col">
+      <DialogContent className="sm:max-w-[500px] max-h-[90vh] flex flex-col">
         <DialogHeader>
           <DialogTitle className="text-xl">Edit Service</DialogTitle>
-          <DialogDescription className="text-gray-400">
+          <DialogDescription>
             Update the details of your monitored service.
           </DialogDescription>
         </DialogHeader>

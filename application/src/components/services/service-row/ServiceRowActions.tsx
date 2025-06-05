@@ -112,10 +112,10 @@ export const ServiceRowActions = ({
         </DropdownMenuTrigger>
         <DropdownMenuContent 
           align="end" 
-          className="w-48 bg-gray-900 border border-gray-800 text-white"
+          className="w-48"
         >
           <DropdownMenuItem 
-            className="flex items-center gap-2 cursor-pointer hover:bg-gray-800 focus:bg-gray-800 text-base py-2.5"
+            className="flex items-center gap-2 cursor-pointer text-base py-2.5"
             onClick={(e) => {
               e.stopPropagation();
               onViewDetail(service);
@@ -125,7 +125,7 @@ export const ServiceRowActions = ({
             <span>View Detail</span>
           </DropdownMenuItem>
           <DropdownMenuItem 
-            className="flex items-center gap-2 cursor-pointer hover:bg-gray-800 focus:bg-gray-800 text-base py-2.5"
+            className="flex items-center gap-2 cursor-pointer text-base py-2.5"
             onClick={handlePauseResume}
           >
             {service.status === "paused" ? (
@@ -141,7 +141,7 @@ export const ServiceRowActions = ({
             )}
           </DropdownMenuItem>
           <DropdownMenuItem 
-            className="flex items-center gap-2 cursor-pointer hover:bg-gray-800 focus:bg-gray-800 text-base py-2.5"
+            className="flex items-center gap-2 cursor-pointer text-base py-2.5"
             onClick={(e) => {
               e.stopPropagation();
               onEdit(service);
@@ -151,7 +151,7 @@ export const ServiceRowActions = ({
             <span>Edit</span>
           </DropdownMenuItem>
           <DropdownMenuItem 
-            className="flex items-center gap-2 cursor-pointer hover:bg-gray-800 focus:bg-gray-800 text-base py-2.5"
+            className="flex items-center gap-2 cursor-pointer text-base py-2.5"
             onClick={handleMuteAlerts}
           >
             {alertsMuted ? (
@@ -166,9 +166,9 @@ export const ServiceRowActions = ({
               </>
             )}
           </DropdownMenuItem>
-          <DropdownMenuSeparator className="bg-gray-700" />
+          <DropdownMenuSeparator />
           <DropdownMenuItem 
-            className="flex items-center gap-2 text-red-500 cursor-pointer hover:bg-gray-800 focus:bg-gray-800 text-base py-2.5"
+            className="flex items-center gap-2 text-destructive cursor-pointer text-base py-2.5"
             onClick={(e) => {
               e.stopPropagation();
               onDelete(service);

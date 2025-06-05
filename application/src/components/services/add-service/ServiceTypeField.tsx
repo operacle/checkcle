@@ -22,7 +22,7 @@ export function ServiceTypeField({ form }: ServiceTypeFieldProps) {
               onValueChange={field.onChange} 
               defaultValue={field.value}
             >
-              <SelectTrigger className="bg-black border-gray-700">
+              <SelectTrigger>
                 <SelectValue>
                   {field.value === "http" && (
                     <div className="flex items-center gap-2">
@@ -33,14 +33,14 @@ export function ServiceTypeField({ form }: ServiceTypeFieldProps) {
                   {field.value !== "http" && "Select a service type"}
                 </SelectValue>
               </SelectTrigger>
-              <SelectContent className="bg-gray-900 text-white border-gray-700">
+              <SelectContent>
                 <SelectItem value="http">
                   <div className="flex flex-col">
                     <div className="flex items-center gap-2">
                       <Globe className="w-4 h-4" />
                       <span>HTTP/S</span>
                     </div>
-                    <p className="text-xs text-gray-400 mt-1">
+                    <p className="text-xs text-muted-foreground mt-1">
                       Monitor websites and REST APIs with HTTP/HTTPS protocol
                     </p>
                   </div>

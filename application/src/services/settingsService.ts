@@ -36,6 +36,7 @@ export interface GeneralSettings {
     port?: number;
     host?: string;
     username?: string;
+    password?: string;
     authMethod?: string;
     tls?: boolean;
     localName?: string;

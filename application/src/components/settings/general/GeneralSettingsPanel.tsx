@@ -47,6 +47,7 @@ const GeneralSettingsPanel: React.FC<GeneralSettingsPanelProps> = () => {
         port: 587,
         host: '',
         username: '',
+        password: '',
         authMethod: '',
         tls: true,
         localName: ''
@@ -73,6 +74,7 @@ const GeneralSettingsPanel: React.FC<GeneralSettingsPanelProps> = () => {
           port: 587,
           host: '',
           username: '',
+          password: '',
           authMethod: '',
           tls: true,
           localName: ''
@@ -131,6 +133,7 @@ const GeneralSettingsPanel: React.FC<GeneralSettingsPanelProps> = () => {
           port: 587,
           host: '',
           username: '',
+          password: '',
           authMethod: '',
           tls: true,
           localName: ''

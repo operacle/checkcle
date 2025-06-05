@@ -18,6 +18,7 @@ export const settingsTranslations: SettingsTranslations = {
   smtpHost: "SMTP-Host",
   smtpPort: "SMTP-Port",
   smtpUsername: "SMTP-Benutzername",
+  smtpPassword: "SMTP Password",
   smtpAuthMethod: "Authentifizierungsmethode",
   enableTLS: "TLS aktivieren",
   localName: "Lokaler Name",

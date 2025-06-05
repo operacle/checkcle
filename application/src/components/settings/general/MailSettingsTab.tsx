@@ -143,6 +143,26 @@ const MailSettingsTab: React.FC<MailSettingsTabProps> = ({
         <div className="mt-4">
           <FormField
             control={form.control}
+            name="smtp.password"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t("smtpPassword", "settings")}</FormLabel>
+                <FormControl>
+                  <Input 
+                    {...field} 
+                    type="password"
+                    disabled={!isEditing || !form.watch('smtp.enabled')}
+                    placeholder="••••••••"
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+        </div>
+        
+        <div className="mt-4">
+          <FormField
+            control={form.control}
             name="smtp.authMethod"
             render={({ field }) => (
               <FormItem>

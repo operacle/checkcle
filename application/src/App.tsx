@@ -17,6 +17,8 @@ import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
 import SslDomain from "./pages/SslDomain";
 import ScheduleIncident from "./pages/ScheduleIncident";
+import OperationalPage from "./pages/OperationalPage";
+import PublicStatusPage from "./pages/PublicStatusPage";
 
 // Create a Protected route component
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
@@ -111,6 +113,16 @@ const App = () => {
                     </ProtectedRoute>
                   } 
                 />
+                <Route 
+                  path="/operational-page" 
+                  element={
+                    <ProtectedRoute>
+                      <OperationalPage />
+                    </ProtectedRoute>
+                  } 
+                />
+                {/* Public status page route */}
+                <Route path="/status/:slug" element={<PublicStatusPage />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>

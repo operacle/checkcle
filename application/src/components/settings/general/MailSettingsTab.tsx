@@ -1,24 +1,65 @@
 
-import React from 'react';
+
+import React, { useState } from 'react';
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import { FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { SettingsTabProps } from "./types";
+import TestEmailDialog, { TestEmailData } from "./TestEmailDialog";
+import { Mail } from "lucide-react";
 
 interface MailSettingsTabProps extends SettingsTabProps {
-  handleTestConnection: () => Promise<void>;
-  isTestingConnection: boolean;
+  // Remove handleTestConnection and isTestingConnection props since we're removing the test connection button
 }
 
 const MailSettingsTab: React.FC<MailSettingsTabProps> = ({
   form,
-  isEditing,
-  handleTestConnection,
-  isTestingConnection
+  isEditing
 }) => {
   const { t } = useLanguage();
+  const [showTestEmailDialog, setShowTestEmailDialog] = useState(false);
+  const [isTestingEmail, setIsTestingEmail] = useState(false);
+
+  const handleTestEmail = async (data: TestEmailData) => {
+    try {
+      setIsTestingEmail(true);
+      console.log('Testing email with data:', data);
+      
+      const response = await fetch('/api/settings', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          action: 'sendTestEmail',
+          data: {
+            email: data.email,
+            template: data.template,
+            ...(data.collection && { collection: data.collection })
+          }
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      
+      if (!result.success) {
+        throw new Error(result.message || 'Test email failed');
+      }
+
+      console.log('Test email sent successfully');
+    } catch (error) {
+      console.error('Error sending test email:', error);
+      throw error; // Re-throw to let the dialog handle the error display
+    } finally {
+      setIsTestingEmail(false);
+    }
+  };
 
   return (
     <div className="space-y-4">
@@ -217,19 +258,29 @@ const MailSettingsTab: React.FC<MailSettingsTabProps> = ({
           />
         </div>
         
+        {/* Only show Test Email button, removed Test Connection button */}
         {isEditing && form.watch('smtp.enabled') && (
           <div className="mt-4">
             <Button 
               type="button" 
               variant="outline" 
-              onClick={handleTestConnection}
-              disabled={isTestingConnection}
+              onClick={() => setShowTestEmailDialog(true)}
+              disabled={isTestingEmail}
+              className="flex items-center gap-2"
             >
-              {isTestingConnection ? t("testingConnection", "settings") : t("testConnection", "settings")}
+              <Mail className="h-4 w-4" />
+              {t("testEmail", "settings")}
             </Button>
           </div>
         )}
       </div>
+
+      <TestEmailDialog
+        open={showTestEmailDialog}
+        onOpenChange={setShowTestEmailDialog}
+        onSendTest={handleTestEmail}
+        isTesting={isTestingEmail}
+      />
     </div>
   );
 };

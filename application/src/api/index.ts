@@ -17,7 +17,7 @@ const api = {
     if (path === '/api/realtime') {
       console.log("Routing to realtime handler");
       return await realtime(body);
-    } else if (path === '/api/settings') {
+    } else if (path === '/api/settings' || path.startsWith('/api/settings/')) {
       console.log("Routing to settings handler");
       return await settingsApi(body);
     }

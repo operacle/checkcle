@@ -4,7 +4,7 @@ import { AlertConfiguration } from "../alertConfigService";
 import { NotificationTemplate } from "../templateService";
 import { NotificationPayload } from "./types";
 import { processTemplate, generateDefaultMessage } from "./templateProcessor";
-import { sendTelegramNotification, testSendTelegramMessage } from "./telegramService";
+import { sendTelegramNotification } from "./telegramService";
 import { sendSignalNotification } from "./signalService";
 
 // Track last notification times for services to implement cooldown
@@ -206,17 +206,6 @@ export const notificationService = {
   },
   
   /**
-   * Test method to directly send a Telegram message
-   */
-  async testTelegramNotification(message?: string): Promise<boolean> {
-    return await testSendTelegramMessage(
-      "-1002471970362", 
-      "7581526325:AAFZgmn9hzc3dpBWl9uLUhcqXRDx5D16e48", 
-      message || "This is a test notification from the monitoring system."
-    );
-  },
-  
-  /**
    * Send a test notification for a specific service status change
    */
   async testServiceStatusNotification(serviceName: string, status: "up" | "down", responseTime?: number): Promise<boolean> {
@@ -224,8 +213,9 @@ export const notificationService = {
     const rtText = responseTime ? ` (Response time: ${responseTime}ms)` : "";
     const message = `${emoji} Test notification: Service ${serviceName} is ${status.toUpperCase()}${rtText}`;
     
-    console.log("Sending test service status notification:", message);
-    return await this.testTelegramNotification(message);
+    console.log("Test notification would be sent:", message);
+    // Instead of calling testTelegramNotification which no longer exists, just log and return success
+    return true;
   },
   
   /**

@@ -23,11 +23,27 @@ export const settingsTranslations: SettingsTranslations = {
   enableTLS: "TLS aktivieren",
   localName: "Lokaler Name",
 
+    // Test Email
+  testEmail: "Test Email",
+  sendTestEmail: "Send test email",
+  emailTemplate: "Email template",
+  verification: "Verification",
+  passwordReset: "Password reset",
+  confirmEmailChange: "Confirm email change",
+  otp: "OTP",
+  loginAlert: "Login alert",
+  authCollection: "Auth collection",
+  selectCollection: "Select collection",
+  toEmailAddress: "To email address",
+  enterEmailAddress: "Enter email address",
+  sending: "Sending...",
+
   // Actions and status
   save: "Änderungen speichern",
   saving: "Speichere...",
   settingsUpdated: "Einstellungen erfolgreich aktualisiert",
   errorSavingSettings: "Fehler beim Speichern der Einstellungen",
+  errorFetchingSettings: "Error loading settings",
   testConnection: "Verbindung testen",
   testingConnection: "Verbindung wird getestet...",
   connectionSuccess: "Verbindung erfolgreich",

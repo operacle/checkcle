@@ -28,8 +28,15 @@ CheckCle is an Open Source solution for seamless, real-time monitoring of full-s
 * ✅ x86_64 PCs, laptops, servers (amd64)
 * ✅ Modern Raspberry Pi 3/4/5 with (64-bit OS), Apple Silicon Macs (arm64)
 
-### Installation with Docker Run and Compose
-1. Copy ready docker run command
+### Install CheckCle using one of the options below.
+
+
+1. CheckCle One-Click Installation - Just copy and run on terminal
+```bash 
+curl -fsSL https://checkcle.io/install.sh | bash
+
+```
+2. Install with docker run. Just copy ready docker run command below
 ```bash 
 docker run -d \
   --name checkcle \
@@ -40,7 +47,7 @@ docker run -d \
   operacle/checkcle:latest
 
 ```
-2. Docker Compose - Recommended
+3. Install with Docker compose Configuration.
 ```bash 
 
 version: '3.9'
@@ -87,7 +94,7 @@ services:
 - ✅ Incident Management
 - [ ] Uptime monitoring (PING - Inprogress)
 - [ ] Infrastructure Server Monitoring
-- [ ] Operational Status / Public Status Pages
+- ✅ Operational Status / Public Status Pages
 - [ ] Uptime monitoring (TCP, PING, DNS)
 - ✅ System Setting Panel and Mail Settings
 - ✅ User Permission Roles

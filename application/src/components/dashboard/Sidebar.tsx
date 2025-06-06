@@ -1,4 +1,3 @@
-
 import { Globe, Boxes, Radar, Calendar, BarChart2, LineChart, FileText, Settings, User, UserCog, Bell, FileClock, Database, RefreshCw, Info, ChevronDown, BookOpen } from "lucide-react";
 import { useTheme } from "@/contexts/ThemeContext";
 import { Link, useLocation } from "react-router-dom";
@@ -71,10 +70,10 @@ export const Sidebar = ({
           <Calendar className={`${mainIconSize} text-emerald-400`} />
           {!collapsed && <span className="ml-2.5 font-medium text-foreground tracking-wide text-[15px]">{t("scheduleIncident")}</span>}
         </Link>
-        <div className={`${collapsed ? 'p-3' : 'p-2 pl-3'} mb-1 rounded-lg hover:${theme === 'dark' ? 'bg-gray-800' : 'bg-sidebar-accent'} flex items-center ${collapsed ? 'justify-center' : ''} transition-colors duration-200`}>
+        <Link to="/operational-page" className={`${collapsed ? 'p-3' : 'p-2 pl-3'} mb-1 rounded-lg ${location.pathname === '/operational-page' ? theme === 'dark' ? 'bg-gray-800' : 'bg-sidebar-accent' : `hover:${theme === 'dark' ? 'bg-gray-800' : 'bg-sidebar-accent'}`} flex items-center ${collapsed ? 'justify-center' : ''} transition-colors duration-200`}>
           <BarChart2 className={`${mainIconSize} text-amber-400`} />
           {!collapsed && <span className="ml-2.5 font-medium text-foreground tracking-wide text-[15px]">{t("operationalPage")}</span>}
-        </div>
+        </Link>
         <div className={`${collapsed ? 'p-3' : 'p-2 pl-3'} mb-1 rounded-lg hover:${theme === 'dark' ? 'bg-gray-800' : 'bg-sidebar-accent'} flex items-center ${collapsed ? 'justify-center' : ''} transition-colors duration-200`}>
           <LineChart className={`${mainIconSize} text-rose-400`} />
           {!collapsed && <span className="ml-2.5 font-medium text-foreground tracking-wide text-[15px]">{t("reports")}</span>}

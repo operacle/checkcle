@@ -1,13 +1,15 @@
 import enTranslations from './en';
 import kmTranslations from './km';
 import deTranslations from './de';
+import zhcnTranslations from './zhcn';
 
-export type Language = "en" | "km" | "de";
+export type Language = "en" | "km" | "de" | "zhcn";
 
 export const translations = {
   en: enTranslations,
   km: kmTranslations,
   de: deTranslations,
+  zhcn: zhcnTranslations,
 };
 
 // Type for accessing translations by module and key

@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Header } from "@/components/dashboard/Header";
 import { Sidebar } from "@/components/dashboard/Sidebar";
@@ -8,11 +8,11 @@ import { serviceService } from "@/services/serviceService";
 import { authService } from "@/services/authService";
 import { useNavigate } from "react-router-dom";
 import { LoadingState } from "@/components/services/LoadingState";
+import { useSidebar } from "@/contexts/SidebarContext";
 
 const Dashboard = () => {
-  // State for sidebar collapse functionality
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-  const toggleSidebar = () => setSidebarCollapsed(prev => !prev);
+  // Use shared sidebar state
+  const { sidebarCollapsed, toggleSidebar } = useSidebar();
 
   // Get current user
   const currentUser = authService.getCurrentUser();

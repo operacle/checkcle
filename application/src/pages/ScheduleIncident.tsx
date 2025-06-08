@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Header } from "@/components/dashboard/Header";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { useTheme } from "@/contexts/ThemeContext";
@@ -8,11 +8,11 @@ import { ScheduleIncidentContent } from "@/components/schedule-incident/Schedule
 import { authService } from "@/services/authService";
 import { useNavigate } from "react-router-dom";
 import { initMaintenanceNotifications, stopMaintenanceNotifications } from "@/services/maintenance/maintenanceNotificationService";
+import { useSidebar } from "@/contexts/SidebarContext";
 
 const ScheduleIncident = () => {
-  // State for sidebar collapse functionality
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-  const toggleSidebar = () => setSidebarCollapsed(prev => !prev);
+  // Use shared sidebar state
+  const { sidebarCollapsed, toggleSidebar } = useSidebar();
   
   // Get current theme and language
   const { theme } = useTheme();
@@ -24,12 +24,10 @@ const ScheduleIncident = () => {
   
   // Initialize maintenance notifications
   useEffect(() => {
-    console.log("Initializing maintenance notifications");
     initMaintenanceNotifications();
     
     // Clean up on unmount
     return () => {
-      console.log("Stopping maintenance notifications");
       stopMaintenanceNotifications();
     };
   }, []);

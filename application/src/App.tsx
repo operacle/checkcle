@@ -1,137 +1,115 @@
 
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { authService } from "@/services/authService";
-import { ThemeProvider } from "@/contexts/ThemeContext";
-import { LanguageProvider } from "@/contexts/LanguageContext";
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ThemeProvider } from './contexts/ThemeContext';
+import { LanguageProvider } from './contexts/LanguageContext';
+import { SidebarProvider } from './contexts/SidebarContext';
+import { ErrorBoundary } from './components/ErrorBoundary';
+import { Toaster } from './components/ui/sonner';
+import { authService } from './services/authService';
 
-import Login from "./pages/Login";
-import Dashboard from "./pages/Dashboard";
-import ServiceDetail from "./pages/ServiceDetail";
-import Settings from "./pages/Settings";
-import Profile from "./pages/Profile";
-import NotFound from "./pages/NotFound";
-import SslDomain from "./pages/SslDomain";
-import ScheduleIncident from "./pages/ScheduleIncident";
-import OperationalPage from "./pages/OperationalPage";
-import PublicStatusPage from "./pages/PublicStatusPage";
-
-// Create a Protected route component
-const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  const isAuthenticated = authService.isAuthenticated();
-  
-  if (!isAuthenticated) {
-    return <Navigate to="/login" replace />;
-  }
-  
-  return <>{children}</>;
-};
+// Pages
+import Index from './pages/Index';
+import Login from './pages/Login';
+import Dashboard from './pages/Dashboard';
+import ServiceDetail from './pages/ServiceDetail';
+import Settings from './pages/Settings';
+import Profile from './pages/Profile';
+import SslDomain from './pages/SslDomain';
+import ScheduleIncident from './pages/ScheduleIncident';
+import OperationalPage from './pages/OperationalPage';
+import PublicStatusPage from './pages/PublicStatusPage';
+import NotFound from './pages/NotFound';
 
 const queryClient = new QueryClient();
 
-const App = () => {
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    // Check authentication status when the app loads
-    const checkAuth = async () => {
-      try {
-        // Just check the auth state
-        authService.isAuthenticated();
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    
-    checkAuth();
-  }, []);
-
-  if (isLoading) {
-    return <div className="flex items-center justify-center h-screen bg-background text-foreground">Loading...</div>;
-  }
-
-  return (
-    <QueryClientProvider client={queryClient}>
-      <ThemeProvider>
-        <LanguageProvider>
-          <TooltipProvider>
-            <Toaster />
-            <Sonner />
-            <BrowserRouter>
-              <Routes>
-                <Route path="/login" element={<Login />} />
-                <Route path="/" element={<Navigate to="/dashboard" replace />} />
-                <Route 
-                  path="/dashboard" 
-                  element={
-                    <ProtectedRoute>
-                      <Dashboard />
-                    </ProtectedRoute>
-                  } 
-                />
-                <Route 
-                  path="/service/:id" 
-                  element={
-                    <ProtectedRoute>
-                      <ServiceDetail />
-                    </ProtectedRoute>
-                  } 
-                />
-                <Route 
-                  path="/settings" 
-                  element={
-                    <ProtectedRoute>
-                      <Settings />
-                    </ProtectedRoute>
-                  } 
-                />
-                <Route 
-                  path="/profile" 
-                  element={
-                    <ProtectedRoute>
-                      <Profile />
-                    </ProtectedRoute>
-                  } 
-                />
-                <Route 
-                  path="/ssl-domain" 
-                  element={
-                    <ProtectedRoute>
-                      <SslDomain />
-                    </ProtectedRoute>
-                  } 
-                />
-                <Route 
-                  path="/schedule-incident" 
-                  element={
-                    <ProtectedRoute>
-                      <ScheduleIncident />
-                    </ProtectedRoute>
-                  } 
-                />
-                <Route 
-                  path="/operational-page" 
-                  element={
-                    <ProtectedRoute>
-                      <OperationalPage />
-                    </ProtectedRoute>
-                  } 
-                />
-                {/* Public status page route */}
-                <Route path="/status/:slug" element={<PublicStatusPage />} />
-                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </BrowserRouter>
-          </TooltipProvider>
-        </LanguageProvider>
-      </ThemeProvider>
-    </QueryClientProvider>
-  );
+// Protected Route Component
+const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+  const isAuthenticated = authService.isAuthenticated();
+  return isAuthenticated ? <>{children}</> : <Navigate to="/login" replace />;
 };
+
+function App() {
+  return (
+    <ErrorBoundary>
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider>
+          <LanguageProvider>
+            <SidebarProvider>
+              <Router>
+                <div className="min-h-screen bg-background text-foreground">
+                  <Routes>
+                    <Route path="/" element={<Index />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route 
+                      path="/dashboard" 
+                      element={
+                        <ProtectedRoute>
+                          <Dashboard />
+                        </ProtectedRoute>
+                      } 
+                    />
+                    <Route 
+                      path="/service/:id" 
+                      element={
+                        <ProtectedRoute>
+                          <ServiceDetail />
+                        </ProtectedRoute>
+                      } 
+                    />
+                    <Route 
+                      path="/settings" 
+                      element={
+                        <ProtectedRoute>
+                          <Settings />
+                        </ProtectedRoute>
+                      } 
+                    />
+                    <Route 
+                      path="/profile" 
+                      element={
+                        <ProtectedRoute>
+                          <Profile />
+                        </ProtectedRoute>
+                      } 
+                    />
+                    <Route 
+                      path="/ssl-domain" 
+                      element={
+                        <ProtectedRoute>
+                          <SslDomain />
+                        </ProtectedRoute>
+                      } 
+                    />
+                    <Route 
+                      path="/schedule-incident" 
+                      element={
+                        <ProtectedRoute>
+                          <ScheduleIncident />
+                        </ProtectedRoute>
+                      } 
+                    />
+                    <Route 
+                      path="/operational-page" 
+                      element={
+                        <ProtectedRoute>
+                          <OperationalPage />
+                        </ProtectedRoute>
+                      } 
+                    />
+                    <Route path="/status/:pageSlug" element={<PublicStatusPage />} />
+                    <Route path="*" element={<NotFound />} />
+                  </Routes>
+                  <Toaster />
+                </div>
+              </Router>
+            </SidebarProvider>
+          </LanguageProvider>
+        </ThemeProvider>
+      </QueryClientProvider>
+    </ErrorBoundary>
+  );
+}
 
 export default App;

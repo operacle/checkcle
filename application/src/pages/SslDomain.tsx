@@ -1,3 +1,4 @@
+
 import React, { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { authService } from "@/services/authService";
@@ -8,14 +9,14 @@ import { SSLDomainContent } from "@/components/ssl-domain/SSLDomainContent";
 import { LoadingState } from "@/components/services/LoadingState";
 import { fetchSSLCertificates, shouldRunDailyCheck, checkAllCertificatesAndNotify } from "@/services/sslCertificateService";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useSidebar } from "@/contexts/SidebarContext";
 
 const SslDomain = () => {
   // Get language context for translations
   const { t } = useLanguage();
   
-  // State for sidebar collapse functionality
-  const [sidebarCollapsed, setSidebarCollapsed] = React.useState(false);
-  const toggleSidebar = () => setSidebarCollapsed(prev => !prev);
+  // Use shared sidebar state
+  const { sidebarCollapsed, toggleSidebar } = useSidebar();
 
   // Get current user
   const currentUser = authService.getCurrentUser();

@@ -9,11 +9,11 @@ import { ProfileContent } from "@/components/profile/ProfileContent";
 import { User } from "@/services/userService";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
+import { useSidebar } from "@/contexts/SidebarContext";
 
 const Profile = () => {
-  // State for sidebar collapse functionality
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-  const toggleSidebar = () => setSidebarCollapsed(prev => !prev);
+  // Use shared sidebar state
+  const { sidebarCollapsed, toggleSidebar } = useSidebar();
 
   // Get current user
   const currentUser = authService.getCurrentUser();

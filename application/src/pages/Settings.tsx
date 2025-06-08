@@ -10,11 +10,11 @@ import { NotificationSettings } from "@/components/settings/notification-setting
 import { AlertsTemplates } from "@/components/settings/alerts-templates";
 import { AboutSystem } from "@/components/settings/about-system";
 import DataRetentionSettings from "@/components/settings/data-retention/DataRetentionSettings";
+import { useSidebar } from "@/contexts/SidebarContext";
 
 const Settings = () => {
-  // State for sidebar collapse functionality
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-  const toggleSidebar = () => setSidebarCollapsed(prev => !prev);
+  // Use shared sidebar state
+  const { sidebarCollapsed, toggleSidebar } = useSidebar();
 
   // Get current user
   const currentUser = authService.getCurrentUser();

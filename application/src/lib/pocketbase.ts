@@ -51,7 +51,6 @@ if (typeof window !== 'undefined') {
       localStorage.removeItem('pocketbase_auth');
     }
   }
-
   // Subscribe to authStore changes to persist authentication
   pb.authStore.onChange(() => {
     if (pb.authStore.isValid) {

@@ -5,13 +5,15 @@ import { authService } from '@/services/authService';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/use-toast';
-import { Eye, EyeOff, Mail, LogIn, Settings } from "lucide-react";
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Eye, EyeOff, Mail, LogIn, Settings, AlertCircle } from "lucide-react";
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useTheme } from '@/contexts/ThemeContext';
 import { API_ENDPOINTS, getCurrentEndpoint, setApiEndpoint } from '@/lib/pocketbase';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
+import { ForgotPasswordDialog } from '@/components/auth/ForgotPasswordDialog';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -19,6 +21,8 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [currentEndpoint, setCurrentEndpoint] = useState(getCurrentEndpoint());
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
+  const [loginError, setLoginError] = useState('');
   const navigate = useNavigate();
   const { t } = useLanguage();
   const { theme } = useTheme();
@@ -42,6 +46,7 @@ const Login = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    setLoginError(''); // Clear previous errors
 
     try {
       await authService.login({ email, password });
@@ -52,11 +57,31 @@ const Login = () => {
       navigate('/dashboard');
     } catch (error) {
       console.error("Login error details:", error);
+      
+      // Set specific error message based on the error
+      if (error instanceof Error) {
+        if (error.message.includes('Failed to authenticate') || 
+            error.message.includes('Authentication failed') ||
+            error.message.includes('Invalid credentials') ||
+            error.message.includes('invalid email or password')) {
+          setLoginError(t("invalidCredentials"));
+        } else {
+          setLoginError(error.message);
+        }
+      } else {
+        setLoginError(`${t("authenticationFailed")}. Server: ${currentEndpoint}`);
+      }
+      
       toast({
         variant: "destructive",
         title: t("loginFailed"),
         description: error instanceof Error 
-          ? error.message 
+          ? (error.message.includes('Failed to authenticate') || 
+             error.message.includes('Authentication failed') ||
+             error.message.includes('Invalid credentials') ||
+             error.message.includes('invalid email or password')) 
+            ? t("invalidCredentials")
+            : error.message
           : `${t("authenticationFailed")}. Server: ${currentEndpoint}`,
       });
     } finally {
@@ -115,8 +140,8 @@ const Login = () => {
           <div className="mb-4">
             <img 
               src="/checkcle_logo.svg" 
-              alt="Checkcle Logo" 
-              className="mx-auto h-20 w-auto"
+              alt="CheckCle Logo" 
+              className="mx-auto h-16 w-auto"
             />
           </div>
           
@@ -127,6 +152,14 @@ const Login = () => {
         {/* Removed Google Sign in button section */}
 
         <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
+          {/* Error Alert */}
+          {loginError && (
+            <Alert variant="destructive" className="mb-4">
+              <AlertCircle className="h-4 w-4" />
+              <AlertDescription>{loginError}</AlertDescription>
+            </Alert>
+          )}
+
           <div className="space-y-1 sm:space-y-2">
             <label className="text-xs sm:text-sm font-medium text-foreground" htmlFor="email">{t("email")}</label>
             <div className="relative">
@@ -138,7 +171,10 @@ const Login = () => {
                 placeholder="your.email@provider.com"
                 type="email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  setLoginError(''); // Clear error when user starts typing
+                }}
                 required
                 className="pl-10 text-sm sm:text-base h-9 sm:h-10"
               />
@@ -148,7 +184,13 @@ const Login = () => {
           <div className="space-y-1 sm:space-y-2">
             <div className="flex items-center justify-between">
               <label className="text-xs sm:text-sm font-medium text-foreground" htmlFor="password">{t("password")}</label>
-              <a href="#" className="text-xs sm:text-sm text-emerald-500 hover:text-emerald-400">{t("forgot")}</a>
+              <button 
+                type="button"
+                onClick={() => setShowForgotPassword(true)}
+                className="text-xs sm:text-sm text-emerald-500 hover:text-emerald-400"
+              >
+                {t("forgot")}
+              </button>
             </div>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -162,7 +204,10 @@ const Login = () => {
                 placeholder="••••••••••••"
                 type={showPassword ? 'text' : 'password'}
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                  setLoginError(''); // Clear error when user starts typing
+                }}
                 required
                 className="pl-10 text-sm sm:text-base h-9 sm:h-10"
               />
@@ -195,6 +240,11 @@ const Login = () => {
           </p>
         </form>
       </div>
+
+      <ForgotPasswordDialog 
+        open={showForgotPassword} 
+        onOpenChange={setShowForgotPassword} 
+      />
     </div>
   );
 };

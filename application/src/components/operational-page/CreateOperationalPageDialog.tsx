@@ -180,8 +180,6 @@ export const CreateOperationalPageDialog = () => {
                         <SelectItem value="default">Default</SelectItem>
                         <SelectItem value="dark">Dark</SelectItem>
                         <SelectItem value="light">Light</SelectItem>
-                        <SelectItem value="blue">Blue</SelectItem>
-                        <SelectItem value="green">Green</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />

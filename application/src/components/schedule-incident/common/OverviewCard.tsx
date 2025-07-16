@@ -18,6 +18,7 @@ interface OverviewCardProps {
   valueClassName?: string;
   isLoading?: boolean;
   color?: string;
+  gradient?: string;
 }
 
 export const OverviewCard = ({
@@ -30,11 +31,15 @@ export const OverviewCard = ({
   valueClassName,
   isLoading = false,
   color = "blue",
+  gradient,
 }: OverviewCardProps) => {
   const { theme } = useTheme();
   
   // Map color prop to gradient colors
   const getGradientBackground = () => {
+    if (gradient) {
+      return gradient;
+    }
     const colors = {
       blue: theme === 'dark'
         ? "linear-gradient(135deg, rgba(25, 118, 210, 0.8) 0%, rgba(66, 165, 245, 0.6) 100%)"

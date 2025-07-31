@@ -13,6 +13,7 @@ import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { alertConfigService } from "@/services/alertConfigService";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface NotificationChannelListProps {
   channels: AlertConfiguration[];
@@ -25,6 +26,7 @@ export const NotificationChannelList = ({
   onEdit,
   onDelete
 }: NotificationChannelListProps) => {
+  const { language } = useLanguage();
   const toggleEnabled = async (config: AlertConfiguration) => {
     if (!config.id) return;
     
@@ -43,6 +45,7 @@ export const NotificationChannelList = ({
       case "slack": return "Slack";
       case "signal": return "Signal";
       case "email": return "Email";
+      case "wecom": return language === "zh-CN" ? "企业微信" : "Wecom";
       default: return type;
     }
   };

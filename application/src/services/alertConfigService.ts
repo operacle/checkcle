@@ -7,7 +7,7 @@ export interface AlertConfiguration {
   collectionId?: string;
   collectionName?: string;
   service_id: string;
-  notification_type: "telegram" | "discord" | "signal" | "slack" | "email";
+  notification_type: "telegram" | "discord" | "signal" | "slack" | "email" | "wecom";
   telegram_chat_id?: string;
   discord_webhook_url?: string;
   signal_number?: string;
@@ -15,6 +15,7 @@ export interface AlertConfiguration {
   bot_token?: string;
   template_id?: string;
   slack_webhook_url?: string;
+  wecom_webhook_url?: string;
   enabled: boolean;
   created?: string;
   updated?: string;

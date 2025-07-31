@@ -1,5 +1,5 @@
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { 
   Dialog, 
   DialogContent, 
@@ -24,7 +24,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Switch } from "@/components/ui/switch";
-import { Loader2 } from "lucide-react";
+import { Loader2, MessageSquare } from "lucide-react";
+import TestWecomDialog from "./TestWecomDialog";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface NotificationChannelDialogProps {
   open: boolean;
@@ -34,7 +36,7 @@ interface NotificationChannelDialogProps {
 
 const baseSchema = z.object({
   notify_name: z.string().min(1, "Name is required"),
-  notification_type: z.enum(["telegram", "discord", "slack", "signal", "email"]),
+  notification_type: z.enum(["telegram", "discord", "slack", "signal", "email", "wecom"]),
   enabled: z.boolean().default(true),
   service_id: z.string().default("global"), // Assuming global for now, could be linked to specific services
   template_id: z.string().optional(),
@@ -66,12 +68,18 @@ const emailSchema = baseSchema.extend({
   // Email specific fields could be added here
 });
 
+const wecomSchema = baseSchema.extend({
+  notification_type: z.literal("wecom"),
+  wecom_webhook_url: z.string().url("Must be a valid URL"),
+});
+
 const formSchema = z.discriminatedUnion("notification_type", [
   telegramSchema,
   discordSchema,
   slackSchema,
   signalSchema,
-  emailSchema
+  emailSchema,
+  wecomSchema
 ]);
 
 type FormValues = z.infer<typeof formSchema>;
@@ -96,6 +104,8 @@ export const NotificationChannelDialog = ({
   const { watch, reset } = form;
   const notificationType = watch("notification_type");
   const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const [showTestWecomDialog, setShowTestWecomDialog] = useState(false);
+  const { language } = useLanguage();
   
   useEffect(() => {
     if (editingConfig) {
@@ -224,6 +234,14 @@ export const NotificationChannelDialog = ({
                           Email
                         </FormLabel>
                       </FormItem>
+                      <FormItem className="flex items-center space-x-3 space-y-0">
+                        <FormControl>
+                          <RadioGroupItem value="wecom" />
+                        </FormControl>
+                        <FormLabel className="font-normal">
+                          {language === "zh-CN" ? "企业微信" : "Wecom"}
+                        </FormLabel>
+                      </FormItem>
                     </RadioGroup>
                   </FormControl>
                   <FormMessage />
@@ -311,6 +329,38 @@ export const NotificationChannelDialog = ({
               />
             )}
             
+            {notificationType === "wecom" && (
+              <>
+                <FormField
+                  control={form.control}
+                  name="wecom_webhook_url"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Webhook URL</FormLabel>
+                      <FormControl>
+                        <Input placeholder={language === "zh-CN" ? "企业微信机器人Webhook URL" : "Wecom Bot Webhook URL"} {...field} />
+                      </FormControl>
+                      <FormDescription>
+                        {language === "zh-CN" ? "在企业微信群聊中添加机器人，获取Webhook URL" : "Add a bot in Wecom group chat to get the Webhook URL"}
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                {isEditing && editingConfig && editingConfig.wecom_webhook_url && (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="flex items-center gap-2 mt-2"
+                    onClick={() => setShowTestWecomDialog(true)}
+                  >
+                    <MessageSquare className="h-4 w-4" />
+                    {language === "zh-CN" ? "发送测试消息" : "Send Test Message"}
+                  </Button>
+                )}
+              </>
+            )}
+            
             <FormField
               control={form.control}
               name="enabled"
@@ -344,6 +394,13 @@ export const NotificationChannelDialog = ({
           </form>
         </Form>
       </DialogContent>
+      
+      {/* 测试企业微信通知对话框 */}
+      <TestWecomDialog
+        open={showTestWecomDialog}
+        onOpenChange={setShowTestWecomDialog}
+        config={editingConfig}
+      />
     </Dialog>
   );
 };

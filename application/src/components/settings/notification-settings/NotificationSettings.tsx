@@ -7,6 +7,7 @@ import { Plus, Loader2 } from "lucide-react";
 import { AlertConfiguration, alertConfigService } from "@/services/alertConfigService";
 import { NotificationChannelDialog } from "./NotificationChannelDialog";
 import { NotificationChannelList } from "./NotificationChannelList";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const NotificationSettings = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -14,6 +15,7 @@ const NotificationSettings = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [currentTab, setCurrentTab] = useState<string>("all");
   const [editingConfig, setEditingConfig] = useState<AlertConfiguration | null>(null);
+  const { language } = useLanguage();
 
   const fetchAlertConfigurations = async () => {
     setIsLoading(true);
@@ -87,6 +89,7 @@ const NotificationSettings = () => {
             <TabsTrigger value="slack">Slack</TabsTrigger>
             <TabsTrigger value="signal">Signal</TabsTrigger>
             <TabsTrigger value="email">Email</TabsTrigger>
+            <TabsTrigger value="wecom">{language === "zh-CN" ? "企业微信" : "Wecom"}</TabsTrigger>
           </TabsList>
           
           <TabsContent value={currentTab} className="mt-0">

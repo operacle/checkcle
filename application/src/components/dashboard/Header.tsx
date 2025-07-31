@@ -132,6 +132,9 @@ export const Header = ({
             <DropdownMenuItem onClick={() => setLanguage("ja")} className={language === "ja" ? "bg-accent" : ""}>
               {t("japanese")}
             </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setLanguage("zh-CN")} className={language === "zh-CN" ? "bg-accent" : ""}>
+              {t("simplifiedChinese")}
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
         

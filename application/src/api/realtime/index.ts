@@ -169,6 +169,117 @@ export default async function handler(req) {
           description: "Signal message sent successfully (simulated)"
         }
       };
+    } 
+    // Handle WeChat Work (WeCom) notifications
+    else if (type === "wecom") {
+      const { webhookUrl, message } = body;
+      
+      if (!webhookUrl || !message) {
+        console.error("Missing required parameters for WeChat Work notification", { 
+          hasWebhookUrl: !!webhookUrl, 
+          hasMessage: !!message 
+        });
+        
+        return {
+          status: 400,
+          json: {
+            ok: false,
+            error_code: 400,
+            description: "Missing required WeChat Work parameters"
+          }
+        };
+      }
+      
+      try {
+        console.log("Attempting to call WeChat Work webhook API");
+        console.log("Calling WeChat Work webhook URL: [REDACTED]");
+        
+        // Parse the message to get the JSON payload
+        let messagePayload;
+        try {
+          messagePayload = JSON.parse(message);
+        } catch (e) {
+          console.error("Error parsing WeChat Work message payload:", e);
+          return {
+            status: 400,
+            json: {
+              ok: false,
+              error_code: 400,
+              description: "Invalid WeChat Work message format"
+            }
+          };
+        }
+        
+        const response = await fetch(webhookUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(messagePayload),
+        });
+        
+        if (!response.ok) {
+          const errorText = await response.text();
+          console.error(`WeChat Work API error (${response.status}):`, errorText);
+          
+          try {
+            // Try to parse error as JSON if possible
+            const errorJson = JSON.parse(errorText);
+            return {
+              status: response.status,
+              json: errorJson
+            };
+          } catch (e) {
+            // If parsing fails, return the raw error
+            return {
+              status: response.status,
+              json: {
+                ok: false,
+                error_code: response.status,
+                description: `WeChat Work API error: ${errorText}`
+              }
+            };
+          }
+        }
+        
+        const result = await response.json();
+        console.log("WeChat Work API response:", JSON.stringify(result, null, 2));
+        
+        // WeChat Work API returns errcode: 0 for success
+        if (result.errcode !== 0) {
+          console.error("WeChat Work API error:", result);
+          return {
+            status: 400,
+            json: {
+              ok: false,
+              error_code: result.errcode,
+              description: result.errmsg || "Unknown WeChat Work API error"
+            }
+          };
+        }
+        
+        console.log("Successfully sent message to WeChat Work!");
+        return {
+          status: 200,
+          json: {
+            ok: true,
+            result: result,
+            description: "Message sent successfully to WeChat Work"
+          }
+        };
+      } catch (error) {
+        console.error("Error calling WeChat Work API:", error);
+        
+        // Return detailed error information
+        return {
+          status: 500,
+          json: {
+            ok: false,
+            error_code: 500,
+            description: `Error sending WeChat Work message: ${error instanceof Error ? error.message : "Unknown error"}`
+          }
+        };
+      }
     } else {
       // Return error for unsupported notification type
       console.error("Unsupported notification type:", type);

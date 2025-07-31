@@ -1,7 +1,8 @@
 
 import { Service } from "@/types/service.types";
 import { processTemplate, generateDefaultMessage } from "./notification/templateProcessor";
-import { sendTelegramNotification, testSendTelegramMessage } from "./notification/telegramService";
+import { sendTelegramNotification } from "./notification/telegramService";
+import { sendWecomNotification, testSendWecomMessage } from "./notification/wecomService";
 import { pb } from "@/lib/pocketbase";
 import { templateService } from "./templateService";
 import { AlertConfiguration } from "./alertConfigService";
@@ -116,6 +117,7 @@ export const notificationService = {
         bot_token: alertConfigRecord.bot_token,
         template_id: alertConfigRecord.template_id,
         slack_webhook_url: alertConfigRecord.slack_webhook_url,
+        wecom_webhook_url: alertConfigRecord.wecom_webhook_url,
         enabled: alertConfigRecord.enabled,
         created: alertConfigRecord.created,
         updated: alertConfigRecord.updated
@@ -153,6 +155,8 @@ export const notificationService = {
       
       if (notificationType === 'telegram') {
         return await sendTelegramNotification(alertConfig, message);
+      } else if (notificationType === 'wecom') {
+        return await sendWecomNotification(alertConfig, message, status);
       }
       
       // For other types like discord, slack, etc. (not implemented yet)

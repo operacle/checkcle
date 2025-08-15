@@ -1,3 +1,4 @@
+
 package notification
 
 import "time"
@@ -60,9 +61,9 @@ type AlertConfiguration struct {
 	SMTPPort              string `json:"smtp_port"`
 	WebhookID             string `json:"webhook_id"`
 	ChannelID             string `json:"channel_id"`
-	// New webhook fields
 	WebhookURL            string `json:"webhook_url"`
 	WebhookPayloadTemplate string `json:"webhook_payload_template"`
+	NtfyEndpoint          string `json:"ntfy_endpoint"`
 }
 
 // ServerNotificationTemplate represents a server notification template

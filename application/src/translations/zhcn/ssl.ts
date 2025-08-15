@@ -112,5 +112,6 @@ export const sslTranslations: SSLTranslations = {
   created: "创建时间",
   lastUpdated: "最后更新时间",
   lastNotification: "最后通知时间",
-  collectionId: "集合 ID"
+  collectionId: "集合 ID",
+  noCertificatesFound: "未找到证书",
 };

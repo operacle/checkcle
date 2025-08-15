@@ -7,6 +7,7 @@ import { StatusCards } from "./StatusCards";
 import { ServiceFilters } from "./ServiceFilters";
 import { ServicesTable } from "./ServicesTable";
 import { AddServiceDialog } from "@/components/services/AddServiceDialog";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface DashboardContentProps {
   services: Service[];
@@ -15,6 +16,7 @@ interface DashboardContentProps {
 }
 
 export const DashboardContent = ({ services, isLoading, error }: DashboardContentProps) => {
+  const { t } = useLanguage();
   const [filter, setFilter] = useState<string>("all");
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [isAddDialogOpen, setIsAddDialogOpen] = useState<boolean>(false);
@@ -31,7 +33,7 @@ export const DashboardContent = ({ services, isLoading, error }: DashboardConten
     return (
       <div className="flex flex-col items-center justify-center h-full gap-4 text-foreground">
         <p>Error loading service data.</p>
-        <Button onClick={() => window.location.reload()}>Retry</Button>
+        <Button onClick={() => window.location.reload()}>{t('retry')}</Button>
       </div>
     );
   }
@@ -40,12 +42,12 @@ export const DashboardContent = ({ services, isLoading, error }: DashboardConten
     <main className="flex-1 flex flex-col overflow-auto bg-background p-6 pb-0">
       <div className="flex flex-col flex-1">
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold text-foreground">Overview</h2>
+          <h2 className="text-2xl font-bold text-foreground">{t('overview')}</h2>
           <Button 
             className="text-primary-foreground"
             onClick={() => setIsAddDialogOpen(true)}
           >
-            <Plus className="w-4 h-4 mr-2" /> New Service
+            <Plus className="w-4 h-4 mr-2" /> {t('newService')}
           </Button>
         </div>
         

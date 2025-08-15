@@ -2,7 +2,7 @@
 import { MenuTranslations } from '../types/menu';
 
 export const menuTranslations: MenuTranslations = {
-  uptimeMonitoring: "Uptime 监控",
+  uptimeMonitoring: "在线监控",
   instanceMonitoring: "实例监控",
   sslDomain: "SSL & 域名",
   scheduleIncident: "计划与事件",

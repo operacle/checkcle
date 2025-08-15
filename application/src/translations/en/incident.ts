@@ -52,4 +52,5 @@ export const incidentTranslations: IncidentTranslations = {
   configuration: 'Configuration',
   failedToUpdateStatus: 'Failed to update status',
   inProgress: 'In Progress',
+  enterRootCause: 'Enter Root Cause',
 };

@@ -52,4 +52,5 @@ export const incidentTranslations: IncidentTranslations = {
   configuration: "ការកំណត់រចនាសម្ព័ន្ធ",
   failedToUpdateStatus: "បរាជ័យក្នុងការធ្វើបច្ចុប្បន្នភាពស្ថានភាព",
   inProgress: "កំពុងដំណើរការ",
+  enterRootCause: 'បញ្ចូលហេតុផលដើម',
 };

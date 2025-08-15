@@ -112,5 +112,6 @@ export const sslTranslations: SSLTranslations = {
   created: "Created",
   lastUpdated: "Last Updated",
   lastNotification: "Last Notification",
-  collectionId: "Collection ID"
+  collectionId: "Collection ID",
+  noCertificatesFound: "No Certificates Found",
 };

@@ -111,4 +111,5 @@ export interface SSLTranslations {
   lastUpdated: string;
   lastNotification: string;
   collectionId: string;
+  noCertificatesFound: string;
 }

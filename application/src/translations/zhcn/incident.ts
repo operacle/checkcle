@@ -52,4 +52,5 @@ export const incidentTranslations: IncidentTranslations = {
   configuration: '配置',
   failedToUpdateStatus: '更新状态失败',
   inProgress: '进行中',
+  enterRootCause: '输入故障根源',
 };

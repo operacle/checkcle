@@ -51,4 +51,5 @@ export const incidentTranslations: IncidentTranslations = {
   configuration: 'Konfiguration',
   failedToUpdateStatus: 'Fehler beim Aktualisieren des Status',
   inProgress: 'In Bearbeitung',
+  enterRootCause: 'Grundursache eingeben',
 };

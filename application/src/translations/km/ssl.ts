@@ -112,5 +112,6 @@ export const sslTranslations: SSLTranslations = {
   created: "បានបង្កើត",
   lastUpdated: "បានធ្វើបច្ចុប្បន្នភាពចុងក្រោយ",
   lastNotification: "ការជូនដំណឹងចុងក្រោយ",
-  collectionId: "លេខសម្គាល់ប្រមូលផ្តុំ"
+  collectionId: "លេខសម្គាល់ប្រមូលផ្តុំ",
+  noCertificatesFound: "រកមិនឃើញវិញ្ញាបនប័ត្រ",
 };

@@ -51,4 +51,5 @@ export const incidentTranslations: IncidentTranslations = {
   configuration: '設定',
   failedToUpdateStatus: 'ステータスの更新に失敗しました',
   inProgress: '進行中',
+  enterRootCause: '原因を入力してください',
 };

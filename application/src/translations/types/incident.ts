@@ -50,4 +50,5 @@ export interface IncidentTranslations {
   configuration: string;
   failedToUpdateStatus: string;
   inProgress: string;
+  enterRootCause: string;
 }

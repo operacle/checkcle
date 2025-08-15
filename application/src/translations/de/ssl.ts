@@ -112,6 +112,7 @@ export const sslTranslations: SSLTranslations = {
   created: "Erstellt",
   lastUpdated: "Zuletzt aktualisiert",
   lastNotification: "Letzte Benachrichtigung",
-  collectionId: "Sammlungs-ID"
+  collectionId: "Sammlungs-ID",
+  noCertificatesFound: "Keine Zertifikate gefunden",
 }
 

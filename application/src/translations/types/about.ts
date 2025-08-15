@@ -13,4 +13,5 @@ export interface AboutTranslations {
   quickActions: string;
   quickActionsDescription: string;
   quickTips: string;
+  releasedOn: string;
 }

@@ -2,7 +2,7 @@
 import { AboutTranslations } from '../types/about';
 
 export const aboutTranslations: AboutTranslations = {
-  aboutCheckcle: "Über Checkcle",
+  aboutCheckCle: "Über Checkcle",
   systemDescription: "Checkcle ist ein Open-Source-Überwachungs-Stack, der Echtzeit-Einblicke in Server- und Dienstzustände, Vorfallmanagement und operative Transparenz bietet. Veröffentlicht unter der MIT-Lizenz.",
   systemVersion: "Systemversion",
   license: "Lizenz",
@@ -15,6 +15,7 @@ export const aboutTranslations: AboutTranslations = {
   quickActions: "Schnelle Aktionen",
   quickActionsDescription: "Greifen Sie schnell auf gängige Überwachungsvorgänge und -funktionen zu. Wählen Sie unten eine Aktion aus, um loszulegen.",
   quickTips: "Schnelle Tipps",
+  releasedOn: "Veröffentlicht",
 };
 
 

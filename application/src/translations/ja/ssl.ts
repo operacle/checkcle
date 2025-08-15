@@ -111,5 +111,6 @@ export const sslTranslations: SSLTranslations = {
   created: "作成日",
   lastUpdated: "最終更新",
   lastNotification: "最終通知",
-  collectionId: "コレクションID"
+  collectionId: "コレクションID",
+  noCertificatesFound: "証明書が見つかりません",
 };

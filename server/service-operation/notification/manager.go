@@ -1,4 +1,3 @@
-
 package notification
 
 import (
@@ -20,7 +19,7 @@ type NotificationManager struct {
 func NewNotificationManager(pbClient *pocketbase.PocketBaseClient) *NotificationManager {
 	// Initialize notification services
 	services := make(map[string]NotificationService)
-	
+
 	// log.Printf("🔧 Initializing notification services...")
 	services["telegram"] = NewTelegramService()
 	services["signal"] = NewSignalService()
@@ -31,6 +30,7 @@ func NewNotificationManager(pbClient *pocketbase.PocketBaseClient) *Notification
 	services["webhook"] = NewWebhookService()
 	services["ntfy"] = NewNtfyService()
 	services["pushover"] = NewPushoverService()
+	services["feishu"] = NewFeishuService()
 
 	// log.Printf("✅ Notification services initialized: %v", getKeys(services))
 

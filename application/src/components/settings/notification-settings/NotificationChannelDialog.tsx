@@ -36,7 +36,7 @@ interface NotificationChannelDialogProps {
 
 const baseSchema = z.object({
   notify_name: z.string().min(1, "Name is required"),
-  notification_type: z.enum(["telegram", "discord", "slack", "signal", "google_chat", "email", "ntfy", "pushover", "notifiarr", "webhook"]),
+  notification_type: z.enum(["telegram", "discord", "slack", "signal", "google_chat", "email", "ntfy", "pushover", "notifiarr", "gotify", "webhook"]),
   enabled: z.boolean().default(true),
   service_id: z.string().default("global"),
   template_id: z.string().optional(),
@@ -101,6 +101,12 @@ const webhookSchema = baseSchema.extend({
   webhook_payload_template: z.string().optional(),
 });
 
+const gotifySchema = baseSchema.extend({
+  notification_type: z.literal("gotify"),
+  api_token: z.string().min(1, "API token is required"),
+  server_url: z.string().url("Must be a valid server URL"),
+});
+
 const formSchema = z.discriminatedUnion("notification_type", [
   telegramSchema,
   discordSchema,
@@ -111,6 +117,7 @@ const formSchema = z.discriminatedUnion("notification_type", [
   ntfySchema,
   pushoverSchema,
   notifiarrSchema,
+  gotifySchema,
   webhookSchema,
 ]);
 
@@ -171,6 +178,12 @@ const notificationTypeOptions = [
     label: "Notifiarr", 
     description: "Send notifications via Notifiarr",
     icon: "/upload/notification/notifiarr.png" 
+  },
+  { 
+    value: "gotify", 
+    label: "Gotify", 
+    description: "Send push notifications via Gotify",
+    icon: "/upload/notification/gotify.png" 
   },
   { 
     value: "webhook", 
@@ -664,6 +677,43 @@ export const NotificationChannelDialog = ({
                       </FormControl>
                       <FormDescription>
                         The Discord channel ID where notifications will be sent
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </>
+            )}
+
+            {notificationType === "gotify" && (
+              <>
+                <FormField
+                  control={form.control}
+                  name="api_token"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>API Token</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Your Gotify API token" {...field} type="password" />
+                      </FormControl>
+                      <FormDescription>
+                        Your Gotify application API token
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="server_url"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Server URL</FormLabel>
+                      <FormControl>
+                        <Input placeholder="https://your-gotify-server.com" {...field} />
+                      </FormControl>
+                      <FormDescription>
+                        The URL of your Gotify server
                       </FormDescription>
                       <FormMessage />
                     </FormItem>

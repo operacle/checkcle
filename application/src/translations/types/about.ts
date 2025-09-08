@@ -14,4 +14,16 @@ export interface AboutTranslations {
   quickActionsDescription: string;
   quickTips: string;
   releasedOn: string;
+	updateSchema: string;
+	updateSchemaDesc: string;
+	mergeFieldsLabel: string;
+	importing: string;
+	clickToUpdateSchema: string;
+	importSuccessful: string;
+	importFailed: string;
+	instructions: string;
+	mergeFields: string;
+	instructionsMergeFields: string;
+	instructionsCollections: string;
+	instructionsImportAuth: string;
 }

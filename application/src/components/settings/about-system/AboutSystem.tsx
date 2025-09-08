@@ -355,9 +355,9 @@ export const AboutSystem: React.FC = () => {
         <CardHeader className="bg-muted/50 pb-4">
           <CardTitle className="flex items-center gap-2">
             <Database className={`h-5 w-5 ${theme === 'dark' ? 'text-blue-400' : 'text-blue-600'}`} />
-            <span>Update Schema</span>
+            <span>{t('updateSchema')}</span>
           </CardTitle>
-          <CardDescription className="font-medium text-base">Automatic import collections schema</CardDescription>
+          <CardDescription className="font-medium text-base">{t('updateSchemaDesc')}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4 pt-6">
           <div className="space-y-3">
@@ -368,7 +368,7 @@ export const AboutSystem: React.FC = () => {
                 onCheckedChange={(checked) => setMergeFields(checked === true)}
               />
               <Label htmlFor="merge-fields" className="text-sm font-medium">
-                Merge fields with existing collections (safe - preserves data)
+	              {t('mergeFieldsLabel')}
               </Label>
             </div>
           </div>
@@ -382,7 +382,7 @@ export const AboutSystem: React.FC = () => {
               }`}
             >
               <Database className={`h-4 w-4 ${isImporting ? 'animate-spin' : ''}`} />
-              {isImporting ? 'Importing...' : 'Click to update Schema'}
+              {isImporting ? t('importing') : t('clickToUpdateSchema')}
             </Button>
           </div>
 
@@ -403,7 +403,7 @@ export const AboutSystem: React.FC = () => {
                     ? 'text-green-800 dark:text-green-200' 
                     : 'text-red-800 dark:text-red-200'
                 }`}>
-                  {importResult.success ? 'Import Successful' : 'Import Failed'}
+                  {importResult.success ? t('importSuccessful') : t('importFailed')}
                 </span>
               </div>
               <div className={`mt-2 text-sm ${
@@ -420,12 +420,12 @@ export const AboutSystem: React.FC = () => {
 
           <div className="text-sm text-muted-foreground">
             <p className="mb-2">
-              <strong>Instructions:</strong>
+              <strong>{t('instructions')}:</strong>
             </p>
             <ul className="list-disc list-inside space-y-1 ml-2">
-              <li><strong>Merge fields:</strong> Safely add new fields to existing collections, preserves all data</li>
-              <li>System collections (starting with _) and users collection will be skipped automatically</li>
-              <li>Only authenticated admins can perform schema imports</li>
+              <li><strong>{t('mergeFields')}:</strong> {t('instructionsMergeFields')}</li>
+              <li>{t('instructionsCollections')}</li>
+              <li>{t('instructionsImportAuth')}</li>
             </ul>
           </div>
         </CardContent>

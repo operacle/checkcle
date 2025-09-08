@@ -126,15 +126,6 @@ const TestEmailDialog: React.FC<TestEmailDialogProps> = ({
             <Mail className="h-5 w-5" />
             {t("sendTestEmail", "settings")}
           </DialogTitle>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="absolute right-4 top-4"
-            onClick={handleClose}
-            disabled={isLoading}
-          >
-            <X className="h-4 w-4" />
-          </Button>
         </DialogHeader>
         
         <div className="space-y-4 py-4">

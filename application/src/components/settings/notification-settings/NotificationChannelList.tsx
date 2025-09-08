@@ -67,6 +67,8 @@ export const NotificationChannelList = ({
       case "signal": return "Signal";
       case "google_chat": return "Google Chat";
       case "email": return "Email";
+      case "pushover": return "Pushover";
+      case "notifiarr": return "Notifiarr";
       case "webhook": return "Webhook";
       default: return type || "Unknown";
     }

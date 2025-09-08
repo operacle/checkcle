@@ -15,6 +15,7 @@ import {
   SelectValue 
 } from "@/components/ui/select";
 import { PageSize } from "./types";
+import {useLanguage} from "@/contexts/LanguageContext.tsx";
 
 interface TablePaginationProps {
   currentPage: number;
@@ -35,6 +36,7 @@ export function TablePagination({
   onPageChange,
   onPageSizeChange,
 }: TablePaginationProps) {
+	const {t} = useLanguage()
   // Generate page numbers
   const getPageNumbers = () => {
     const pages = [];
@@ -58,7 +60,7 @@ export function TablePagination({
   return (
     <div className="mt-4 flex items-center justify-between">
       <div className="flex items-center space-x-2">
-        <span className="text-sm text-muted-foreground">Rows per page:</span>
+        <span className="text-sm text-muted-foreground">{t("rowsPerPage")}:</span>
         <Select
           value={pageSize}
           onValueChange={(value) => onPageSizeChange(value as PageSize)}

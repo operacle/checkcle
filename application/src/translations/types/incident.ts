@@ -59,4 +59,5 @@ export interface IncidentTranslations {
   affectedSystems: string;
   enterAffectedSystems: string;
   separateSystemsWithComma: string;
+
 }

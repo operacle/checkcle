@@ -25,8 +25,8 @@ export function IncidentTable({ incidents }: IncidentTableProps) {
           <TableHead className={theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}>{t("time")}</TableHead>
           <TableHead className={theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}>{t("status")}</TableHead>
           <TableHead className={theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}>{t("responseTime")}</TableHead>
-          <TableHead className={theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}>Error Message</TableHead>
-          <TableHead className={theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}>Details</TableHead>
+          <TableHead className={theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}>{t("errorMessage")}</TableHead>
+          <TableHead className={theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}>{t("details")}</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>

@@ -3,7 +3,6 @@ import { ServicesTranslations } from '../types/services';
 
 export const servicesTranslations: ServicesTranslations = {
   serviceStatus: "Service Status",
-  responseTime: "Response Time",
   uptime: "Uptime",
   lastChecked: "Last Checked",
   noServices: "No services match your filter criteria.",
@@ -95,4 +94,46 @@ export const servicesTranslations: ServicesTranslations = {
 	downServices: "DOWN SERVICES",
 	pausedServices: "PAUSED SERVICES",
 	warningServices: "WARNING SERVICES",
+
+	// ServiceRowActions.tsx
+	viewDetail: "View Detail",
+	resumeMonitoring: "Resume Monitoring",
+	pauseMonitoring: "Pause Monitoring",
+
+
+	//IncidentTable.tsx
+	responseTime: "Response Time",
+	errorMessage: "Error Message",
+	details: "Details",
+	unmuteAlerts: "Unmute Alerts",
+	muteAlerts: "Mute Alerts",
+
+	//LastCheckedTime.tsx
+	pausedAt: "Paused at ",
+	lastCheckDetails: "Last Check Details",
+	checkedAt: "Checked at ",
+	monitoringPaused: "Monitoring Paused",
+	noAutomaticChecks: "No automatic checks",
+
+	//ServiveEditDialog.tsx
+	editService: "Edit Service",
+	editServiceDesc: "Update the details of your monitored service.",
+
+	//ServiceStatsCards.tsx
+	lastCheckedAt: "Last checked at {datetime}",
+	avg: "Avg",
+	lastUpChecksCount: "last {count} up checks",
+	basedOnlastChecksCount: "Based on last {count} checks",
+	totalUptime: "Total Uptime",
+	totalDowntime: "Total Downtime",
+	monitoringSettings: "Monitoring Settings",
+	monitoringSettingsInterval: "Checked every {interval} seconds",
+	monitoringSettingsType: "monitoring",
+	upStatusDuration: "Up for {duration}",
+	downStatusDuration: "Down for {duration}",
+
+	incidentHistory: "Incident History",
+	processing: "Processing",
+	back: "Back",
+	last20Checks: "Last 20 checks",
 };

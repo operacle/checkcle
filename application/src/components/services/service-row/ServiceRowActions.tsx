@@ -12,6 +12,7 @@ import {
 import { Service } from "@/types/service.types";
 import { serviceService } from "@/services/serviceService";
 import { useToast } from "@/hooks/use-toast";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface ServiceRowActionsProps {
   service: Service;
@@ -31,6 +32,7 @@ export const ServiceRowActions = ({
   onMuteAlerts
 }: ServiceRowActionsProps) => {
   const { toast } = useToast();
+	const { t } = useLanguage();
 
   // Handle pause/resume directly from dropdown
   const handlePauseResume = async (e: React.MouseEvent) => {
@@ -122,7 +124,7 @@ export const ServiceRowActions = ({
             }}
           >
             <Eye className="h-4 w-4" />
-            <span>View Detail</span>
+            <span>{t("viewDetail")}</span>
           </DropdownMenuItem>
           <DropdownMenuItem 
             className="flex items-center gap-2 cursor-pointer text-base py-2.5"
@@ -131,12 +133,12 @@ export const ServiceRowActions = ({
             {service.status === "paused" ? (
               <>
                 <Play className="h-4 w-4" />
-                <span>Resume Monitoring</span>
+                <span>{t("resumeMonitoring")}</span>
               </>
             ) : (
               <>
                 <Pause className="h-4 w-4" />
-                <span>Pause Monitoring</span>
+                <span>{t("pauseMonitoring")}</span>
               </>
             )}
           </DropdownMenuItem>
@@ -148,7 +150,7 @@ export const ServiceRowActions = ({
             }}
           >
             <Edit className="h-4 w-4" />
-            <span>Edit</span>
+            <span>{t("edit")}</span>
           </DropdownMenuItem>
           <DropdownMenuItem 
             className="flex items-center gap-2 cursor-pointer text-base py-2.5"
@@ -157,12 +159,12 @@ export const ServiceRowActions = ({
             {alertsMuted ? (
               <>
                 <Bell className="h-4 w-4" />
-                <span>Unmute Alerts</span>
+                <span>{t("unmuteAlerts")}</span>
               </>
             ) : (
               <>
                 <BellOff className="h-4 w-4" />
-                <span>Mute Alerts</span>
+                <span>{t("muteAlerts")}</span>
               </>
             )}
           </DropdownMenuItem>
@@ -175,7 +177,7 @@ export const ServiceRowActions = ({
             }}
           >
             <Trash2 className="h-4 w-4" />
-            <span>Delete</span>
+            <span>{t("delete")}</span>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

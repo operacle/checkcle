@@ -2,7 +2,6 @@
 export interface ServicesTranslations {
 
   serviceStatus: string;
-  responseTime: string;
   uptime: string;
   lastChecked: string;
   noServices: string;
@@ -93,5 +92,46 @@ export interface ServicesTranslations {
 	upServices: string;
 	downServices: string;
 	pausedServices: string;
-	warningServices: string;	
+	warningServices: string;
+
+	// ServiceRowActions.tsx
+	viewDetail: string;
+	resumeMonitoring: string;
+	pauseMonitoring: string;
+	unmuteAlerts: string;
+	muteAlerts: string;
+
+	//IncidentTable.tsx
+	responseTime: string;
+	errorMessage: string;
+	details: string;
+
+	//LastCheckedTime.tsx
+	pausedAt: string;
+	lastCheckDetails: string;
+	checkedAt: string;
+	monitoringPaused: string;
+	noAutomaticChecks: string;
+
+	//ServiveEditDialog.tsx
+	editService: string;
+	editServiceDesc: string;
+
+	//ServiceStatsCards.tsx
+	lastCheckedAt: string;
+	avg: string;
+	lastUpChecksCount: string;
+	basedOnlastChecksCount: string;
+	totalUptime: string;
+	totalDowntime: string;
+	monitoringSettings: string;
+	monitoringSettingsInterval: string;
+	monitoringSettingsType: string;
+	upStatusDuration: string;
+	downStatusDuration: string;
+
+	incidentHistory: string;
+	processing: string;
+	back: string;
+	last20Checks: string;
 }

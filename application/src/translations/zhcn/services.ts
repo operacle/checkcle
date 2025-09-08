@@ -118,7 +118,21 @@ export const servicesTranslations: ServicesTranslations = {
 	editService: "编辑服务",
 	editServiceDesc: "更新您所监控服务的详细信息。",
 
+	//ServiceStatsCards.tsx
+	lastCheckedAt: "最新检查时间 {datetime}",
+	avg: "平均",
+	lastUpChecksCount: "最近 {count} 次检查",
+	basedOnlastChecksCount: "基于最近的 {count} 次检查",
+	totalUptime: "总在线时间",
+	totalDowntime: "总宕机时间",
+	monitoringSettings: "监控设置",
+	monitoringSettingsInterval: "每 {interval} 秒检查一次",
+	monitoringSettingsType: "监控",
+	upStatusDuration: "已在线 {duration}",
+	downStatusDuration: "已宕机 {duration}",
+
 	incidentHistory: "事件历史",
 	processing: "处理中",
 	back: "返回",
+	last20Checks: "最近 20 次检查",
 };

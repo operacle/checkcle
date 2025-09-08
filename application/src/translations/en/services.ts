@@ -119,10 +119,21 @@ export const servicesTranslations: ServicesTranslations = {
 	editService: "Edit Service",
 	editServiceDesc: "Update the details of your monitored service.",
 
+	//ServiceStatsCards.tsx
+	lastCheckedAt: "Last checked at {datetime}",
+	avg: "Avg",
+	lastUpChecksCount: "last {count} up checks",
+	basedOnlastChecksCount: "Based on last {count} checks",
+	totalUptime: "Total Uptime",
+	totalDowntime: "Total Downtime",
+	monitoringSettings: "Monitoring Settings",
+	monitoringSettingsInterval: "Checked every {interval} seconds",
+	monitoringSettingsType: "monitoring",
+	upStatusDuration: "Up for {duration}",
+	downStatusDuration: "Down for {duration}",
 
 	incidentHistory: "Incident History",
 	processing: "Processing",
 	back: "Back",
-
-
+	last20Checks: "Last 20 checks",
 };

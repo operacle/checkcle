@@ -117,7 +117,21 @@ export interface ServicesTranslations {
 	editService: string;
 	editServiceDesc: string;
 
+	//ServiceStatsCards.tsx
+	lastCheckedAt: string;
+	avg: string;
+	lastUpChecksCount: string;
+	basedOnlastChecksCount: string;
+	totalUptime: string;
+	totalDowntime: string;
+	monitoringSettings: string;
+	monitoringSettingsInterval: string;
+	monitoringSettingsType: string;
+	upStatusDuration: string;
+	downStatusDuration: string;
+
 	incidentHistory: string;
 	processing: string;
 	back: string;
+	last20Checks: string;
 }

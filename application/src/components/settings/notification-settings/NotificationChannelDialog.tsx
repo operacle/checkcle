@@ -27,12 +27,14 @@ import { Switch } from "@/components/ui/switch";
 import { Loader2, Copy } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "@/hooks/use-toast";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface NotificationChannelDialogProps {
   open: boolean;
   onClose: (refreshList: boolean) => void;
   editingConfig: AlertConfiguration | null;
 }
+
 
 const baseSchema = z.object({
   notify_name: z.string().min(1, "Name is required"),

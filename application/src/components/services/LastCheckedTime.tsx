@@ -2,6 +2,7 @@
 import React from "react";
 import { Clock, TimerOff } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface LastCheckedTimeProps {
   lastCheckedTime: string;
@@ -10,6 +11,7 @@ interface LastCheckedTimeProps {
 }
 
 export const LastCheckedTime = ({ lastCheckedTime, status, interval }: LastCheckedTimeProps) => {
+	const { t } = useLanguage();
   // Format the time without seconds to display a static time
   const formatTimeWithoutSeconds = (timeString: string) => {
     try {
@@ -55,7 +57,7 @@ export const LastCheckedTime = ({ lastCheckedTime, status, interval }: LastCheck
               <Clock className="h-4 w-4" />
             )}
             <span>
-              {isPaused ? "Paused at " : ""}
+              {isPaused ? t("pausedAt") : ""}
               {formattedTime}
             </span>
           </div>
@@ -66,14 +68,14 @@ export const LastCheckedTime = ({ lastCheckedTime, status, interval }: LastCheck
         >
           <div className="flex flex-col gap-1 text-xs">
             <div className="font-medium">
-              {isPaused ? "Monitoring Paused" : "Last Check Details"}
+              {isPaused ? t("monitoringPaused") : t("lastCheckDetails")}
             </div>
             <div>
-              {isPaused ? "No automatic checks" : `Checked at ${formattedTime}`}
+              {isPaused ? t("noAutomaticChecks") : t("checkedAt") + `${formattedTime}`}
             </div>
             {interval && !isPaused && (
               <div>
-                Check interval: {formatInterval(interval)}
+	              {t("checkInterval")}: {formatInterval(interval)}
               </div>
             )}
             <div className="text-gray-400 text-[10px]">

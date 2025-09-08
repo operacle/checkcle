@@ -9,10 +9,12 @@ import { IncidentTable } from "./IncidentTable";
 import { StatusFilter, PageSize } from "./types";
 import { getStatusChangeEvents } from "./utils";
 import { useTheme } from "@/contexts/ThemeContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export function LatestChecksTable({ uptimeData }: { uptimeData: UptimeData[] }) {
   // Get current theme
   const { theme } = useTheme();
+	const { t } = useLanguage();
   
   // Filter state
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
@@ -65,7 +67,7 @@ export function LatestChecksTable({ uptimeData }: { uptimeData: UptimeData[] }) 
       <CardHeader>
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <CardTitle className="text-card-foreground">
-            <span>Incident History</span>
+            <span>{t("incidentHistory")}</span>
           </CardTitle>
           <StatusFilterTabs statusFilter={statusFilter} onStatusFilterChange={setStatusFilter} />
         </div>

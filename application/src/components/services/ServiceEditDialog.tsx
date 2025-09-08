@@ -11,6 +11,7 @@ import { Service } from "@/types/service.types";
 import { useQueryClient } from "@tanstack/react-query";
 import { useState, useEffect } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface ServiceEditDialogProps {
   open: boolean;
@@ -19,6 +20,7 @@ interface ServiceEditDialogProps {
 }
 
 export function ServiceEditDialog({ open, onOpenChange, service }: ServiceEditDialogProps) {
+	const { t } = useLanguage();
   const queryClient = useQueryClient();
   const [isSubmitting, setIsSubmitting] = useState(false);
   
@@ -53,9 +55,9 @@ export function ServiceEditDialog({ open, onOpenChange, service }: ServiceEditDi
     }}>
       <DialogContent className="sm:max-w-[700px] max-h-[90vh] flex flex-col">
         <DialogHeader>
-          <DialogTitle className="text-xl">Edit Service</DialogTitle>
+          <DialogTitle className="text-xl">{t("editService")}</DialogTitle>
           <DialogDescription>
-            Update the details of your monitored service.
+	          {t("editServiceDesc")}
           </DialogDescription>
         </DialogHeader>
         {open && service && (

@@ -3,7 +3,6 @@ import { ServicesTranslations } from '../types/services';
 
 export const servicesTranslations: ServicesTranslations = {
   serviceStatus: "服务状态",
-  responseTime: "响应时间",
   uptime: "在线时间",
   lastChecked: "最后检查时间",
   noServices: "没有符合您筛选条件的服务。",
@@ -95,4 +94,31 @@ export const servicesTranslations: ServicesTranslations = {
 	downServices: "下线服务",
 	pausedServices: "暂停服务",
 	warningServices: "告警服务",
+
+	// ServiceRowActions.tsx
+	viewDetail: "查看详情",
+	resumeMonitoring: "恢复监控",
+	pauseMonitoring: "暂停监控",
+	unmuteAlerts: "取消静音警报",
+	muteAlerts: "静音警报",
+
+	//IncidentTable.tsx
+	responseTime: "响应时间",
+	errorMessage: "错误信息",
+	details: "详情",
+
+	//LastCheckedTime.tsx
+	pausedAt: "暂停于 ",
+	lastCheckDetails: "最近检查详情",
+	checkedAt: "检查于 ",
+	monitoringPaused: "监控已暂停",
+	noAutomaticChecks: "无自动检查",
+
+	//ServiveEditDialog.tsx
+	editService: "编辑服务",
+	editServiceDesc: "更新您所监控服务的详细信息。",
+
+	incidentHistory: "事件历史",
+	processing: "处理中",
+	back: "返回",
 };

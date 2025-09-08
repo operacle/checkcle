@@ -23,8 +23,12 @@ export const aboutTranslations: AboutTranslations = {
 	clickToUpdateSchema: "Click to update Schema",
 	importSuccessful: "Import Successful",
 	importFailed: "Import Failed",
+	instructions: "Instructions",
 	mergeFields: "Merge fields",
 	instructionsMergeFields: "Safely add new fields to existing collections, preserves all data",
 	instructionsCollections: "System collections (starting with _) and users collection will be skipped automatically",
 	instructionsImportAuth: "Only authenticated admins can perform schema imports",
+	collectionsUpdatedCount: "{count} collections updated",
+	collectionsCreatedCount: "{count} collections created",
+	collectionsSkippedCount: "{count} collections created",
 };

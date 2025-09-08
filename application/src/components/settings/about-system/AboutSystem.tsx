@@ -411,9 +411,9 @@ export const AboutSystem: React.FC = () => {
                   ? 'text-green-700 dark:text-green-300' 
                   : 'text-red-700 dark:text-red-300'
               }`}>
-                {importResult.created > 0 && `${importResult.created} collections created`}
-                {importResult.updated > 0 && (importResult.created > 0 ? ', ' : '') + `${importResult.updated} collections updated`}
-                {importResult.skipped > 0 && ((importResult.created > 0 || importResult.updated > 0) ? ', ' : '') + `${importResult.skipped} collections skipped`}
+                {importResult.created > 0 && t('collectionsCreatedCount').replace('{count}', String(importResult.created))}
+                {importResult.updated > 0 && (importResult.created > 0 ? ', ' : '') + t('collectionsUpdatedCount').replace('{count}', String(importResult.updated))}
+                {importResult.skipped > 0 && ((importResult.created > 0 || importResult.updated > 0) ? ', ' : '') + t('collectionsSkippedCount').replace('{count}', String(importResult.skipped))}
               </div>
             </div>
           )}

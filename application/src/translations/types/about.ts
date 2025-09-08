@@ -26,4 +26,7 @@ export interface AboutTranslations {
 	instructionsMergeFields: string;
 	instructionsCollections: string;
 	instructionsImportAuth: string;
+	collectionsUpdatedCount: string;
+	collectionsCreatedCount: string;
+	collectionsSkippedCount: string;
 }

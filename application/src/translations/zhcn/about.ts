@@ -28,4 +28,7 @@ export const aboutTranslations: AboutTranslations = {
 	instructionsMergeFields: "安全地向现有集合添加新字段，保留所有数据",
 	instructionsCollections: "系统集合（以_开头的）和用户集合将被自动跳过",
 	instructionsImportAuth: "只有经过身份验证的管理员才能执行架构导入",
+	collectionsUpdatedCount: "已更新 {count} 个集合",
+	collectionsCreatedCount: "已创建 {count} 个集合",
+	collectionsSkippedCount: "已跳过 {count} 个集合",
 };

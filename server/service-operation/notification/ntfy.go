@@ -32,6 +32,11 @@ func (ns *NtfyService) SendNotification(config *AlertConfiguration, message stri
 	req.Header.Set("Title", "🔔 CheckCle Service Alert")
 	req.Header.Set("Tags", "monitoring")
 	req.Header.Set("Priority", "default")
+	
+	// Add API token authentication if provided
+	if config.APIToken != "" {
+		req.Header.Set("Authorization", "Bearer "+config.APIToken)
+	}
 
 	// Send the request
 	client := &http.Client{}
@@ -111,6 +116,11 @@ func (ns *NtfyService) SendNotificationWithDetails(config *AlertConfiguration, m
 	
 	req.Header.Set("Tags", tags)
 	req.Header.Set("Priority", priority)
+	
+	// Add API token authentication if provided
+	if config.APIToken != "" {
+		req.Header.Set("Authorization", "Bearer "+config.APIToken)
+	}
 
 	// Send the request
 	client := &http.Client{}

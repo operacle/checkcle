@@ -88,6 +88,7 @@ export const alertConfigService = {
        
       } else if (config.notification_type === "ntfy") { 
         cleanConfig.ntfy_endpoint = config.ntfy_endpoint || "";
+        cleanConfig.api_token = config.api_token || "";
 
       } else if (config.notification_type === "pushover") {       
         cleanConfig.api_token = config.api_token || "";

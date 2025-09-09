@@ -83,6 +83,7 @@ const emailSchema = baseSchema.extend({
 const ntfySchema = baseSchema.extend({
   notification_type: z.literal("ntfy"),
   ntfy_endpoint: z.string().url("Must be a valid NTFY endpoint URL"),
+  api_token: z.string().optional(),
 });
 
 const pushoverSchema = baseSchema.extend({
@@ -595,22 +596,40 @@ export const NotificationChannelDialog = ({
             )}
 
              {notificationType === "ntfy" && (
-              <FormField
-                control={form.control}
-                name="ntfy_endpoint"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>NTFY Endpoint</FormLabel>
-                    <FormControl>
-                      <Input placeholder="https://ntfy.sh/your-topic" {...field} />
-                    </FormControl>
-                    <FormDescription>
-                      The NTFY endpoint URL including your topic (e.g., https://ntfy.sh/checkcle)
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+             <>
+                <FormField
+                  control={form.control}
+                  name="ntfy_endpoint"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>NTFY Endpoint</FormLabel>
+                      <FormControl>
+                        <Input placeholder="https://ntfy.sh/your-topic" {...field} />
+                      </FormControl>
+                      <FormDescription>
+                        The NTFY endpoint URL including your topic (e.g., https://ntfy.sh/checkcle)
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="api_token"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>API Token (Optional)</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Enter NTFY API token" {...field} type="password" />
+                      </FormControl>
+                      <FormDescription>
+                        Optional API token for authentication with NTFY server
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </>
             )}
 
              {notificationType === "pushover" && (

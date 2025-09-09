@@ -84,4 +84,6 @@ export const maintenanceTranslations: MaintenanceTranslations = {
 	retry: '重试',
 	loadingServerData: '正在加载服务器数据...',
 	retrievingYourInformation: '正在获取您的信息，请稍候...',
+	servicesPagination: '{startItem}-{endItem}, 共 {totalItems} 个服务',
+	servicesPaginationNoService: '0 服务',
 };

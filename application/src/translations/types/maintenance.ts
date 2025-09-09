@@ -82,4 +82,6 @@ export interface MaintenanceTranslations {
 	retry: string;
 	loadingServerData: string;
 	retrievingYourInformation: string;
+	servicesPagination: string;
+	servicesPaginationNoService: string;
 }

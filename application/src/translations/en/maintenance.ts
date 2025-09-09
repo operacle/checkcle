@@ -84,4 +84,6 @@ export const maintenanceTranslations: MaintenanceTranslations = {
 	retry: 'Retry',
 	loadingServerData: 'Loading server data...',
 	retrievingYourInformation: 'Please wait while we retrieve your information...',
+	servicesPagination: '{startItem}-{endItem} of {totalItems} services',
+	servicesPaginationNoService: '0 services',
 };

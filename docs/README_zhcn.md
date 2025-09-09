@@ -117,7 +117,7 @@ docker run -d \
 ![Service Detail Page](https://cdn.checkcle.io/images/uptime/uptime-regional-detail.png)
 ![checkcle-server-instance](https://cdn.checkcle.io/images/server/server-list.png)
 ![SSL Monitoring](https://cdn.checkcle.io/images/ssl-domain/ssl-list.png)
-![Schedule Maintenance](https://pub-4a4062303020445f8f289a2fee84f9e8.r2.dev/images/checkcle-schedule-maintenance.png)
+![Notification System](https://cdn.checkcle.io/general/powerfull_notification.png)
 
 
 ## 🌟 面向社区的 CheckCle
@@ -129,26 +129,30 @@ docker run -d \
 ---
 
 ## 赞助商
-🙏 我们非常感谢我们的赞助商。你们的贡献使我们能够维护基础设施（托管、域名）、运行测试，并继续开发有价值的功能。
+我们将不再接受赞助形式。从今以后，仅接受以生态系统和社区合作形式提供的支持，例如云服务器、域名或托管资源等基础设施支持。  
 
-### 🥈 白银在线保障合作伙伴
-
-<a href="https://github.com/michaelortnerit">
-  <img src="https://avatars.githubusercontent.com/u/135371107?v=4" width="75" height="75" style="border-radius: 50%; display: block;" />
-</a>
+如果您是科技公司且有意支持 CheckCle ，请直接通过邮箱 tolaleng@checkcle.io 联系作者。
 
 ### 🧡 支持者
+<div style="display: flex; align-items: center; gap: 10px;">
+  <a href="https://github.com/gitbookio">
+    <img src="https://avatars.githubusercontent.com/u/7111340?s=200&v=4" 
+         width="75" height="75" 
+         style="border-radius: 50%;" 
+         alt="GitBook Logo" />
+  </a>
 
-<a href="https://github.com/samang-dauth">
-  <img src="https://avatars.githubusercontent.com/u/4575656?v=4" width="75" height="75" style="border-radius: 50%; display: block;" />
-</a>
-
-### 🤝 生态系统与社区合作伙伴
-<a href="https://github.com/gitbookio">
-  <img src="https://avatars.githubusercontent.com/u/7111340?s=200&v=4" 
-       width="75" height="75" 
-       style="border-radius: 50%; display: block;" />
-</a>
+  <a href="https://www.cloudflare.com">
+    <img src="https://cdn.checkcle.io/images/sponsor/cloudflare-checkcle_logo.png" 
+         height="60" 
+         alt="Cloudflare Logo" />
+  </a>
+    <a href="https://m.do.co/c/0c27ef82475f">
+    <img src="https://cdn.checkcle.io/images/sponsor/digitalocean_checkcle.png" 
+         height="50" 
+         alt="DigitalOcean Logo" />
+  </a>
+</div>
 
 ---
 

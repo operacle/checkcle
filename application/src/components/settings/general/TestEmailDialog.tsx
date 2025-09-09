@@ -194,9 +194,7 @@ const TestEmailDialog: React.FC<TestEmailDialogProps> = ({
           {/* Info message */}
           <Alert>
             <AlertCircle className="h-4 w-4" />
-            <AlertDescription>
-              This will send a test email using your configured SMTP settings. Make sure SMTP is properly configured first.
-            </AlertDescription>
+            <AlertDescription>{t("testEmailAlert", "settings")}</AlertDescription>
           </Alert>
         </div>
 
@@ -214,7 +212,7 @@ const TestEmailDialog: React.FC<TestEmailDialogProps> = ({
             ) : (
               <Mail className="h-4 w-4" />
             )}
-            {isLoading ? t("sending", "settings") : t("send", "common")}
+            {isLoading ? t("sending", "settings") : t("send", "settings")}
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -78,4 +78,10 @@ export const maintenanceTranslations: MaintenanceTranslations = {
   selectNotificationChannel: '添加通知渠道',
   enableNotificationsFirst: '首先启用通知以选择频道',
   updateMaintenance: '更新维护',
+	loginToViewProfile: '请登录查看您的个人资料',
+	goToLogin: '立即登录',
+	loadingUserData: '正在加载用户数据...',
+	retry: '重试',
+	loadingServerData: '正在加载服务器数据...',
+	retrievingYourInformation: '正在获取您的信息，请稍候...',
 };

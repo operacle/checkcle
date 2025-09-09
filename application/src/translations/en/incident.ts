@@ -61,4 +61,5 @@ export const incidentTranslations: IncidentTranslations = {
   affectedSystems: 'Affected Systems',
   enterAffectedSystems: 'Enter Affected Systems',
   separateSystemsWithComma: 'Enter affected systems seperated by comma',
+	createIncidentDesc: 'Create a new incident',
 };

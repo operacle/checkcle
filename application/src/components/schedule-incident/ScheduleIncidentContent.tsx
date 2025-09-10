@@ -72,7 +72,7 @@ export const ScheduleIncidentContent = () => {
 
   return (
     <main className="flex-1 flex flex-col overflow-auto bg-background  dark:bg-black p-2 ">
-      <div className="flex flex-col gap-6 bg-white dark:bg-balck p-3 h-full rounded-xl">
+      <div className="flex flex-col gap-6 bg-white dark:bg-black p-3 h-full rounded-xl">
         <div className="flex justify-between items-center">
           <h2 className="text-2xl font-bold text-foreground">
             {t("scheduleIncidentManagement")}

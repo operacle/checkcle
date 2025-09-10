@@ -1,4 +1,3 @@
-
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useTheme } from "@/contexts/ThemeContext";
@@ -22,7 +21,7 @@ export const MenuItem: React.FC<MenuItemProps> = ({
   translationKey,
   color,
   hasNavigation,
-  collapsed
+  collapsed,
 }) => {
   const { theme } = useTheme();
   const { t } = useLanguage();
@@ -32,7 +31,7 @@ export const MenuItem: React.FC<MenuItemProps> = ({
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    
+
     if (hasNavigation && path) {
       navigate(path, { replace: false });
     }
@@ -42,20 +41,26 @@ export const MenuItem: React.FC<MenuItemProps> = ({
   const mainIconSize = "h-6 w-6";
 
   return (
-    <div 
+    <div
       className={`
-        ${collapsed ? 'p-3' : 'p-2 pl-3'} 
+        ${collapsed ? "p-3" : "p-2 pl-3"} 
         mb-1 rounded-lg 
-        ${isActive ? (theme === 'dark' ? 'bg-gray-800' : 'bg-sidebar-accent') : `hover:${theme === 'dark' ? 'bg-gray-800' : 'bg-sidebar-accent'}`} 
+        ${
+          isActive
+            ? theme === "dark"
+              ? "bg-drak"
+              : "bg-sidebar-accent "
+            : `hover:${theme === "dark" ? "bg-gray-800" : "bg-sidebar-accent "}`
+        } 
         flex items-center 
-        ${collapsed ? 'justify-center' : ''} 
+        ${collapsed ? "justify-center" : ""} 
         cursor-pointer
       `}
       onClick={handleClick}
     >
       <Icon className={`${mainIconSize} ${color}`} />
       {!collapsed && (
-        <span className="ml-2.5 font-medium text-foreground tracking-wide text-[15px]">
+        <span className="ml-2.5 font-medium text-foreground tracking-wide ">
           {t(translationKey)}
         </span>
       )}

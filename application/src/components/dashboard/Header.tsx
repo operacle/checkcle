@@ -104,10 +104,10 @@ export const Header = ({
           className="w-full h-full dark:bg-black"
           style={{
             backgroundImage: `linear-gradient(${
-              theme === "dark" ? "#00000010" : "#00000000"
+              theme === "dark" ? "#ffffff10" : "#00000010"
             } 1px, transparent 1px), 
                               linear-gradient(90deg, ${
-                                theme === "dark" ? "#ffffff10" : "#00000000"
+                                theme === "dark" ? "#ffffff10" : "#00000010"
                               } 1px, transparent 1px)`,
             backgroundSize: "20px 20px",
           }}

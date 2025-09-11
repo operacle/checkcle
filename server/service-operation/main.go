@@ -6,6 +6,7 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
+	"time"
 
 	"github.com/gorilla/mux"
 	"service-operation/config"
@@ -15,6 +16,7 @@ import (
 	servermonitoring "service-operation/server-monitoring"
 	sslmonitoring "service-operation/ssl-monitoring"
 	uptimemonitoring "service-operation/uptime-monitoring"
+	dataretention "service-operation/data-retention"
 )
 
 func main() {
@@ -35,6 +37,7 @@ func main() {
 	var sslNotificationService *sslmonitoring.SSLMonitor
 	var serverMonitoringService *servermonitoring.ServerMonitoringService
 	var uptimeMonitoringService *uptimemonitoring.UptimeMonitor
+	var dataRetentionScheduler *dataretention.Scheduler
 	
 	if cfg.PocketBaseEnabled {
 		//log.Println("🔧 Initializing PocketBase client...")
@@ -80,6 +83,12 @@ func main() {
 				uptimeMonitoringService = uptimemonitoring.NewUptimeMonitor(pbClient)
 				go uptimeMonitoringService.Start()
 				//log.Println("✅ Uptime monitoring started with notification support")
+
+				// Initialize and start data retention scheduler
+				//log.Println("🔧 Initializing data retention scheduler...")
+				dataRetentionScheduler = dataretention.NewScheduler(pbClient, 24*time.Hour) // Run daily
+				go dataRetentionScheduler.Start()
+				//log.Println("✅ Data retention scheduler started (daily cleanup)")
 			}
 		}
 	}
@@ -123,6 +132,9 @@ func main() {
 		log.Printf("✓Uptime monitoring enabled with notification support")
 	}
 	log.Printf("✓Supported operations: ping, dns, tcp, http, ssl")
+	if dataRetentionScheduler != nil {
+		log.Printf("✓Data retention scheduler enabled (daily cleanup)")
+	}
 	
 
 	// Setup graceful shutdown
@@ -153,6 +165,10 @@ func main() {
 		if uptimeMonitoringService != nil {
 			log.Println("🛑 Stopping uptime monitoring...")
 			uptimeMonitoringService.Stop()
+		}
+		if dataRetentionScheduler != nil {
+			log.Println("🛑 Stopping data retention scheduler...")
+			dataRetentionScheduler.Stop()
 		}
 		
 		log.Println("✅ All services stopped gracefully")

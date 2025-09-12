@@ -80,9 +80,9 @@ export function ServicesPagination({
           </SelectContent>
         </Select>
         <span className="text-sm text-muted-foreground whitespace-nowrap">
-          {totalItems > 0 
-            ? `${startItem}-${endItem} of ${totalItems} ${t("services") || "services"}`
-            : `0 ${t("services") || "services"}`
+	        {totalItems > 0
+           ? t("servicesPagination", {"startItem": startItem, "endItem": endItem, "totalItems": totalItems})
+           : t("servicesPaginationNoService")
           }
         </span>
       </div>

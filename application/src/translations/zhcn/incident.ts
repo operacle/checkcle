@@ -53,4 +53,13 @@ export const incidentTranslations: IncidentTranslations = {
   failedToUpdateStatus: '更新状态失败',
   inProgress: '进行中',
   enterRootCause: '输入故障根源',
+	enterIncidentTitle: '输入事件标题',
+  enterIncidentDescription: '输入事件描述',
+  enterServiceId: '输入以逗号分隔的服务ID',
+  selectAssignedUser: '选择分配用户',
+  noAssignedUser: '该事件当前未分配给任何用户',
+  affectedSystems: '受影响系统',
+  enterAffectedSystems: '受影响系统',
+  separateSystemsWithComma: '输入受影响的系统，以逗号分隔',
+	createIncidentDesc: '创建一个新的事件',
 };

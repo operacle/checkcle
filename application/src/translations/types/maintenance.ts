@@ -76,4 +76,12 @@ export interface MaintenanceTranslations {
   selectNotificationChannel: string;
   enableNotificationsFirst: string;
   updateMaintenance: string;
+	loginToViewProfile: string;
+	goToLogin: string;
+	loadingUserData: string;
+	retry: string;
+	loadingServerData: string;
+	retrievingYourInformation: string;
+	servicesPagination: string;
+	servicesPaginationNoService: string;
 }

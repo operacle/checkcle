@@ -10,8 +10,11 @@ import { User } from "@/services/userService";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
 import { useSidebar } from "@/contexts/SidebarContext";
+import {useLanguage} from "@/contexts/LanguageContext.tsx";
 
 const Profile = () => {
+	const { t } = useLanguage()
+
   // Use shared sidebar state
   const { sidebarCollapsed, toggleSidebar } = useSidebar();
 
@@ -84,12 +87,12 @@ const Profile = () => {
     return (
       <div className="flex items-center justify-center h-screen">
         <div className="text-center">
-          <p>Please login to view your profile</p>
+          <p>{t("loginToViewProfile")}</p>
           <button 
             onClick={() => navigate("/login")} 
             className="mt-4 px-4 py-2 bg-primary text-white rounded"
           >
-            Go to Login
+	          {t("goToLogin")}
           </button>
         </div>
       </div>
@@ -110,7 +113,7 @@ const Profile = () => {
           {loading ? (
             <div className="flex items-center justify-center h-full">
               <Loader2 className="h-12 w-12 animate-spin text-primary" />
-              <span className="ml-2">Loading user data...</span>
+              <span className="ml-2">{t("loadingUserData")}</span>
             </div>
           ) : error ? (
             <div className="flex flex-col items-center justify-center h-full">
@@ -121,7 +124,7 @@ const Profile = () => {
                 onClick={() => fetchUserData()}
                 className="px-4 py-2 bg-primary text-primary-foreground rounded-md"
               >
-                Retry
+	              {t("retry")}
               </button>
             </div>
           ) : (

@@ -52,7 +52,6 @@ const DataRetentionSettings = () => {
         setLastCleanup(result.lastCleanup);
       }
     } catch (error) {
-      console.error("Error loading retention settings:", error);
       toast({
         title: "Error",
         description: "Failed to load retention settings",
@@ -72,7 +71,6 @@ const DataRetentionSettings = () => {
         description: "Data retention settings have been updated",
       });
     } catch (error) {
-      console.error("Error saving retention settings:", error);
       toast({
         title: "Error",
         description: "Failed to save retention settings",
@@ -96,7 +94,6 @@ const DataRetentionSettings = () => {
       // Reload settings to get updated last cleanup time
       await loadSettings();
     } catch (error) {
-      console.error("Error during uptime cleanup:", error);
       toast({
         title: "Error",
         description: "Failed to perform uptime data cleanup",
@@ -120,7 +117,6 @@ const DataRetentionSettings = () => {
       // Reload settings to get updated last cleanup time
       await loadSettings();
     } catch (error) {
-      console.error("Error during server cleanup:", error);
       toast({
         title: "Error",
         description: "Failed to perform server data cleanup",
@@ -144,7 +140,6 @@ const DataRetentionSettings = () => {
       // Reload settings to get updated last cleanup time
       await loadSettings();
     } catch (error) {
-      console.error("Error during manual cleanup:", error);
       toast({
         title: "Error",
         description: "Failed to perform database cleanup",
@@ -170,7 +165,7 @@ const DataRetentionSettings = () => {
             <Alert className="border-blue-200 bg-blue-50 dark:bg-blue-950 dark:border-blue-800">
               <AlertTriangle className="h-5 w-5 text-blue-600 dark:text-blue-400" />
               <AlertDescription className="text-blue-700 dark:text-blue-300">
-                <span className="font-medium">{t("permissionNotice")}</span> As an admin user, you do not have access to data retention settings. These settings can only be accessed and modified by Super Admins.
+                <span className="font-medium">Permission Notice:</span> As an admin user, you do not have access to data retention settings. These settings can only be accessed and modified by Super Admins.
               </AlertDescription>
             </Alert>
           </CardContent>
@@ -210,10 +205,16 @@ const DataRetentionSettings = () => {
                 min="1"
                 max="365"
                 value={settings.uptimeRetentionDays}
-                onChange={(e) => setSettings(prev => ({
-                  ...prev,
-                  uptimeRetentionDays: parseInt(e.target.value) || 30
-                }))}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (value === '' || isNaN(Number(value))) {
+                    return;
+                  }
+                  setSettings(prev => ({
+                    ...prev,
+                    uptimeRetentionDays: Number(value)
+                  }));
+                }}
                 className="mt-1"
               />
               <p className="text-sm text-muted-foreground mt-1">
@@ -229,10 +230,16 @@ const DataRetentionSettings = () => {
                 min="1"
                 max="365"
                 value={settings.serverRetentionDays}
-                onChange={(e) => setSettings(prev => ({
-                  ...prev,
-                  serverRetentionDays: parseInt(e.target.value) || 30
-                }))}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (value === '' || isNaN(Number(value))) {
+                    return;
+                  }
+                  setSettings(prev => ({
+                    ...prev,
+                    serverRetentionDays: Number(value)
+                  }));
+                }}
                 className="mt-1"
               />
               <p className="text-sm text-muted-foreground mt-1">
@@ -250,63 +257,17 @@ const DataRetentionSettings = () => {
             </Alert>
           )}
         </CardContent>
-        <CardFooter className="flex flex-col gap-4">
-          <div className="flex flex-wrap gap-2 w-full">
-            <Button
-              variant="outline"
-              onClick={handleUptimeShrink}
-              disabled={isUptimeShrinking}
-              className="flex items-center gap-2"
-            >
-              {isUptimeShrinking ? (
-                <Loader2 className="h-4 w-4 animate-spin" />
-              ) : (
-                <Globe className="h-4 w-4" />
-              )}
-              Shrink Uptime Data
-            </Button>
-            
-            <Button
-              variant="outline"
-              onClick={handleServerShrink}
-              disabled={isServerShrinking}
-              className="flex items-center gap-2"
-            >
-              {isServerShrinking ? (
-                <Loader2 className="h-4 w-4 animate-spin" />
-              ) : (
-                <Server className="h-4 w-4" />
-              )}
-              Shrink Server Data
-            </Button>
-            
-            <Button
-              variant="outline"
-              onClick={handleFullShrink}
-              disabled={isFullShrinking}
-              className="flex items-center gap-2"
-            >
-              {isFullShrinking ? (
-                <Loader2 className="h-4 w-4 animate-spin" />
-              ) : (
-                <Trash2 className="h-4 w-4" />
-              )}
-              Full Database Shrink
-            </Button>
-          </div>
-          
-          <div className="flex justify-end w-full">
-            <Button
-              onClick={handleSave}
-              disabled={isSaving}
-              className="flex items-center gap-2"
-            >
-              {isSaving ? (
-                <Loader2 className="h-4 w-4 animate-spin" />
-              ) : null}
-              Save Changes
-            </Button>
-          </div>
+        <CardFooter className="flex justify-end">
+          <Button
+            onClick={handleSave}
+            disabled={isSaving}
+            className="flex items-center gap-2"
+          >
+            {isSaving ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : null}
+            Save Changes
+          </Button>
         </CardFooter>
       </Card>
     </div>

@@ -25,19 +25,21 @@ const UptimeBarComponent = ({ uptime, status, serviceId, interval, serviceType =
     return start;
   }, [endDate, interval]);
 
-  // Fetch uptime data with very aggressive caching to reduce API calls
+  // Fetch uptime data with immediate display and background updates
   const { data: uptimeData = [] } = useQuery({
     queryKey: ['uptime-bar', serviceId, serviceType],
     queryFn: () => uptimeService.getUptimeHistory(serviceId, 20, startDate, endDate, serviceType),
     enabled: !!serviceId,
-    staleTime: 30000, // Data is fresh for 30 seconds
-    gcTime: 600000, // Keep in cache for 10 minutes
-    refetchInterval: 60000, // 1 minute polling
+    staleTime: 300000, // Data stays fresh for 5 minutes - display immediately from cache
+    gcTime: 900000, // Keep in cache for 15 minutes
+    refetchInterval: 300000, // Reduced to 5 minute polling
     refetchOnWindowFocus: false,
     refetchOnMount: false,
     refetchOnReconnect: false,
-    retry: 3,
-    retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 10000),
+    retry: 1, // Reduce retries for faster failure
+    retryDelay: 1000, // Faster retry delay
+    refetchIntervalInBackground: true, // Allow background updates
+    placeholderData: (previousData) => previousData, // Keep showing previous data while refetching
   });
 
   // Memoize the uptime calculation to prevent unnecessary recalculations

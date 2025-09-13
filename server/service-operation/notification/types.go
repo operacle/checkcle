@@ -53,7 +53,7 @@ type AlertConfiguration struct {
 	TemplateID            string `json:"template_id"`
 	SlackWebhookURL       string `json:"slack_webhook_url"`
 	GoogleChatWebhookURL  string `json:"google_chat_webhook_url"`
-	Enabled               string `json:"enabled"` // String because PocketBase returns it as string
+	Enabled               string `json:"enabled"` 
 	EmailAddress          string `json:"email_address"`
 	EmailSenderName       string `json:"email_sender_name"`
 	SMTPServer            string `json:"smtp_server"`
@@ -66,6 +66,7 @@ type AlertConfiguration struct {
 	NtfyEndpoint          string `json:"ntfy_endpoint"`
 	APIToken              string `json:"api_token"`
 	UserKey               string `json:"user_key"`
+	ServerURL             string `json:"server_url"`
 }
 
 // ServerNotificationTemplate represents a server notification template

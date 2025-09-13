@@ -21,7 +21,7 @@ export interface SettingsTranslations {
   smtpAuthMethod: string;
   enableTLS: string;
   localName: string;
-  
+
 	// General Settings - Test Email
   testEmail: string;
   sendTestEmail: string;
@@ -35,8 +35,12 @@ export interface SettingsTranslations {
   selectCollection: string;
   toEmailAddress: string;
   enterEmailAddress: string;
+	send: string;
   sending: string;
-  
+	testEmailSettings: string;
+	testEmailDescription: string;
+	testEmailAlert: string;
+
 	// General Settings - Actions and status
   save: string;
   saving: string;

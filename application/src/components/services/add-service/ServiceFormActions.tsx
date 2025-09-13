@@ -2,6 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { MouseEvent } from "react";
+import {useLanguage} from "@/contexts/LanguageContext.tsx";
 
 interface ServiceFormActionsProps {
   isSubmitting: boolean;
@@ -14,6 +15,8 @@ export function ServiceFormActions({
   onCancel,
   submitLabel = "Create Service"
 }: ServiceFormActionsProps) {
+
+	const {t} = useLanguage();
   const handleCancel = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     if (!isSubmitting) {
@@ -29,7 +32,7 @@ export function ServiceFormActions({
         variant="outline"
         disabled={isSubmitting}
       >
-        Cancel
+	      {t("cancel")}
       </Button>
       <Button 
         type="submit" 
@@ -38,7 +41,7 @@ export function ServiceFormActions({
         {isSubmitting ? (
           <>
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            Processing...
+	          {t("processing")}...
           </>
         ) : (
           submitLabel

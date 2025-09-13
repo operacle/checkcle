@@ -153,7 +153,8 @@
                     "google_chat",
                     "email",
                     "ntfy",
-                    "pushover"
+                    "pushover",
+                    "notifiarr"
                 ]
             },
             {
@@ -4798,6 +4799,169 @@
                 "required": false,
                 "system": false,
                 "type": "text"
+            },
+            {
+                "hidden": false,
+                "id": "autodate2990389176",
+                "name": "created",
+                "onCreate": true,
+                "onUpdate": false,
+                "presentable": false,
+                "system": false,
+                "type": "autodate"
+            },
+            {
+                "hidden": false,
+                "id": "autodate3332085495",
+                "name": "updated",
+                "onCreate": true,
+                "onUpdate": true,
+                "presentable": false,
+                "system": false,
+                "type": "autodate"
+            }
+        ],
+        "indexes": [],
+        "system": false
+    },
+    {
+        "id": "pbc_1753185970",
+        "listRule": "",
+        "viewRule": "",
+        "createRule": "",
+        "updateRule": "",
+        "deleteRule": "",
+        "name": "ssl_history",
+        "type": "base",
+        "fields": [
+            {
+                "autogeneratePattern": "[a-z0-9]{15}",
+                "hidden": false,
+                "id": "text3208210256",
+                "max": 15,
+                "min": 15,
+                "name": "id",
+                "pattern": "^[a-z0-9]+$",
+                "presentable": false,
+                "primaryKey": true,
+                "required": true,
+                "system": true,
+                "type": "text"
+            },
+            {
+                "autogeneratePattern": "",
+                "hidden": false,
+                "id": "text2812878347",
+                "max": 0,
+                "min": 0,
+                "name": "cert_id",
+                "pattern": "",
+                "presentable": false,
+                "primaryKey": false,
+                "required": false,
+                "system": false,
+                "type": "text"
+            },
+            {
+                "autogeneratePattern": "",
+                "hidden": false,
+                "id": "text1881225410",
+                "max": 0,
+                "min": 0,
+                "name": "days_before_expiry",
+                "pattern": "",
+                "presentable": false,
+                "primaryKey": false,
+                "required": false,
+                "system": false,
+                "type": "text"
+            },
+            {
+                "autogeneratePattern": "",
+                "hidden": false,
+                "id": "text3062427817",
+                "max": 0,
+                "min": 0,
+                "name": "days_before_warning",
+                "pattern": "",
+                "presentable": false,
+                "primaryKey": false,
+                "required": false,
+                "system": false,
+                "type": "text"
+            },
+            {
+                "autogeneratePattern": "",
+                "hidden": false,
+                "id": "text98176952",
+                "max": 0,
+                "min": 0,
+                "name": "template_id",
+                "pattern": "",
+                "presentable": false,
+                "primaryKey": false,
+                "required": false,
+                "system": false,
+                "type": "text"
+            },
+            {
+                "autogeneratePattern": "",
+                "hidden": false,
+                "id": "text4011498884",
+                "max": 0,
+                "min": 0,
+                "name": "notification_id",
+                "pattern": "",
+                "presentable": false,
+                "primaryKey": false,
+                "required": false,
+                "system": false,
+                "type": "text"
+            },
+            {
+                "hidden": false,
+                "id": "select3839288252",
+                "maxSelect": 1,
+                "name": "warning_status",
+                "presentable": false,
+                "required": false,
+                "system": false,
+                "type": "select",
+                "values": [
+                    "sent",
+                    "pending",
+                    "failed"
+                ]
+            },
+            {
+                "hidden": false,
+                "id": "select2670434693",
+                "maxSelect": 1,
+                "name": "expiry_status",
+                "presentable": false,
+                "required": false,
+                "system": false,
+                "type": "select",
+                "values": [
+                    "sent",
+                    "pending",
+                    "failed"
+                ]
+            },
+            {
+                "hidden": false,
+                "id": "select3824245652",
+                "maxSelect": 1,
+                "name": "critical_status",
+                "presentable": false,
+                "required": false,
+                "system": false,
+                "type": "select",
+                "values": [
+                    "sent",
+                    "pending",
+                    "failed"
+                ]
             },
             {
                 "hidden": false,

@@ -37,8 +37,12 @@ export const settingsTranslations: SettingsTranslations = {
   selectCollection: "Select collection",
   toEmailAddress: "To email address",
   enterEmailAddress: "Enter email address",
+	send: "Send",
   sending: "Sending...",
-  
+	testEmailSettings: "Test Email Settings",
+	testEmailDescription: "Test whether the current Email Settings are available",
+	testEmailAlert: "This will send a test email using your configured SMTP settings. Make sure SMTP is properly configured first.",
+
   // General Settings - Actions and status
   save: "Save Changes",
   saving: "Saving...",

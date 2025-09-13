@@ -128,19 +128,9 @@ docker run -d \
 ---
 
 ## Sponsors
-🙏 We're incredibly thankful to our sponsors. Your contributions enable us to maintain infrastructure (hosting, domains), run tests, and continue developing valuable features.
+Sponsorships will no longer be accepted. From now on, support will only be accepted in the form of ecosystem and community partnerships that provide infrastructure such as cloud servers, domains, or hosting credits.
 
-### 🥈 Silver Uptime 
-
-<a href="https://github.com/michaelortnerit">
-  <img src="https://avatars.githubusercontent.com/u/135371107?v=4" width="75" height="75" style="border-radius: 50%; display: block;" />
-</a>
-
-### 🧡 Ping Supporter
-
-<a href="https://github.com/samang-dauth">
-  <img src="https://avatars.githubusercontent.com/u/4575656?v=4" width="75" height="75" style="border-radius: 50%; display: block;" />
-</a>
+If you’re a tech company interested in supporting CheckCle, please contact the author directly at tolaleng@checkcle.io
 
 ### 🤝 Ecosystem & Community Partner
 <div style="display: flex; align-items: center; gap: 10px;">
@@ -151,18 +141,17 @@ docker run -d \
          alt="GitBook Logo" />
   </a>
 
-  <a href="https://m.do.co/c/0c27ef82475f">
+  <a href="https://www.cloudflare.com">
+    <img src="https://cdn.checkcle.io/images/sponsor/cloudflare-checkcle_logo.png" 
+         height="60" 
+         alt="Cloudflare Logo" />
+  </a>
+    <a href="https://m.do.co/c/0c27ef82475f">
     <img src="https://cdn.checkcle.io/images/sponsor/digitalocean_checkcle.png" 
          height="50" 
          alt="DigitalOcean Logo" />
   </a>
 </div>
-
-
-
-
-
-
 
 ---
 

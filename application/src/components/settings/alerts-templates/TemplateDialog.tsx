@@ -16,6 +16,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { TemplateType, templateTypeConfigs } from "@/services/templateService";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
+import {z} from "zod";
 
 interface TemplateDialogProps {
   open: boolean;
@@ -81,6 +82,7 @@ export const TemplateDialog: React.FC<TemplateDialogProps> = ({
   };
 
   const renderPlaceholderGuide = () => {
+
     const config = templateTypeConfigs[selectedTemplateType];
     if (!config) return null;
 

@@ -27,6 +27,7 @@ import { Switch } from "@/components/ui/switch";
 import { Loader2, Copy } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "@/hooks/use-toast";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface NotificationChannelDialogProps {
   open: boolean;
@@ -34,9 +35,10 @@ interface NotificationChannelDialogProps {
   editingConfig: AlertConfiguration | null;
 }
 
+
 const baseSchema = z.object({
   notify_name: z.string().min(1, "Name is required"),
-  notification_type: z.enum(["telegram", "discord", "slack", "signal", "google_chat", "email", "ntfy", "pushover", "webhook"]),
+  notification_type: z.enum(["telegram", "discord", "slack", "signal", "google_chat", "email", "ntfy", "pushover", "notifiarr", "gotify", "webhook"]),
   enabled: z.boolean().default(true),
   service_id: z.string().default("global"),
   template_id: z.string().optional(),
@@ -81,6 +83,19 @@ const emailSchema = baseSchema.extend({
 const ntfySchema = baseSchema.extend({
   notification_type: z.literal("ntfy"),
   ntfy_endpoint: z.string().url("Must be a valid NTFY endpoint URL"),
+  api_token: z.string().optional(),
+});
+
+const pushoverSchema = baseSchema.extend({
+  notification_type: z.literal("pushover"),
+  api_token: z.string().min(1, "API token is required"),
+  user_key: z.string().min(1, "User key is required"),
+});
+
+const notifiarrSchema = baseSchema.extend({
+  notification_type: z.literal("notifiarr"),
+  api_token: z.string().min(1, "API token is required"),
+  channel_id: z.string().min(1, "Channel ID is required"),
 });
 
 const webhookSchema = baseSchema.extend({
@@ -89,10 +104,10 @@ const webhookSchema = baseSchema.extend({
   webhook_payload_template: z.string().optional(),
 });
 
-const pushoverSchema = baseSchema.extend({
-  notification_type: z.literal("pushover"),
+const gotifySchema = baseSchema.extend({
+  notification_type: z.literal("gotify"),
   api_token: z.string().min(1, "API token is required"),
-  user_key: z.string().min(1, "User key is required"),
+  server_url: z.string().url("Must be a valid server URL"),
 });
 
 const formSchema = z.discriminatedUnion("notification_type", [
@@ -104,6 +119,8 @@ const formSchema = z.discriminatedUnion("notification_type", [
   emailSchema,
   ntfySchema,
   pushoverSchema,
+  notifiarrSchema,
+  gotifySchema,
   webhookSchema,
 ]);
 
@@ -157,6 +174,19 @@ const notificationTypeOptions = [
     label: "Pushover", 
     description: "Send push notifications via Pushover",
     icon: "/upload/notification/pushover.png" 
+  },
+
+  { 
+    value: "notifiarr", 
+    label: "Notifiarr", 
+    description: "Send notifications via Notifiarr",
+    icon: "/upload/notification/notifiarr.png" 
+  },
+  { 
+    value: "gotify", 
+    label: "Gotify", 
+    description: "Send push notifications via Gotify",
+    icon: "/upload/notification/gotify.png" 
   },
   { 
     value: "webhook", 
@@ -566,22 +596,40 @@ export const NotificationChannelDialog = ({
             )}
 
              {notificationType === "ntfy" && (
-              <FormField
-                control={form.control}
-                name="ntfy_endpoint"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>NTFY Endpoint</FormLabel>
-                    <FormControl>
-                      <Input placeholder="https://ntfy.sh/your-topic" {...field} />
-                    </FormControl>
-                    <FormDescription>
-                      The NTFY endpoint URL including your topic (e.g., https://ntfy.sh/checkcle)
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+             <>
+                <FormField
+                  control={form.control}
+                  name="ntfy_endpoint"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>NTFY Endpoint</FormLabel>
+                      <FormControl>
+                        <Input placeholder="https://ntfy.sh/your-topic" {...field} />
+                      </FormControl>
+                      <FormDescription>
+                        The NTFY endpoint URL including your topic (e.g., https://ntfy.sh/checkcle)
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="api_token"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>API Token (Optional)</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Enter NTFY API token" {...field} type="password" />
+                      </FormControl>
+                      <FormDescription>
+                        Optional API token for authentication with NTFY server
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </>
             )}
 
              {notificationType === "pushover" && (
@@ -613,6 +661,80 @@ export const NotificationChannelDialog = ({
                       </FormControl>
                       <FormDescription>
                         Your Pushover user key (or group key)
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </>
+            )}
+
+             {notificationType === "notifiarr" && (
+              <>
+                <FormField
+                  control={form.control}
+                  name="api_token"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>API Token</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Your Notifiarr API token" {...field} type="password" />
+                      </FormControl>
+                      <FormDescription>
+                        Your Notifiarr API token for sending notifications
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="channel_id"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Channel ID</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Discord Channel ID" {...field} />
+                      </FormControl>
+                      <FormDescription>
+                        The Discord channel ID where notifications will be sent
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </>
+            )}
+
+            {notificationType === "gotify" && (
+              <>
+                <FormField
+                  control={form.control}
+                  name="api_token"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>API Token</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Your Gotify API token" {...field} type="password" />
+                      </FormControl>
+                      <FormDescription>
+                        Your Gotify application API token
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="server_url"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Server URL</FormLabel>
+                      <FormControl>
+                        <Input placeholder="https://your-gotify-server.com" {...field} />
+                      </FormControl>
+                      <FormDescription>
+                        The URL of your Gotify server
                       </FormDescription>
                       <FormMessage />
                     </FormItem>

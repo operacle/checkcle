@@ -92,6 +92,8 @@ export const SSLCertificatesTable = () => {
         warning_threshold: updatedCertificate.warning_threshold,
         expiry_threshold: updatedCertificate.expiry_threshold,
         notification_channel: updatedCertificate.notification_channel,
+        notification_id: updatedCertificate.notification_id,
+        template_id: updatedCertificate.template_id,
         check_interval: updatedCertificate.check_interval,
       });
       

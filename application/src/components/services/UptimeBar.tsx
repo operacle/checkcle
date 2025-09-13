@@ -5,6 +5,7 @@ import { TooltipProvider } from '@/components/ui/tooltip';
 import { UptimeStatusItem } from './uptime/UptimeStatusItem';
 import { uptimeService } from '@/services/uptimeService';
 import { UptimeData } from '@/types/service.types';
+import {useLanguage} from "@/contexts/LanguageContext.tsx";
 
 interface UptimeBarProps {
   uptime: number;
@@ -15,6 +16,7 @@ interface UptimeBarProps {
 }
 
 const UptimeBarComponent = ({ uptime, status, serviceId, interval, serviceType = "HTTP" }: UptimeBarProps) => {
+	const { t } = useLanguage();
   // Calculate date range for last 20 checks with much more aggressive caching
   const endDate = useMemo(() => new Date(), []);
   const startDate = useMemo(() => {
@@ -84,7 +86,7 @@ const UptimeBarComponent = ({ uptime, status, serviceId, interval, serviceType =
       </div>
       
       <span className="text-xs text-muted-foreground">
-            Last 20 checks 
+            {t('last20Checks')}
       </span>    
     </TooltipProvider>
   );

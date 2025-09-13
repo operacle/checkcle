@@ -31,6 +31,8 @@ func NewNotificationManager(pbClient *pocketbase.PocketBaseClient) *Notification
 	services["webhook"] = NewWebhookService()
 	services["ntfy"] = NewNtfyService()
 	services["pushover"] = NewPushoverService()
+	services["notifiarr"] = NewNotifiarrService()
+	services["gotify"] = NewGotifyService()
 
 	// log.Printf("✅ Notification services initialized: %v", getKeys(services))
 

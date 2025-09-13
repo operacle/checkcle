@@ -7,7 +7,7 @@ export interface AlertConfiguration {
   collectionId?: string;
   collectionName?: string;
   service_id: string;
-  notification_type: "telegram" | "discord" | "slack" | "signal" | "google_chat" | "email" | "ntfy" | "pushover" | "webhook";
+  notification_type: "telegram" | "discord" | "slack" | "signal" | "google_chat" | "email" | "ntfy" | "pushover" | "notifiarr" | "gotify" | "webhook";
   telegram_chat_id?: string;
   discord_webhook_url?: string;
   signal_number?: string;
@@ -31,6 +31,7 @@ export interface AlertConfiguration {
   ntfy_endpoint?: string;
   api_token?: string;
   user_key?: string;
+  server_url?: string;
   webhook_url?: string;
   webhook_payload_template?: string;
 }
@@ -87,10 +88,19 @@ export const alertConfigService = {
        
       } else if (config.notification_type === "ntfy") { 
         cleanConfig.ntfy_endpoint = config.ntfy_endpoint || "";
+        cleanConfig.api_token = config.api_token || "";
 
       } else if (config.notification_type === "pushover") {       
         cleanConfig.api_token = config.api_token || "";
         cleanConfig.user_key = config.user_key || "";
+
+      } else if (config.notification_type === "notifiarr") {   
+        cleanConfig.api_token = config.api_token || "";
+        cleanConfig.channel_id = config.channel_id || "";
+
+      } else if (config.notification_type === "gotify") {      
+        cleanConfig.api_token = config.api_token || "";
+        cleanConfig.server_url = config.server_url || "";
         
       } else if (config.notification_type === "webhook") {
         cleanConfig.webhook_url = config.webhook_url || "";

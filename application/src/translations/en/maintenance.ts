@@ -78,4 +78,12 @@ export const maintenanceTranslations: MaintenanceTranslations = {
   selectNotificationChannel: 'Add a notification channel', 
   enableNotificationsFirst: 'Enable notifications first to select channel',
   updateMaintenance: 'Update Maintenance',
+	loginToViewProfile: 'Please login to view your profile',
+	goToLogin: 'Go to Login',
+	loadingUserData: 'Loading user data...',
+	retry: 'Retry',
+	loadingServerData: 'Loading server data...',
+	retrievingYourInformation: 'Please wait while we retrieve your information...',
+	servicesPagination: '{startItem}-{endItem} of {totalItems} services',
+	servicesPaginationNoService: '0 services',
 };

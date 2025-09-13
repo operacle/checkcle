@@ -37,8 +37,12 @@ export const settingsTranslations: SettingsTranslations = {
   selectCollection: "选择集合",
   toEmailAddress: "收件人邮箱地址",
   enterEmailAddress: "输入收件人邮箱地址",
+	send: "发送",
   sending: "发送中...",
-  
+	testEmailSettings: "测试邮箱配置",
+	testEmailDescription: "测试当前的邮箱设置是否可用",
+	testEmailAlert: "这将使用您配置的SMTP设置发送一封测试邮件。请确保SMTP已正确配置。",
+
 	// General Settings - Actions and status
   save: "保存变更",
   saving: "保存中...",

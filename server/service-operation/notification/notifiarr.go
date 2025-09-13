@@ -1,144 +1,145 @@
-
 package notification
 
 import (
+	"bytes"
+	"encoding/json"
 	"fmt"
 	"net/http"
+	"strconv"
 	"strings"
 )
 
-// NtfyService handles NTFY push notifications
-type NtfyService struct{}
+// NotifiarrService handles Notifiarr notifications
+type NotifiarrService struct{}
 
-// NewNtfyService creates a new NTFY notification service
-func NewNtfyService() *NtfyService {
-	return &NtfyService{}
+// NewNotifiarrService creates a new Notifiarr notification service
+func NewNotifiarrService() *NotifiarrService {
+	return &NotifiarrService{}
 }
 
-// SendNotification sends a notification via NTFY
-func (ns *NtfyService) SendNotification(config *AlertConfiguration, message string) error {
-	if config.NtfyEndpoint == "" {
-		return fmt.Errorf("ntfy endpoint is required")
+// NotifiarrPayload represents the payload for Notifiarr API
+type NotifiarrPayload struct {
+	Notification NotifiarrNotification `json:"notification"`
+	Discord      NotifiarrDiscord      `json:"discord"`
+}
+
+type NotifiarrNotification struct {
+	Update bool   `json:"update"`
+	Name   string `json:"name"`
+	Event  string `json:"event,omitempty"`
+}
+
+type NotifiarrDiscord struct {
+	Color  string           `json:"color,omitempty"`
+	Ping   NotifiarrPing    `json:"ping,omitempty"`
+	Images NotifiarrImages  `json:"images,omitempty"`
+	Text   NotifiarrText    `json:"text"`
+	IDs    NotifiarrIDs     `json:"ids,omitempty"`
+}
+
+type NotifiarrPing struct {
+	PingUser int64 `json:"pingUser,omitempty"`
+	PingRole int64 `json:"pingRole,omitempty"`
+}
+
+type NotifiarrImages struct {
+	Thumbnail string `json:"thumbnail,omitempty"`
+	Image     string `json:"image,omitempty"`
+}
+
+type NotifiarrText struct {
+	Title       string `json:"title"`
+	Icon        string `json:"icon,omitempty"`
+	Content     string `json:"content,omitempty"`
+	Description string `json:"description"`
+	Fields      []any  `json:"fields,omitempty"`
+	Footer      string `json:"footer,omitempty"`
+}
+
+type NotifiarrIDs struct {
+	Channel int64 `json:"channel,omitempty"`
+}
+
+// SendNotification sends a notification via Notifiarr
+func (ns *NotifiarrService) SendNotification(config *AlertConfiguration, message string) error {
+	// fmt.Printf("📡 [NOTIFIARR] Attempting to send notification...\n")
+	// fmt.Printf("📡 [NOTIFIARR] Config - API Token present: %v\n", config.APIToken != "")
+	// fmt.Printf("📡 [NOTIFIARR] Message: %s\n", message)
+
+	if config.APIToken == "" {
+		return fmt.Errorf("notifiarr API token is required")
 	}
 
-	// Create HTTP request with plain text message
-	req, err := http.NewRequest("POST", config.NtfyEndpoint, strings.NewReader(message))
-	if err != nil {
-		return fmt.Errorf("failed to create NTFY request: %v", err)
+	// Parse channel ID if provided
+	var channelID int64
+	if config.ChannelID != "" {
+		if parsed, err := strconv.ParseInt(config.ChannelID, 10, 64); err == nil {
+			channelID = parsed
+		}
 	}
 
-	// Set headers for NTFY
-	req.Header.Set("Content-Type", "text/plain; charset=utf-8")
-	req.Header.Set("Title", "🔔 CheckCle Service Alert")
-	req.Header.Set("Tags", "monitoring")
-	req.Header.Set("Priority", "default")
+	url := fmt.Sprintf("https://notifiarr.com/api/v1/notification/passthrough/%s", config.APIToken)
+	// fmt.Printf("📡 [NOTIFIARR] API URL: %s\n", strings.Replace(url, config.APIToken, "[REDACTED]", 1))
+
+	// Create status-based color
+	color := ns.getStatusColor(message)
 	
-	// Add API token authentication if provided
-	if config.APIToken != "" {
-		req.Header.Set("Authorization", "Bearer "+config.APIToken)
+	payload := NotifiarrPayload{
+		Notification: NotifiarrNotification{
+			Update: false,
+			Name:   "This is an automated notification from CheckCle System",
+			Event:  "",
+		},
+		Discord: NotifiarrDiscord{
+			Color: color,
+			Text: NotifiarrText{
+				Title:       "Service Alert",
+				Description: message,
+				Footer:      "CheckCle Monitoring System",
+			},
+			IDs: NotifiarrIDs{
+				Channel: channelID,
+			},
+		},
 	}
 
-	// Send the request
-	client := &http.Client{}
-	resp, err := client.Do(req)
+	jsonData, err := json.Marshal(payload)
 	if err != nil {
-		return fmt.Errorf("failed to send NTFY notification: %v", err)
+		return err
+	}
+
+	// fmt.Printf("📡 [NOTIFIARR] Sending POST request...\n")
+	resp, err := http.Post(url, "application/json", bytes.NewBuffer(jsonData))
+	if err != nil {
+		// fmt.Printf("❌ [NOTIFIARR] HTTP error: %v\n", err)
+		return err
 	}
 	defer resp.Body.Close()
 
-	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
-		return fmt.Errorf("ntfy API error, status: %d", resp.StatusCode)
+	// Check response status
+	if resp.StatusCode != http.StatusOK {
+		// fmt.Printf("❌ [NOTIFIARR] HTTP status error: %d\n", resp.StatusCode)
+		return fmt.Errorf("notifiarr API error: status code %d", resp.StatusCode)
 	}
 
+	// fmt.Printf("✅ [NOTIFIARR] Message sent successfully!\n")
 	return nil
 }
 
-// SendServerNotification sends a server-specific notification via NTFY
-func (ns *NtfyService) SendServerNotification(config *AlertConfiguration, payload *NotificationPayload, template *ServerNotificationTemplate, resourceType string) error {
+// SendServerNotification sends a server-specific notification via Notifiarr
+func (ns *NotifiarrService) SendServerNotification(config *AlertConfiguration, payload *NotificationPayload, template *ServerNotificationTemplate, resourceType string) error {
 	message := ns.generateServerMessage(payload, template, resourceType)
-	return ns.SendNotificationWithDetails(config, message, "🔔 Server Alert", resourceType)
+	return ns.SendNotification(config, message)
 }
 
-// SendServiceNotification sends a service-specific notification via NTFY
-func (ns *NtfyService) SendServiceNotification(config *AlertConfiguration, payload *NotificationPayload, template *ServiceNotificationTemplate) error {
+// SendServiceNotification sends a service-specific notification via Notifiarr
+func (ns *NotifiarrService) SendServiceNotification(config *AlertConfiguration, payload *NotificationPayload, template *ServiceNotificationTemplate) error {
 	message := ns.generateServiceMessage(payload, template)
-	return ns.SendNotificationWithDetails(config, message, "🔔 Service Alert", "service")
-}
-
-// SendNotificationWithDetails sends a notification with custom title and tags
-func (ns *NtfyService) SendNotificationWithDetails(config *AlertConfiguration, message, title, alertType string) error {
-	if config.NtfyEndpoint == "" {
-		return fmt.Errorf("ntfy endpoint is required")
-	}
-
-	// Create HTTP request with plain text message
-	req, err := http.NewRequest("POST", config.NtfyEndpoint, strings.NewReader(message))
-	if err != nil {
-		return fmt.Errorf("failed to create NTFY request: %v", err)
-	}
-
-	// Set headers for NTFY with dynamic values
-	req.Header.Set("Content-Type", "text/plain; charset=utf-8")
-	req.Header.Set("Title", title)
-	
-	// Set appropriate tags and priority based on alert type and message content
-	tags := "monitoring"
-	priority := "default"
-	
-	// Determine priority and tags based on message content
-	messageLower := strings.ToLower(message)
-	if strings.Contains(messageLower, "down") || strings.Contains(messageLower, "critical") || strings.Contains(messageLower, "expired") {
-		priority = "high"
-		tags = "rotating_light,warning"
-	} else if strings.Contains(messageLower, "warning") || strings.Contains(messageLower, "expiring") {
-		priority = "default"
-		tags = "warning"
-	} else if strings.Contains(messageLower, "up") || strings.Contains(messageLower, "restored") || strings.Contains(messageLower, "resolved") {
-		priority = "default"
-		tags = "white_check_mark"
-	}
-	
-	// Add resource type specific tags
-	switch alertType {
-	case "cpu":
-		tags += ",cpu"
-	case "ram", "memory":
-		tags += ",memory"
-	case "disk":
-		tags += ",floppy_disk"
-	case "network":
-		tags += ",globe_with_meridians"
-	case "service":
-		tags += ",gear"
-	case "ssl":
-		tags += ",lock"
-	}
-	
-	req.Header.Set("Tags", tags)
-	req.Header.Set("Priority", priority)
-	
-	// Add API token authentication if provided
-	if config.APIToken != "" {
-		req.Header.Set("Authorization", "Bearer "+config.APIToken)
-	}
-
-	// Send the request
-	client := &http.Client{}
-	resp, err := client.Do(req)
-	if err != nil {
-		return fmt.Errorf("failed to send NTFY notification: %v", err)
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
-		return fmt.Errorf("ntfy API error, status: %d", resp.StatusCode)
-	}
-
-	return nil
+	return ns.SendNotification(config, message)
 }
 
 // generateServerMessage creates a message for server notifications using server template
-func (ns *NtfyService) generateServerMessage(payload *NotificationPayload, template *ServerNotificationTemplate, resourceType string) string {
+func (ns *NotifiarrService) generateServerMessage(payload *NotificationPayload, template *ServerNotificationTemplate, resourceType string) string {
 	var templateMessage string
 	
 	// Select appropriate template message based on status and resource type
@@ -204,7 +205,7 @@ func (ns *NtfyService) generateServerMessage(payload *NotificationPayload, templ
 }
 
 // generateServiceMessage creates a message for service notifications using service template
-func (ns *NtfyService) generateServiceMessage(payload *NotificationPayload, template *ServiceNotificationTemplate) string {
+func (ns *NotifiarrService) generateServiceMessage(payload *NotificationPayload, template *ServiceNotificationTemplate) string {
 	var templateMessage string
 	
 	// Select appropriate template message based on status
@@ -234,7 +235,7 @@ func (ns *NtfyService) generateServiceMessage(payload *NotificationPayload, temp
 }
 
 // replacePlaceholders replaces all placeholders in the message with actual values
-func (ns *NtfyService) replacePlaceholders(message string, payload *NotificationPayload) string {
+func (ns *NotifiarrService) replacePlaceholders(message string, payload *NotificationPayload) string {
 	// Replace basic placeholders
 	message = strings.ReplaceAll(message, "${service_name}", payload.ServiceName)
 	message = strings.ReplaceAll(message, "${status}", strings.ToUpper(payload.Status))
@@ -302,16 +303,31 @@ func (ns *NtfyService) replacePlaceholders(message string, payload *Notification
 }
 
 // safeString returns the string value or "N/A" if empty
-func (ns *NtfyService) safeString(value string) string {
+func (ns *NotifiarrService) safeString(value string) string {
 	if value == "" {
 		return "N/A"
 	}
 	return value
 }
 
+// getStatusColor returns appropriate color for status
+func (ns *NotifiarrService) getStatusColor(message string) string {
+	messageLower := strings.ToLower(message)
+	
+	if strings.Contains(messageLower, "down") || strings.Contains(messageLower, "error") || strings.Contains(messageLower, "failed") {
+		return "FF0000" // Red
+	} else if strings.Contains(messageLower, "up") || strings.Contains(messageLower, "restored") || strings.Contains(messageLower, "resolved") {
+		return "00FF00" // Green
+	} else if strings.Contains(messageLower, "warning") || strings.Contains(messageLower, "alert") {
+		return "FFA500" // Orange
+	}
+	
+	return "0099FF" // Blue (default)
+}
+
 // generateDefaultUptimeMessage creates a default uptime message with proper formatting
-func (ns *NtfyService) generateDefaultUptimeMessage(payload *NotificationPayload) string {
-	// Status emoji mapping for NTFY
+func (ns *NotifiarrService) generateDefaultUptimeMessage(payload *NotificationPayload) string {
+	// Status emoji mapping
 	statusEmoji := "🔵"
 	switch strings.ToLower(payload.Status) {
 	case "up":
@@ -331,50 +347,50 @@ func (ns *NtfyService) generateDefaultUptimeMessage(payload *NotificationPayload
 	
 	// Add URL or host
 	if payload.URL != "" {
-		details = append(details, fmt.Sprintf("Host URL: %s", payload.URL))
+		details = append(details, fmt.Sprintf(" - Host URL: %s", payload.URL))
 	} else if payload.Host != "" {
-		details = append(details, fmt.Sprintf("Host: %s", payload.Host))
+		details = append(details, fmt.Sprintf(" - Host: %s", payload.Host))
 	}
 	
 	// Add service type
 	if payload.ServiceType != "" {
-		details = append(details, fmt.Sprintf("Type: %s", strings.ToUpper(payload.ServiceType)))
+		details = append(details, fmt.Sprintf(" - Type: %s", strings.ToUpper(payload.ServiceType)))
 	}
 	
 	// Add port if available
 	if payload.Port > 0 {
-		details = append(details, fmt.Sprintf("Port: %d", payload.Port))
+		details = append(details, fmt.Sprintf(" - Port: %d", payload.Port))
 	}
 	
 	// Add domain if available
 	if payload.Domain != "" {
-		details = append(details, fmt.Sprintf("Domain: %s", payload.Domain))
+		details = append(details, fmt.Sprintf(" - Domain: %s", payload.Domain))
 	}
 	
 	// Add response time
 	if payload.ResponseTime > 0 {
-		details = append(details, fmt.Sprintf("Response time: %dms", payload.ResponseTime))
+		details = append(details, fmt.Sprintf(" - Response time: %dms", payload.ResponseTime))
 	} else {
-		details = append(details, "Response time: N/A")
+		details = append(details, " - Response time: N/A")
 	}
 	
 	// Add region info
 	if payload.RegionName != "" {
-		details = append(details, fmt.Sprintf("Region: %s", payload.RegionName))
+		details = append(details, fmt.Sprintf(" - Region: %s", payload.RegionName))
 	}
 	
 	// Add agent info
 	if payload.AgentID != "" {
-		details = append(details, fmt.Sprintf("Agent: %s", payload.AgentID))
+		details = append(details, fmt.Sprintf(" - Agent: %s", payload.AgentID))
 	}
 	
 	// Add uptime if available
 	if payload.Uptime > 0 {
-		details = append(details, fmt.Sprintf("Uptime: %d%%", payload.Uptime))
+		details = append(details, fmt.Sprintf(" - Uptime: %d%%", payload.Uptime))
 	}
 	
 	// Add timestamp
-	details = append(details, fmt.Sprintf("Time: %s", payload.Timestamp.Format("2006-01-02 15:04:05")))
+	details = append(details, fmt.Sprintf(" - Time: %s", payload.Timestamp.Format("2006-01-02 15:04:05")))
 	
 	// Combine message with details
 	if len(details) > 0 {
@@ -385,7 +401,7 @@ func (ns *NtfyService) generateDefaultUptimeMessage(payload *NotificationPayload
 }
 
 // generateDefaultServerMessage creates a default server message
-func (ns *NtfyService) generateDefaultServerMessage(payload *NotificationPayload, resourceType string) string {
+func (ns *NotifiarrService) generateDefaultServerMessage(payload *NotificationPayload, resourceType string) string {
 	statusEmoji := "🔵"
 	switch strings.ToLower(payload.Status) {
 	case "up":
@@ -396,5 +412,5 @@ func (ns *NtfyService) generateDefaultServerMessage(payload *NotificationPayload
 		statusEmoji = "🟡"
 	}
 	
-	return fmt.Sprintf("%s🖥️ Server %s (%s) status: %s", statusEmoji, payload.ServiceName, payload.Hostname, strings.ToUpper(payload.Status))
+	return fmt.Sprintf("%s 🖥️ Server %s (%s) status: %s", statusEmoji, payload.ServiceName, payload.Hostname, strings.ToUpper(payload.Status))
 }

@@ -76,7 +76,7 @@ The roadmap is divided into the following stages:
 - [ ] ✅ Add ntfy push notifications
 
 ### 🚀 v1.6.0 – Feature Enhancements _(Target: Q3 2025)_
-**Status:** 🔧 In Progress
+**Status:** ✅ Completed 
 #### Tentative Features:
 - [ ] ✅ Allow user to update the schema directly from the dashboard
 - [ ] ✅ Add Korean translations and update types. By @taking [#143](https://github.com/operacle/checkcle/pull/143)
@@ -89,7 +89,14 @@ The roadmap is divided into the following stages:
 - [ ] ✅ fix(ssl):  Ensure edit form saves notification_id and template_id in DB.
 - [ ] ✅ Add Notifiarr notifications
 - [ ] ✅ Add Gotify notifications
-- [ ] 🔧 Enhance the Data retention feature
+- [ ] ✅ Enhance the Data retention feature
+
+
+### 🚀 v1.7.0 – Feature Enhancements _(Target: Q3 2025)_
+**Status:** 🔧 In Progress
+#### Tentative Features:
+- [ ] 🔧 Fix for the response time dashboard filter (date/time) in the uptime detail page
+- [ ] 🔧 Fix the server historical loading data
 - [ ] 🔧 Improve docker agent for server monitoring
 - [ ] 🔧 Improve the Server Agent on Unraid
 - [ ] 🔧 Server Windows Agent

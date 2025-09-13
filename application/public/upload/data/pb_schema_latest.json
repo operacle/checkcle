@@ -154,7 +154,8 @@
                     "email",
                     "ntfy",
                     "pushover",
-                    "notifiarr"
+                    "notifiarr",
+                    "gotify"
                 ]
             },
             {
@@ -332,6 +333,20 @@
                 "max": 0,
                 "min": 0,
                 "name": "user_key",
+                "pattern": "",
+                "presentable": false,
+                "primaryKey": false,
+                "required": false,
+                "system": false,
+                "type": "text"
+            },
+            {
+                "autogeneratePattern": "",
+                "hidden": false,
+                "id": "text3401535476",
+                "max": 0,
+                "min": 0,
+                "name": "server_url",
                 "pattern": "",
                 "presentable": false,
                 "primaryKey": false,

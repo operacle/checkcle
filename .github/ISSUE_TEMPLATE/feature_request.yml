@@ -51,7 +51,8 @@ body:
     id: checklist
     attributes:
       label: Checklist
-      description: Before submitting, please confirm:
+      description: |
+        Before submitting, please confirm:
       options:
         - label: I have searched existing issues to make sure this feature hasn’t been requested yet.
           required: true

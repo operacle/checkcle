@@ -45,7 +45,8 @@ body:
     id: checklist
     attributes:
       label: Checklist
-      description: Before submitting, please confirm the following:
+      description: |
+        Before submitting, please confirm the following:
       options:
         - label: I have searched existing issues and discussions for a solution.
           required: true

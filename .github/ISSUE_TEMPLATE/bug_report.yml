@@ -85,7 +85,8 @@ body:
     id: terms
     attributes:
       label: Checklist
-      description: Please confirm the following before submitting:
+      description: |
+        Please confirm the following before submitting:
       options:
         - label: I have searched existing issues to avoid creating duplicates.
           required: true

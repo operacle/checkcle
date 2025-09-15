@@ -1,13 +1,39 @@
 import { Button } from "@/components/ui/button";
 import { AuthUser } from "@/services/authService";
 import { useTheme } from "@/contexts/ThemeContext";
-import { Moon, PanelLeft, PanelLeftClose, Sun, Globe, FileText, Github, Twitter, MessageSquare, Bell, User, Settings, LogOut } from "lucide-react";
+import {
+  Moon,
+  PanelLeft,
+  PanelLeftClose,
+  Sun,
+  Globe,
+  FileText,
+  Github,
+  Twitter,
+  MessageSquare,
+  Bell,
+  User,
+  Settings,
+  LogOut,
+  CaseUpper,
+  BookA,
+  CaseSensitive,
+  CaseLower,
+  ALargeSmall,
+} from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu";
 import { useEffect, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useNavigate } from "react-router-dom";
 import { useSystemSettings } from "@/hooks/useSystemSettings";
+import useDynamicFontSize from "@/contexts/FontSizeContext";
 
 interface HeaderProps {
   currentUser: AuthUser | null;
@@ -20,7 +46,7 @@ export const Header = ({
   currentUser,
   onLogout,
   sidebarCollapsed,
-  toggleSidebar
+  toggleSidebar,
 }: HeaderProps) => {
   const { theme, toggleTheme } = useTheme();
   const { language, setLanguage, t } = useLanguage();
@@ -55,148 +81,270 @@ export const Header = ({
   }, [currentUser]);
 
   // Prepare avatar URL - ensure it displays correctly if it's a local profile image
-  let avatarUrl = '';
+  let avatarUrl = "";
   if (currentUser?.avatar) {
     // If it's a relative path from the public folder, make sure it's resolved properly
-    if (currentUser.avatar.startsWith('/upload/profile/')) {
+    if (currentUser.avatar.startsWith("/upload/profile/")) {
       avatarUrl = currentUser.avatar;
     } else {
       avatarUrl = currentUser.avatar;
     }
     console.log("Final avatar URL:", avatarUrl);
   }
-
+  const [fontSize, setFontSize] = useState(() => {
+    const savedFontSize = localStorage.getItem("fontSize");
+    return savedFontSize ? parseInt(savedFontSize, 10) : 14;
+  });
+  useDynamicFontSize(fontSize);
   return (
     <header className="relative bg-background border-b border-border px-6 flex justify-between items-center py-[12px] overflow-hidden">
       {/* Grid Pattern Overlay - Similar to StatusCards */}
       <div className="absolute inset-0 z-0">
-        <div 
-          className="w-full h-full"
-          style={{ 
-            backgroundImage: `linear-gradient(${theme === 'dark' ? '#ffffff10' : '#00000010'} 1px, transparent 1px), 
-                              linear-gradient(90deg, ${theme === 'dark' ? '#ffffff10' : '#00000010'} 1px, transparent 1px)`,
-            backgroundSize: '20px 20px'
+        <div
+          className="w-full h-full dark:bg-black"
+          style={{
+            backgroundImage: `linear-gradient(${
+              theme === "dark" ? "#ffffff10" : "#00000010"
+            } 1px, transparent 1px), 
+                              linear-gradient(90deg, ${
+                                theme === "dark" ? "#ffffff10" : "#00000010"
+                              } 1px, transparent 1px)`,
+            backgroundSize: "20px 20px",
           }}
         >
           <div className="w-full h-full backdrop-blur-[1px]"></div>
         </div>
       </div>
-      
+
       {/* Header Content */}
       <div className="flex items-center gap-4 z-10">
-        <Button variant="ghost" size="icon" onClick={toggleSidebar} className="mr-2">
-          {sidebarCollapsed ? <PanelLeft className="h-5 w-5" /> : <PanelLeftClose className="h-5 w-5" />}
+        <div
+          className={` p-1 h-8  w-8 -ml-2 rounded bg-gray-600 ${
+            !sidebarCollapsed ? "hidden" : ""
+          }`}
+        >
+          <img
+            src="/favicon_sidebar.ico"
+            alt="CheckCle"
+            className={`h-6 w-6  `}
+          />
+        </div>
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={toggleSidebar}
+          className="mr-2"
+        >
+          {sidebarCollapsed ? (
+            <PanelLeft className="h-5 w-5" />
+          ) : (
+            <PanelLeftClose className="h-5 w-5" />
+          )}
         </Button>
-        
+
         <div className="flex items-center space-x-2">
-          <h1 className="text-lg font-medium">{greeting}, {currentUser?.name || currentUser?.email?.split('@')[0] || 'User'} 👋 ✨</h1>
+          <h1 className="font-medium text-xl">
+            {greeting},{" "}
+            {currentUser?.name || currentUser?.email?.split("@")[0] || "User"}{" "}
+            👋 ✨
+          </h1>
         </div>
       </div>
-      
+
       <div className="flex items-center space-x-4 z-10">
-        <Button variant="outline" size="icon" className="rounded-full w-8 h-8 border-border" onClick={toggleTheme}>
+        <Button
+          variant="outline"
+          size="icon"
+          className="rounded-full w-8 h-8 border-border"
+          onClick={toggleTheme}
+        >
           <span className="sr-only">Toggle theme</span>
-          {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+          {theme === "dark" ? (
+            <Sun className="w-4 h-4" />
+          ) : (
+            <Moon className="w-4 h-4" />
+          )}
         </Button>
-        
+
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" size="icon" className="rounded-full w-8 h-8 border-border">
+            <Button
+              variant="outline"
+              size="icon"
+              className="rounded-full w-8 h-8 border-border"
+            >
               <span className="sr-only">{t("language")}</span>
               <Globe className="w-4 h-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem onClick={() => setLanguage("en")} className={language === "en" ? "bg-accent" : ""}>
+            <DropdownMenuItem
+              onClick={() => setLanguage("en")}
+              className={language === "en" ? "bg-accent" : ""}
+            >
               {t("english")}
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setLanguage("km")} className={language === "km" ? "bg-accent" : ""}>
+            <DropdownMenuItem
+              onClick={() => setLanguage("km")}
+              className={language === "km" ? "bg-accent" : ""}
+            >
               {t("khmer")}
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setLanguage("de")} className={language === "de" ? "bg-accent" : ""}>
+            <DropdownMenuItem
+              onClick={() => setLanguage("de")}
+              className={language === "de" ? "bg-accent" : ""}
+            >
               {t("Deutsch")}
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setLanguage("ko")} className={language === "ko" ? "bg-accent" : ""}>
+            <DropdownMenuItem
+              onClick={() => setLanguage("ko")}
+              className={language === "ko" ? "bg-accent" : ""}
+            >
               {t("korean")}
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setLanguage("ja")} className={language === "ja" ? "bg-accent" : ""}>
+            <DropdownMenuItem
+              onClick={() => setLanguage("ja")}
+              className={language === "ja" ? "bg-accent" : ""}
+            >
               {t("japanese")}
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setLanguage("zhcn")} className={language === "zhcn" ? "bg-accent" : ""}>
+            <DropdownMenuItem
+              onClick={() => setLanguage("zhcn")}
+              className={language === "zhcn" ? "bg-accent" : ""}
+            >
               {t("simplifiedChinese")}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-        
+
         {/* Documentation */}
-        <Button 
-          variant="outline" 
-          size="icon" 
+        <Button
+          variant="outline"
+          size="icon"
           className="rounded-full w-8 h-8 border-border"
           onClick={() => window.open("https://docs.checkcle.io", "_blank")}
         >
           <span className="sr-only">{t("documentation")}</span>
           <FileText className="w-4 h-4" />
         </Button>
-        
+
         {/* GitHub */}
-        <Button 
-          variant="outline" 
-          size="icon" 
+        <Button
+          variant="outline"
+          size="icon"
           className="rounded-full w-8 h-8 border-border"
-          onClick={() => window.open("https://github.com/operacle/checkcle", "_blank")}
+          onClick={() =>
+            window.open("https://github.com/operacle/checkcle", "_blank")
+          }
         >
           <span className="sr-only">GitHub</span>
           <Github className="w-4 h-4" />
         </Button>
-        
+
         {/* X (Twitter) */}
-        <Button 
-          variant="outline" 
-          size="icon" 
+        <Button
+          variant="outline"
+          size="icon"
           className="rounded-full w-8 h-8 border-border"
           onClick={() => window.open("https://x.com/checkcle_oss)", "_blank")}
         >
           <span className="sr-only">X (Twitter)</span>
           <Twitter className="w-4 h-4" />
         </Button>
-        
+
         {/* Discord */}
-        <Button 
-          variant="outline" 
-          size="icon" 
+        <Button
+          variant="outline"
+          size="icon"
           className="rounded-full w-8 h-8 border-border"
           onClick={() => window.open("https://discord.gg/xs9gbubGwX", "_blank")}
         >
           <span className="sr-only">Discord</span>
           <MessageSquare className="w-4 h-4" />
         </Button>
-        
+
         {/* Notifications */}
-        <Button variant="outline" size="icon" className="rounded-full w-8 h-8 border-border">
+        <Button
+          variant="outline"
+          size="icon"
+          className="rounded-full w-8 h-8 border-border"
+        >
           <span className="sr-only">{t("notifications")}</span>
           <Bell className="w-4 h-4" />
         </Button>
-        
+        {/* Fond Size */}
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="outline"
+              size="icon"
+              className="rounded-full w-8 h-8 border-border"
+            >
+              <span className="sr-only">{t("language")}</span>
+              <BookA className="w-4 h-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem
+              onClick={() => setFontSize((prev) => prev + 1)}
+              className={`cursor-pointer`}
+            >
+              <span className={`text-[15px] font-semibold`}> Aa +</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => setFontSize((prev) => prev - 1)}
+              className={`cursor-pointer`}
+            >
+              <span className={`text-[12px] font-semibold`}> Aa -</span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+
         {/* User Profile Dropdown */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Avatar className="h-8 w-8 cursor-pointer ring-offset-background transition-colors hover:bg-accent hover:text-accent-foreground">
-              {avatarUrl ? <AvatarImage src={avatarUrl} alt={currentUser?.name || currentUser?.email?.split('@')[0] || 'User'} /> : <AvatarFallback className="bg-primary/20 text-primary">
-                  {currentUser?.name?.[0] || currentUser?.email?.[0] || 'U'}
-                </AvatarFallback>}
+              {avatarUrl ? (
+                <AvatarImage
+                  src={avatarUrl}
+                  alt={
+                    currentUser?.name ||
+                    currentUser?.email?.split("@")[0] ||
+                    "User"
+                  }
+                />
+              ) : (
+                <AvatarFallback className="bg-primary/20 text-primary">
+                  {currentUser?.name?.[0] || currentUser?.email?.[0] || "U"}
+                </AvatarFallback>
+              )}
             </Avatar>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-56">
             <div className="flex items-center gap-3 p-2">
               <Avatar className="h-10 w-10">
-                {avatarUrl ? <AvatarImage src={avatarUrl} alt={currentUser?.name || currentUser?.email?.split('@')[0] || 'User'} /> : <AvatarFallback className="bg-primary/20 text-primary">
-                    {currentUser?.name?.[0] || currentUser?.email?.[0] || 'U'}
-                  </AvatarFallback>}
+                {avatarUrl ? (
+                  <AvatarImage
+                    src={avatarUrl}
+                    alt={
+                      currentUser?.name ||
+                      currentUser?.email?.split("@")[0] ||
+                      "User"
+                    }
+                  />
+                ) : (
+                  <AvatarFallback className="bg-primary/20 text-primary">
+                    {currentUser?.name?.[0] || currentUser?.email?.[0] || "U"}
+                  </AvatarFallback>
+                )}
               </Avatar>
               <div className="flex flex-col space-y-1">
-                <span className="font-medium">{currentUser?.name || 'User'}</span>
-                <span className="text-xs text-muted-foreground truncate">{currentUser?.email}</span>
+                <span className="font-medium">
+                  {currentUser?.name || "User"}
+                </span>
+                <span className="text-xs text-muted-foreground truncate">
+                  {currentUser?.email}
+                </span>
               </div>
             </div>
             <DropdownMenuSeparator />
@@ -209,7 +357,10 @@ export const Header = ({
               <span>{t("settings")}</span>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={onLogout} className="text-red-500 focus:text-red-500">
+            <DropdownMenuItem
+              onClick={onLogout}
+              className="text-red-500 focus:text-red-500"
+            >
               <LogOut className="mr-2 h-4 w-4" />
               <span>{t("logout")}</span>
             </DropdownMenuItem>

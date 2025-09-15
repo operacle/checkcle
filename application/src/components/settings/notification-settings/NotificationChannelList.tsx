@@ -1,6 +1,7 @@
 
 import { AlertConfiguration } from "@/services/alertConfigService";
 import { Bell, Edit, Trash2 } from "lucide-react";
+import { useState } from "react";
 import { 
   Table, 
   TableBody, 
@@ -33,29 +34,40 @@ export const NotificationChannelList = ({
   onEdit,
   onDelete
 }: NotificationChannelListProps) => {
+  const [optimisticStates, setOptimisticStates] = useState<Record<string, boolean>>({});
+
   const toggleEnabled = async (config: CombinedChannel) => {
     if (!config.id) return;
     
-    if (config.isWebhook) {
-      // Handle webhook toggle
-      try {
-        const newEnabled = config.enabled ? "off" : "on";
+    const currentEnabled = typeof config.enabled === 'string'
+      ? config.enabled === "true" || config.enabled === "on"
+      : !!config.enabled;
+    
+    // Apply optimistic update immediately
+    setOptimisticStates(prev => ({
+      ...prev,
+      [config.id!]: !currentEnabled
+    }));
+    
+    try {
+      if (config.isWebhook) {
+        // Handle webhook toggle
+        const newEnabled = currentEnabled ? "off" : "on";
         await pb.collection('webhook').update(config.id, {
           enabled: newEnabled
         });
-        // Trigger refresh by calling onEdit with empty config
-        onEdit({} as AlertConfiguration);
-      } catch (error) {
-        console.error("Error updating webhook:", error);
+      } else {
+        // Handle alert config toggle
+        await alertConfigService.updateAlertConfiguration(config.id, {
+          enabled: !currentEnabled
+        });
       }
-    } else {
-      // Handle alert config toggle
-      await alertConfigService.updateAlertConfiguration(config.id, {
-        enabled: !config.enabled
-      });
-      
-      // The parent component will refresh the list
-      onEdit(config as AlertConfiguration);
+  
+    } catch (error) {
+      setOptimisticStates(prev => ({
+        ...prev,
+        [config.id!]: currentEnabled
+      }));
     }
   };
 
@@ -130,12 +142,14 @@ export const NotificationChannelList = ({
               <TableCell className="max-w-xs truncate text-sm text-muted-foreground">
                 {getChannelDetails(channel)}
               </TableCell>
-              <TableCell>
+               <TableCell>
                 <Switch 
                   checked={
-                    typeof channel.enabled === 'string'
-                      ? channel.enabled === "true" || channel.enabled === "on"
-                      : !!channel.enabled
+                    channel.id && optimisticStates.hasOwnProperty(channel.id)
+                      ? optimisticStates[channel.id]
+                      : typeof channel.enabled === 'string'
+                        ? channel.enabled === "true" || channel.enabled === "on"
+                        : !!channel.enabled
                   }
                   onCheckedChange={() => toggleEnabled(channel)}
                 />
@@ -149,7 +163,7 @@ export const NotificationChannelList = ({
                     variant="outline" 
                     size="sm" 
                     onClick={() => onEdit(channel as AlertConfiguration)}
-                    disabled={channel.isWebhook} // Disable edit for webhooks for now
+                    disabled={channel.isWebhook} 
                   >
                     <Edit className="h-4 w-4" />
                   </Button>

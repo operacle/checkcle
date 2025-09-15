@@ -4,7 +4,6 @@ import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { UseFormReturn } from "react-hook-form";
-import { UserProfilePictureField } from "./";
 import { UserTextField } from "./";
 import { UserToggleField } from "./";
 import { UserRoleField } from "./";
@@ -20,7 +19,6 @@ const AddUserForm = ({ form, onSubmit, isSubmitting }: AddUserFormProps) => {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-        <UserProfilePictureField control={form.control} />
         
         <div className="grid grid-cols-2 gap-4">
           <UserTextField

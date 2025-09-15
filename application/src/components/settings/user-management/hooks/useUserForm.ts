@@ -27,7 +27,7 @@ export const useUserForm = () => {
       passwordConfirm: "",
       isActive: true,
       role: "user",
-      avatar: avatarOptions[0].url,
+      avatar: avatarOptions[Math.floor(Math.random() * avatarOptions.length)].url,
     },
   });
 

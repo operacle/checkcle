@@ -17,7 +17,6 @@ import { Loader2, AlertCircle } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import UserTextField from "./form-fields/UserTextField";
 import UserToggleField from "./form-fields/UserToggleField";
-import UserProfilePictureField from "./form-fields/UserProfilePictureField";
 import UserRoleField from "./form-fields/UserRoleField";
 
 interface EditUserDialogProps {
@@ -62,7 +61,6 @@ const EditUserDialog = ({
             
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-                <UserProfilePictureField control={form.control} />
                 
                 <div className="grid grid-cols-2 gap-4">
                   <UserTextField

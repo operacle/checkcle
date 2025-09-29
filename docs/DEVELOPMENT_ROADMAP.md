@@ -95,8 +95,10 @@ The roadmap is divided into the following stages:
 ### 🚀 v1.7.0 – Feature Enhancements _(Target: Q3 2025)_
 **Status:** 🔧 In Progress
 #### Tentative Features:
+- [ ] 🔧 Convert the Docker Hub from personal account to an organization (the CheckCle Docker Compose image endpoint will need to be updated).
 - [ ] 🔧 Fix for the response time dashboard filter (date/time) in the uptime detail page
 - [ ] 🔧 Fix the server historical loading data
+- [ ] 🔧 Fix Regenerate Server Agent ID & Token without page refresh
 - [ ] 🔧 Improve docker agent for server monitoring
 - [ ] 🔧 Improve the Server Agent on Unraid
 - [ ] 🔧 Server Windows Agent

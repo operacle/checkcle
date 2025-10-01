@@ -151,6 +151,12 @@ If you’re a tech company interested in supporting CheckCle, please contact the
          height="50" 
          alt="DigitalOcean Logo" />
   </a>
+  </a>
+    <a href="https://www.jetbrains.com/">
+    <img src="https://cdn.checkcle.io/images/sponsor/jetbrains.png" 
+         height="50" 
+         alt="Jetbrains Logo" />
+  </a>
 </div>
 
 ---

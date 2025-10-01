@@ -1,10 +1,8 @@
-
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { LucideIcon } from "lucide-react";
-
 interface MenuItemProps {
   id: string;
   path: string | null;
@@ -14,7 +12,6 @@ interface MenuItemProps {
   hasNavigation: boolean;
   collapsed: boolean;
 }
-
 export const MenuItem: React.FC<MenuItemProps> = ({
   id,
   path,
@@ -24,41 +21,36 @@ export const MenuItem: React.FC<MenuItemProps> = ({
   hasNavigation,
   collapsed
 }) => {
-  const { theme } = useTheme();
-  const { t } = useLanguage();
+  const {
+    theme
+  } = useTheme();
+  const {
+    t
+  } = useLanguage();
   const location = useLocation();
   const navigate = useNavigate();
-
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    
     if (hasNavigation && path) {
-      navigate(path, { replace: false });
+      navigate(path, {
+        replace: false
+      });
     }
   };
-
   const isActive = path && location.pathname === path;
   const mainIconSize = "h-6 w-6";
-
-  return (
-    <div 
-      className={`
+  return <div className={`
         ${collapsed ? 'p-3' : 'p-2 pl-3'} 
         mb-1 rounded-lg 
-        ${isActive ? (theme === 'dark' ? 'bg-gray-800' : 'bg-sidebar-accent') : `hover:${theme === 'dark' ? 'bg-gray-800' : 'bg-sidebar-accent'}`} 
+        ${isActive ? theme === 'dark' ? 'bg-gray-800' : 'bg-sidebar-accent' : `hover:${theme === 'dark' ? 'bg-gray-800' : 'bg-sidebar-accent'}`} 
         flex items-center 
         ${collapsed ? 'justify-center' : ''} 
         cursor-pointer
-      `}
-      onClick={handleClick}
-    >
+      `} onClick={handleClick}>
       <Icon className={`${mainIconSize} ${color}`} />
-      {!collapsed && (
-        <span className="ml-2.5 font-medium text-foreground tracking-wide text-[15px]">
+      {!collapsed && <span className="ml-2.5 text-foreground tracking-wide text-[15px] font-normal">
           {t(translationKey)}
-        </span>
-      )}
-    </div>
-  );
+        </span>}
+    </div>;
 };

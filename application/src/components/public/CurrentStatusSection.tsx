@@ -5,6 +5,7 @@ import { format } from 'date-fns';
 import { OperationalPageRecord } from '@/types/operational.types';
 import { StatusPageComponentRecord } from '@/types/statusPageComponents.types';
 import { Service } from '@/types/service.types';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface CurrentStatusSectionProps {
   page: OperationalPageRecord;
@@ -45,18 +46,18 @@ const getActualStatus = (components: StatusPageComponentRecord[], services: Serv
   return 'operational';
 };
 
-const getStatusMessage = (status: OperationalPageRecord['status']) => {
+const getStatusMessage = (status: OperationalPageRecord['status'], t: (k: string, m?: string) => string) => {
   switch (status) {
     case 'operational':
-      return 'All systems are operational';
+      return t('allOperational', 'public');
     case 'degraded':
-      return 'Some systems are experiencing degraded performance';
+      return t('degradedPerformance', 'public');
     case 'maintenance':
-      return 'Systems are currently under maintenance';
+      return t('underMaintenance', 'public');
     case 'major_outage':
-      return 'We are experiencing a major service outage';
+      return t('majorOutage', 'public');
     default:
-      return 'Status unknown';
+      return t('statusUnknown', 'public');
   }
 };
 
@@ -106,6 +107,7 @@ const getStatusBackground = (status: OperationalPageRecord['status']) => {
 };
 
 export const CurrentStatusSection = ({ page, components, services }: CurrentStatusSectionProps) => {
+  const { t } = useLanguage();
   const actualStatus = getActualStatus(components, services);
   const displayStatus = actualStatus; // Use actual status for real-time accuracy
   
@@ -114,7 +116,7 @@ export const CurrentStatusSection = ({ page, components, services }: CurrentStat
       <CardHeader>
         <CardTitle className="flex items-center gap-3 text-card-foreground text-xl">
           <Shield className="h-6 w-6" />
-          System Status
+          {t('systemStatus', 'public')}
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
@@ -123,10 +125,10 @@ export const CurrentStatusSection = ({ page, components, services }: CurrentStat
             {getStatusIcon(displayStatus)}
             <div>
               <h3 className={`text-2xl font-bold ${getStatusColor(displayStatus)}`}>
-                {getStatusMessage(displayStatus)}
+                {getStatusMessage(displayStatus, t)}
               </h3>
               <p className="text-sm text-muted-foreground mt-1">
-                Status automatically updated based on component health
+                {t('autoUpdatedByHealth', 'public')}
               </p>
             </div>
           </div>
@@ -136,20 +138,20 @@ export const CurrentStatusSection = ({ page, components, services }: CurrentStat
             displayStatus === 'maintenance' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200' :
             'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
           }`}>
-            {displayStatus === 'operational' ? 'All Systems Operational' :
-             displayStatus === 'degraded' ? 'Degraded Performance' :
-             displayStatus === 'maintenance' ? 'Under Maintenance' : 'Major Outage'}
+            {displayStatus === 'operational' ? t('allOperational', 'public') :
+             displayStatus === 'degraded' ? t('degradedPerformance', 'public') :
+             displayStatus === 'maintenance' ? t('underMaintenance', 'public') : t('majorOutage', 'public')}
           </div>
         </div>
         
         <div className="flex items-center justify-between text-sm text-muted-foreground border-t pt-4">
           <div className="flex items-center gap-2">
             <Clock className="h-4 w-4" />
-            <span>Last updated: {format(new Date(), 'MMM dd, yyyy HH:mm')} UTC</span>
+            <span>{t('lastUpdatedAt', 'public', { time: format(new Date(), 'MMM dd, yyyy HH:mm') })}</span>
           </div>
           <div className="flex items-center gap-2">
             <div className="h-2 w-2 bg-green-500 rounded-full animate-pulse"></div>
-            <span>Live status monitoring</span>
+            <span>{t('liveStatusMonitoring', 'public')}</span>
           </div>
         </div>
       </CardContent>

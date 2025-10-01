@@ -10,6 +10,7 @@ import { DockerContainer, DockerMetrics } from "@/types/docker.types";
 import { dockerService } from "@/services/dockerService";
 import { Loader2, Cpu, HardDrive, Network, MemoryStick } from "lucide-react";
 import { useTheme } from "@/contexts/ThemeContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface DockerMetricsDialogProps {
   container: DockerContainer | null;
@@ -20,16 +21,17 @@ interface DockerMetricsDialogProps {
 type TimeRange = '60m' | '1d' | '7d' | '1m' | '3m';
 
 const timeRangeOptions = [
-  { value: '60m' as TimeRange, label: '60 minutes', hours: 1 },
-  { value: '1d' as TimeRange, label: '1 day', hours: 24 },
-  { value: '7d' as TimeRange, label: '7 days', hours: 24 * 7 },
-  { value: '1m' as TimeRange, label: '1 month', hours: 24 * 30 },
-  { value: '3m' as TimeRange, label: '3 months', hours: 24 * 90 },
+  { value: '60m' as TimeRange, label: 'minutes60', hours: 1 },
+  { value: '1d' as TimeRange, label: 'day1', hours: 24 },
+  { value: '7d' as TimeRange, label: 'days7', hours: 24 * 7 },
+  { value: '1m' as TimeRange, label: 'month1', hours: 24 * 30 },
+  { value: '3m' as TimeRange, label: 'months3', hours: 24 * 90 },
 ];
 
 export const DockerMetricsDialog = ({ container, open, onOpenChange }: DockerMetricsDialogProps) => {
   const [timeRange, setTimeRange] = useState<TimeRange>("1d");
   const { theme } = useTheme();
+  const { t } = useLanguage();
 
   const {
     data: metrics = [],
@@ -232,11 +234,11 @@ export const DockerMetricsDialog = ({ container, open, onOpenChange }: DockerMet
       <DialogContent className="max-w-7xl max-h-[95vh] overflow-y-auto bg-background text-foreground">
         <DialogHeader>
           <DialogTitle className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2">
               <div className="h-8 w-8 rounded bg-primary/10 flex items-center justify-center">
                 <Cpu className="h-4 w-4 text-primary" />
               </div>
-              Container Metrics: {container.name}
+                {t('containerMetricsTitle', 'docker', { name: container.name })}
             </div>
             <div className="flex items-center gap-2">
               <Select value={timeRange} onValueChange={(value: TimeRange) => setTimeRange(value)}>
@@ -246,7 +248,7 @@ export const DockerMetricsDialog = ({ container, open, onOpenChange }: DockerMet
                 <SelectContent>
                   {timeRangeOptions.map((option) => (
                     <SelectItem key={option.value} value={option.value}>
-                      {option.label}
+                      {t(option.label, 'docker')}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -254,22 +256,22 @@ export const DockerMetricsDialog = ({ container, open, onOpenChange }: DockerMet
             </div>
           </DialogTitle>
           <p className="text-sm text-muted-foreground">
-            Docker ID: {container.docker_id} • {container.hostname}
+            {t('dockerId', 'docker')}: {container.docker_id} • {container.hostname}
           </p>
         </DialogHeader>
 
         {isLoading ? (
           <div className="flex items-center justify-center h-96">
             <Loader2 className="h-8 w-8 animate-spin" />
-            <span className="ml-2">Loading metrics...</span>
+            <span className="ml-2">{t('loadingMetrics', 'docker')}</span>
           </div>
         ) : error ? (
           <div className="flex items-center justify-center h-96 text-muted-foreground">
-            <p>Error loading metrics: {error.message}</p>
+            <p>{t('errorLoadingMetrics', 'docker')}: {String((error as any)?.message ?? '')}</p>
           </div>
         ) : chartData.length === 0 ? (
           <div className="flex items-center justify-center h-96 text-muted-foreground">
-            <p>No metrics data available for this container</p>
+            <p>{t('noMetricsAvailable', 'docker')}</p>
           </div>
         ) : (
           <>
@@ -277,7 +279,7 @@ export const DockerMetricsDialog = ({ container, open, onOpenChange }: DockerMet
             {latestMetric && (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
                 <MetricCard
-                  title="CPU"
+                  title={t('cpu', 'docker')}
                   used={`${latestMetric.cpuUsage}%`}
                   total={`${latestMetric.cpuCores} cores`}
                   free={`${(100 - latestMetric.cpuUsage).toFixed(1)}%`}
@@ -286,7 +288,7 @@ export const DockerMetricsDialog = ({ container, open, onOpenChange }: DockerMet
                   color={chartConfig.cpuUsage.color}
                 />
                 <MetricCard
-                  title="Memory"
+                  title={t('memoryTitle', 'docker')}
                   used={latestMetric.ramUsed}
                   total={latestMetric.ramTotal}
                   free={latestMetric.ramFree}
@@ -295,7 +297,7 @@ export const DockerMetricsDialog = ({ container, open, onOpenChange }: DockerMet
                   color={chartConfig.ramUsagePercent.color}
                 />
                 <MetricCard
-                  title="Disk"
+                  title={t('diskTitle', 'docker')}
                   used={latestMetric.diskUsed}
                   total={latestMetric.diskTotal}
                   free={latestMetric.diskFree}
@@ -304,10 +306,10 @@ export const DockerMetricsDialog = ({ container, open, onOpenChange }: DockerMet
                   color={chartConfig.diskUsagePercent.color}
                 />
                 <MetricCard
-                  title="Network"
+                  title={t('network', 'docker')}
                   used={`RX: ${latestMetric.networkRx}`}
                   total={`TX: ${latestMetric.networkTx}`}
-                  free={`Speed: ${latestMetric.networkRxSpeed} KB/s`}
+                  free={`${t('networkSpeedKbs', 'docker').replace('(KB/s)', '')}: ${latestMetric.networkRxSpeed} KB/s`}
                   percentage={0}
                   icon={Network}
                   color={chartConfig.networkRx.color}
@@ -319,19 +321,19 @@ export const DockerMetricsDialog = ({ container, open, onOpenChange }: DockerMet
               <TabsList className="grid w-full grid-cols-4 bg-muted">
                 <TabsTrigger value="cpu" className="flex items-center gap-2 data-[state=active]:bg-background">
                   <Cpu className="h-4 w-4" />
-                  CPU
+                  {t('cpu', 'docker')}
                 </TabsTrigger>
                 <TabsTrigger value="memory" className="flex items-center gap-2 data-[state=active]:bg-background">
                   <MemoryStick className="h-4 w-4" />
-                  Memory
+                  {t('memoryTitle', 'docker')}
                 </TabsTrigger>
                 <TabsTrigger value="disk" className="flex items-center gap-2 data-[state=active]:bg-background">
                   <HardDrive className="h-4 w-4" />
-                  Disk
+                  {t('diskTitle', 'docker')}
                 </TabsTrigger>
                 <TabsTrigger value="network" className="flex items-center gap-2 data-[state=active]:bg-background">
                   <Network className="h-4 w-4" />
-                  Network
+                  {t('network', 'docker')}
                 </TabsTrigger>
               </TabsList>
 
@@ -339,7 +341,7 @@ export const DockerMetricsDialog = ({ container, open, onOpenChange }: DockerMet
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <Card className="bg-card border-border">
                     <CardHeader>
-                      <CardTitle className="text-foreground">CPU Usage (%)</CardTitle>
+                      <CardTitle className="text-foreground">{t('cpuUsagePct', 'docker')}</CardTitle>
                     </CardHeader>
                     <CardContent>
                       <ChartContainer config={chartConfig} className="h-80">
@@ -365,7 +367,7 @@ export const DockerMetricsDialog = ({ container, open, onOpenChange }: DockerMet
                             stroke={chartConfig.cpuUsage.color}
                             strokeWidth={2}
                             dot={{ r: 3, fill: chartConfig.cpuUsage.color }}
-                            name="CPU Usage (%)"
+                            name={t('cpuUsagePct', 'docker')}
                           />
                         </LineChart>
                       </ChartContainer>
@@ -374,7 +376,7 @@ export const DockerMetricsDialog = ({ container, open, onOpenChange }: DockerMet
 
                   <Card className="bg-card border-border">
                     <CardHeader>
-                      <CardTitle className="text-foreground">CPU Usage vs Available</CardTitle>
+                      <CardTitle className="text-foreground">{t('cpuUsageVsAvailable', 'docker')}</CardTitle>
                     </CardHeader>
                     <CardContent>
                       <ChartContainer config={chartConfig} className="h-80">
@@ -401,7 +403,7 @@ export const DockerMetricsDialog = ({ container, open, onOpenChange }: DockerMet
                             stroke={theme === 'dark' ? "#6b7280" : "#9ca3af"}
                             fill={theme === 'dark' ? "#6b7280" : "#9ca3af"}
                             fillOpacity={0.3}
-                            name="CPU Available (%)"
+                            name={t('cpuAvailablePct', 'docker')}
                           />
                           <Area 
                             type="monotone" 
@@ -410,7 +412,7 @@ export const DockerMetricsDialog = ({ container, open, onOpenChange }: DockerMet
                             stroke={chartConfig.cpuUsage.color}
                             fill={chartConfig.cpuUsage.color}
                             fillOpacity={0.6}
-                            name="CPU Usage (%)"
+                            name={t('cpuUsagePct', 'docker')}
                           />
                         </AreaChart>
                       </ChartContainer>
@@ -423,7 +425,7 @@ export const DockerMetricsDialog = ({ container, open, onOpenChange }: DockerMet
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <Card className="bg-card border-border">
                     <CardHeader>
-                      <CardTitle className="text-foreground">Memory Usage (%)</CardTitle>
+                      <CardTitle className="text-foreground">{t('ramUsagePct', 'docker')}</CardTitle>
                     </CardHeader>
                     <CardContent>
                       <ChartContainer config={chartConfig} className="h-80">
@@ -459,7 +461,7 @@ export const DockerMetricsDialog = ({ container, open, onOpenChange }: DockerMet
 
                   <Card className="bg-card border-border">
                     <CardHeader>
-                      <CardTitle className="text-foreground">Memory Usage (Bytes)</CardTitle>
+                      <CardTitle className="text-foreground">{t('memoryUsageBytes', 'docker')}</CardTitle>
                     </CardHeader>
                     <CardContent>
                       <ChartContainer config={chartConfig} className="h-80">
@@ -479,8 +481,8 @@ export const DockerMetricsDialog = ({ container, open, onOpenChange }: DockerMet
                             content={<ChartTooltipContent className="bg-popover border-border" />}
                             cursor={{ stroke: getGridColor() }}
                             formatter={(value, name) => [
-                              name === 'Used Memory' ? formatBytes(Number(value)) : 
-                              name === 'Total Memory' ? formatBytes(Number(value)) : value,
+                              name === t('usedMemory', 'docker') ? formatBytes(Number(value)) : 
+                              name === t('totalMemory', 'docker') ? formatBytes(Number(value)) : value,
                               name
                             ]}
                           />
@@ -491,7 +493,7 @@ export const DockerMetricsDialog = ({ container, open, onOpenChange }: DockerMet
                             stroke={theme === 'dark' ? "#6b7280" : "#9ca3af"}
                             fill={theme === 'dark' ? "#6b7280" : "#9ca3af"}
                             fillOpacity={0.3}
-                            name="Total Memory"
+                            name={t('totalMemory', 'docker')}
                           />
                           <Area 
                             type="monotone" 
@@ -500,7 +502,7 @@ export const DockerMetricsDialog = ({ container, open, onOpenChange }: DockerMet
                             stroke={chartConfig.ramUsagePercent.color}
                             fill={chartConfig.ramUsagePercent.color}
                             fillOpacity={0.6}
-                            name="Used Memory"
+                            name={t('usedMemory', 'docker')}
                           />
                         </AreaChart>
                       </ChartContainer>
@@ -513,7 +515,7 @@ export const DockerMetricsDialog = ({ container, open, onOpenChange }: DockerMet
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <Card className="bg-card border-border">
                     <CardHeader>
-                      <CardTitle className="text-foreground">Disk Usage (%)</CardTitle>
+                      <CardTitle className="text-foreground">{t('diskUsagePct', 'docker')}</CardTitle>
                     </CardHeader>
                     <CardContent>
                       <ChartContainer config={chartConfig} className="h-80">
@@ -540,7 +542,7 @@ export const DockerMetricsDialog = ({ container, open, onOpenChange }: DockerMet
                             stroke={chartConfig.diskUsagePercent.color}
                             fill={chartConfig.diskUsagePercent.color}
                             fillOpacity={0.6}
-                            name="Disk Usage (%)"
+                            name={t('diskUsagePct', 'docker')}
                           />
                         </AreaChart>
                       </ChartContainer>
@@ -549,7 +551,7 @@ export const DockerMetricsDialog = ({ container, open, onOpenChange }: DockerMet
 
                   <Card className="bg-card border-border">
                     <CardHeader>
-                      <CardTitle className="text-foreground">Disk Usage (Bytes)</CardTitle>
+                      <CardTitle className="text-foreground">{t('diskUsageBytes', 'docker')}</CardTitle>
                     </CardHeader>
                     <CardContent>
                       <ChartContainer config={chartConfig} className="h-80">
@@ -569,8 +571,8 @@ export const DockerMetricsDialog = ({ container, open, onOpenChange }: DockerMet
                             content={<ChartTooltipContent className="bg-popover border-border" />}
                             cursor={{ stroke: getGridColor() }}
                             formatter={(value, name) => [
-                              name === 'Used Disk' ? formatBytes(Number(value)) : 
-                              name === 'Total Disk' ? formatBytes(Number(value)) : value,
+                              name === t('usedDisk', 'docker') ? formatBytes(Number(value)) : 
+                              name === t('totalDisk', 'docker') ? formatBytes(Number(value)) : value,
                               name
                             ]}
                           />
@@ -581,7 +583,7 @@ export const DockerMetricsDialog = ({ container, open, onOpenChange }: DockerMet
                             stroke={theme === 'dark' ? "#6b7280" : "#9ca3af"}
                             fill={theme === 'dark' ? "#6b7280" : "#9ca3af"}
                             fillOpacity={0.3}
-                            name="Total Disk"
+                            name={t('totalDisk', 'docker')}
                           />
                           <Area 
                             type="monotone" 
@@ -590,7 +592,7 @@ export const DockerMetricsDialog = ({ container, open, onOpenChange }: DockerMet
                             stroke={chartConfig.diskUsagePercent.color}
                             fill={chartConfig.diskUsagePercent.color}
                             fillOpacity={0.6}
-                            name="Used Disk"
+                            name={t('usedDisk', 'docker')}
                           />
                         </AreaChart>
                       </ChartContainer>
@@ -603,7 +605,7 @@ export const DockerMetricsDialog = ({ container, open, onOpenChange }: DockerMet
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <Card className="bg-card border-border">
                     <CardHeader>
-                      <CardTitle className="text-foreground">Network Traffic</CardTitle>
+                      <CardTitle className="text-foreground">{t('networkTraffic', 'docker')}</CardTitle>
                     </CardHeader>
                     <CardContent>
                       <ChartContainer config={chartConfig} className="h-64">
@@ -627,7 +629,7 @@ export const DockerMetricsDialog = ({ container, open, onOpenChange }: DockerMet
                             dataKey="networkRxBytes" 
                             stroke={chartConfig.networkRx.color}
                             strokeWidth={2}
-                            name="RX Bytes"
+                            name={t('rxBytes', 'docker')}
                             dot={{ r: 2 }}
                           />
                           <Line 
@@ -635,7 +637,7 @@ export const DockerMetricsDialog = ({ container, open, onOpenChange }: DockerMet
                             dataKey="networkTxBytes" 
                             stroke={chartConfig.networkTx.color}
                             strokeWidth={2}
-                            name="TX Bytes"
+                            name={t('txBytes', 'docker')}
                             dot={{ r: 2 }}
                           />
                         </LineChart>
@@ -645,7 +647,7 @@ export const DockerMetricsDialog = ({ container, open, onOpenChange }: DockerMet
 
                   <Card className="bg-card border-border">
                     <CardHeader>
-                      <CardTitle className="text-foreground">Network Speed (KB/s)</CardTitle>
+                      <CardTitle className="text-foreground">{t('networkSpeedKbs', 'docker')}</CardTitle>
                     </CardHeader>
                     <CardContent>
                       <ChartContainer config={chartConfig} className="h-64">
@@ -669,7 +671,7 @@ export const DockerMetricsDialog = ({ container, open, onOpenChange }: DockerMet
                             dataKey="networkRxSpeed" 
                             stroke={chartConfig.networkRx.color}
                             strokeWidth={2}
-                            name="RX Speed (KB/s)"
+                            name={t('rxSpeedKbs', 'docker')}
                             dot={{ r: 2 }}
                           />
                           <Line 
@@ -677,7 +679,7 @@ export const DockerMetricsDialog = ({ container, open, onOpenChange }: DockerMet
                             dataKey="networkTxSpeed" 
                             stroke={chartConfig.networkTx.color}
                             strokeWidth={2}
-                            name="TX Speed (KB/s)"
+                            name={t('txSpeedKbs', 'docker')}
                             dot={{ r: 2 }}
                           />
                         </LineChart>

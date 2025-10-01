@@ -8,12 +8,14 @@ import { CPUChart } from "./charts/CPUChart";
 import { MemoryChart } from "./charts/MemoryChart";
 import { DiskChart } from "./charts/DiskChart";
 import { NetworkChart } from "./charts/NetworkChart";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface ServerHistoryChartsProps {
   serverId: string;
 }
 
 export const ServerHistoryCharts = ({ serverId }: ServerHistoryChartsProps) => {
+  const { t } = useLanguage();
   const {
     timeRange,
     setTimeRange,
@@ -33,15 +35,15 @@ export const ServerHistoryCharts = ({ serverId }: ServerHistoryChartsProps) => {
 
   // Show skeleton loading state for better UX
   if (isLoading) {
-    return (
+   return (
       <div className="space-y-6">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
             <TrendingUp className="h-5 w-5" />
-            <h2 className="text-lg font-medium">Historical Performance</h2>
+            <h2 className="text-lg font-medium">{t("historicalPerformance")}</h2>
             <div className="flex items-center gap-2 ml-2">
               <Loader2 className="h-4 w-4 animate-spin" />
-              <span className="text-xs text-muted-foreground">Loading...</span>
+              <span className="text-xs text-muted-foreground">{t("loading")}</span>
             </div>
           </div>
           <TimeRangeSelector value={timeRange} onChange={setTimeRange} />
@@ -77,7 +79,7 @@ export const ServerHistoryCharts = ({ serverId }: ServerHistoryChartsProps) => {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <TrendingUp className="h-5 w-5" />
-            <h2 className="text-lg font-medium">Historical Performance</h2>
+            <h2 className="text-lg font-medium">{t("historicalPerformance")}</h2>
             {isFetching && <Loader2 className="h-4 w-4 animate-spin ml-2" />}
           </div>
           <TimeRangeSelector value={timeRange} onChange={setTimeRange} />
@@ -85,9 +87,9 @@ export const ServerHistoryCharts = ({ serverId }: ServerHistoryChartsProps) => {
         <Card>
           <CardContent className="flex items-center justify-center py-12">
             <div className="text-center">
-              <p className="text-muted-foreground">Error loading chart data</p>
+              <p className="text-muted-foreground">{t("errorLoadingChartData")}</p>
               <p className="text-xs mt-2 font-mono text-red-500">{error?.message}</p>
-              <p className="text-xs mt-1 text-muted-foreground">Server ID: {serverId} • Time Range: {timeRange}</p>
+              <p className="text-xs mt-1 text-muted-foreground">{t("serverIdTimeRange", { serverId, timeRange })}</p>
             </div>
           </CardContent>
         </Card>
@@ -101,7 +103,7 @@ export const ServerHistoryCharts = ({ serverId }: ServerHistoryChartsProps) => {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <TrendingUp className="h-5 w-5" />
-            <h2 className="text-lg font-medium">Historical Performance</h2>
+            <h2 className="text-lg font-medium">{t("historicalPerformance")}</h2>
             {isFetching && <Loader2 className="h-4 w-4 animate-spin ml-2" />}
           </div>
           <TimeRangeSelector value={timeRange} onChange={setTimeRange} />
@@ -109,11 +111,13 @@ export const ServerHistoryCharts = ({ serverId }: ServerHistoryChartsProps) => {
         <Card>
           <CardContent className="flex items-center justify-center py-12">
             <div className="text-center">
-              <p className="text-muted-foreground">No historical data available for {timeRange}</p>
-              <p className="text-xs mt-2">Raw metrics count: {metrics.length}</p>
-              <p className="text-xs mt-1">Server ID: {serverId} • Time Range: {timeRange}</p>
+              <p className="text-muted-foreground">{t("noHistoricalData", { timeRange })}</p>
+              <p className="text-xs mt-2">{t("rawMetricsCount", { count: metrics.length })}</p>
+              <p className="text-xs mt-1">{t("serverIdTimeRange", { serverId, timeRange })}</p>
               <p className="text-xs mt-1 text-muted-foreground">
-                {metrics.length > 0 ? 'Data exists but may be outside selected time range' : 'No metrics data found'}
+                {metrics.length > 0
+                  ? t("dataExistsOutsideRange")
+                  : t("noMetricsDataFound")}
               </p>
             </div>
           </CardContent>
@@ -129,13 +133,13 @@ export const ServerHistoryCharts = ({ serverId }: ServerHistoryChartsProps) => {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div className="flex items-center gap-2">
           <TrendingUp className="h-5 w-5" />
-          <h2 className="text-lg font-medium">Historical Performance</h2>
+          <h2 className="text-lg font-medium">{t("historicalPerformance")}</h2>
           <span className="text-xs text-muted-foreground">
             ({chartData.length} data points • {timeRange})
             {isFetching && (
               <span className="inline-flex items-center gap-1 ml-2">
                 <Loader2 className="h-3 w-3 animate-spin" />
-                <span className="text-blue-500">Updating...</span>
+                <span className="text-blue-500">{t("updating")}</span>
               </span>
             )}
           </span>

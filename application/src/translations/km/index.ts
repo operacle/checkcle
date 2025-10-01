@@ -9,6 +9,11 @@ import { maintenanceTranslations } from './maintenance';
 import { incidentTranslations } from './incident';
 import { sslTranslations } from './ssl';
 import { settingsTranslations } from './settings';
+import { instanceTranslations } from './instance';
+import { operationTranslations } from './operation';
+import { regionTranslations } from './region';
+import { dockerTranslations } from './docker';
+import { publicTranslations } from './public';
 
 const enTranslations: Translations = {
   common: commonTranslations,
@@ -19,7 +24,13 @@ const enTranslations: Translations = {
   maintenance: maintenanceTranslations,
   incident: incidentTranslations,
   ssl: sslTranslations,
-  settings: settingsTranslations
+  settings: settingsTranslations,
+  instance: instanceTranslations,
+  operation: operationTranslations,
+  region: regionTranslations,
+  docker: dockerTranslations,
+  public: publicTranslations
+  
 };
 
 export default enTranslations;

@@ -14,6 +14,7 @@ import { RefreshCw, X } from "lucide-react";
 import { alertConfigService, AlertConfiguration } from "@/services/alertConfigService";
 import { templateService, ServerNotificationTemplate } from "@/services/templateService";
 import { serverThresholdService, ServerThreshold } from "@/services/serverThresholdService";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface EditServerDialogProps {
   server: Server | null;
@@ -46,6 +47,7 @@ export const EditServerDialog: React.FC<EditServerDialogProps> = ({
   onOpenChange,
   onServerUpdated,
 }) => {
+  const { t } = useLanguage();
   const [formData, setFormData] = useState<ServerFormData>({
     name: "",
     check_interval: 60,
@@ -114,7 +116,7 @@ export const EditServerDialog: React.FC<EditServerDialogProps> = ({
         // Handle the API response format with proper field names and type conversion
         setThresholdFormData({
           cpu_threshold: parseInt(String(existingThreshold.cpu_threshold)) || 80,
-          ram_threshold: parseInt(String((existingThreshold as any).ram_threshold_message || existingThreshold.ram_threshold)) || 80,
+          ram_threshold: parseInt(String((existingThreshold.ram_threshold_message ?? existingThreshold.ram_threshold))) || 80,
           disk_threshold: parseInt(String(existingThreshold.disk_threshold)) || 80,
           network_threshold: parseInt(String(existingThreshold.network_threshold)) || 80,
         });
@@ -141,7 +143,7 @@ export const EditServerDialog: React.FC<EditServerDialogProps> = ({
         // Handle the API response format with proper field names and type conversion
         setThresholdFormData({
           cpu_threshold: parseInt(String(threshold.cpu_threshold)) || 80,
-          ram_threshold: parseInt(String((threshold as any).ram_threshold_message || threshold.ram_threshold)) || 80,
+          ram_threshold: parseInt(String((threshold.ram_threshold_message ?? threshold.ram_threshold))) || 80,
           disk_threshold: parseInt(String(threshold.disk_threshold)) || 80,
           network_threshold: parseInt(String(threshold.network_threshold)) || 80,
         });
@@ -165,8 +167,8 @@ export const EditServerDialog: React.FC<EditServerDialogProps> = ({
     } catch (error) {
       toast({
         variant: "destructive",
-        title: "Error",
-        description: "Failed to load notification channels",
+        title: t('error', 'instance'),
+        description: t('failedToLoadChannels', 'instance'),
       });
     } finally {
       setLoadingAlertConfigs(false);
@@ -182,8 +184,8 @@ export const EditServerDialog: React.FC<EditServerDialogProps> = ({
     } catch (error) {
       toast({
         variant: "destructive",
-        title: "Error",
-        description: "Failed to load templates",
+        title: t('error', 'instance'),
+        description: t('failedToLoadTemplates', 'instance'),
       });
     } finally {
       setLoadingTemplates(false);
@@ -198,8 +200,8 @@ export const EditServerDialog: React.FC<EditServerDialogProps> = ({
     } catch (error) {
       toast({
         variant: "destructive",
-        title: "Error",
-        description: "Failed to load server thresholds",
+        title: t('error', 'instance'),
+        description: t('failedToLoadThresholds', 'instance'),
       });
     } finally {
       setLoadingThresholds(false);
@@ -274,15 +276,15 @@ export const EditServerDialog: React.FC<EditServerDialogProps> = ({
         } catch (error) {
           toast({
             variant: "destructive",
-            title: "Warning",
-            description: "Server updated but failed to update threshold values.",
+            title: t('warning', 'instance'),
+            description: t('serverUpdatedButThresholdFailed', 'instance'),
           });
         }
       }
 
       toast({
-        title: "Server updated",
-        description: `${formData.name} has been updated successfully.`,
+        title: t('serverUpdated', 'instance'),
+        description: t('serverUpdatedDesc', 'instance', { name: formData.name }),
       });
 
       onServerUpdated();
@@ -291,8 +293,8 @@ export const EditServerDialog: React.FC<EditServerDialogProps> = ({
     } catch (error) {
       toast({
         variant: "destructive",
-        title: "Error",
-        description: "Failed to update server. Please try again.",
+        title: t('error', 'instance'),
+        description: t('failedToUpdateServer', 'instance'),
       });
     } finally {
       setIsSubmitting(false);
@@ -323,62 +325,62 @@ export const EditServerDialog: React.FC<EditServerDialogProps> = ({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[700px] max-h-[80vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Edit Server Configuration</DialogTitle>
+          <DialogTitle>{t('editServerConfiguration', 'instance')}</DialogTitle>
         </DialogHeader>
         
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="serverName">Server Name *</Label>
+              <Label htmlFor="serverName">{t('serverNameLabel', 'instance')}</Label>
               <Input
                 id="serverName"
                 value={formData.name}
                 onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-                placeholder="Enter server name"
+                placeholder={t('serverNamePlaceholder', 'instance')}
                 required
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="checkInterval">Check Interval</Label>
+              <Label htmlFor="checkInterval">{t('checkIntervalLabel', 'instance')}</Label>
               <Select
                 value={formData.check_interval.toString()}
                 onValueChange={(value) => setFormData(prev => ({ ...prev, check_interval: parseInt(value) }))}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="Select interval" />
+                  <SelectValue placeholder={t('selectInterval', 'instance')} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="30">30 seconds</SelectItem>
-                  <SelectItem value="60">1 minute</SelectItem>
-                  <SelectItem value="120">2 minutes</SelectItem>
-                  <SelectItem value="300">5 minutes</SelectItem>
-                  <SelectItem value="600">10 minutes</SelectItem>
+                  <SelectItem value="30">{t('interval30s', 'instance')}</SelectItem>
+                  <SelectItem value="60">{t('interval1m', 'instance')}</SelectItem>
+                  <SelectItem value="120">{t('interval2m', 'instance')}</SelectItem>
+                  <SelectItem value="300">{t('interval5m', 'instance')}</SelectItem>
+                  <SelectItem value="600">{t('interval10m', 'instance')}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="maxRetries">Max Retries</Label>
+              <Label htmlFor="maxRetries">{t('maxRetriesLabel', 'instance')}</Label>
               <Select
                 value={formData.max_retries.toString()}
                 onValueChange={(value) => setFormData(prev => ({ ...prev, max_retries: parseInt(value) }))}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="Select max retries" />
+                  <SelectValue placeholder={t('selectMaxRetries', 'instance')} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="1">1 retry</SelectItem>
-                  <SelectItem value="2">2 retries</SelectItem>
-                  <SelectItem value="3">3 retries</SelectItem>
-                  <SelectItem value="5">5 retries</SelectItem>
-                  <SelectItem value="10">10 retries</SelectItem>
+                  <SelectItem value="1">{t('retry1', 'instance')}</SelectItem>
+                  <SelectItem value="2">{t('retry2', 'instance')}</SelectItem>
+                  <SelectItem value="3">{t('retry3', 'instance')}</SelectItem>
+                  <SelectItem value="5">{t('retry5', 'instance')}</SelectItem>
+                  <SelectItem value="10">{t('retry10', 'instance')}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="dockerMonitoring">Docker Monitoring</Label>
+              <Label htmlFor="dockerMonitoring">{t('dockerMonitoring', 'instance')}</Label>
               <div className="flex items-center space-x-2">
                 <Switch
                   id="dockerMonitoring"
@@ -389,7 +391,7 @@ export const EditServerDialog: React.FC<EditServerDialogProps> = ({
                   }))}
                 />
                 <Label htmlFor="dockerMonitoring" className="text-sm text-muted-foreground">
-                  {formData.docker_monitoring ? "Enabled" : "Disabled"}
+                  {formData.docker_monitoring ? t('enabled', 'instance') : t('disabled', 'instance')}
                 </Label>
               </div>
             </div>
@@ -407,22 +409,22 @@ export const EditServerDialog: React.FC<EditServerDialogProps> = ({
                   // Remove the automatic clearing of notification_channels, threshold_id, and template_id
                 }))}
               />
-              <Label htmlFor="notificationEnabled">Enable Notifications</Label>
+              <Label htmlFor="notificationEnabled">{t('enableNotifications', 'instance')}</Label>
             </div>
             
             {/* Expanded Notification Settings */}
             {formData.notification_enabled && (
               <Card className="border-l-4 border-l-blue-500">
                 <CardHeader>
-                  <CardTitle className="text-lg">Notification Settings</CardTitle>
+                  <CardTitle className="text-lg">{t('notificationSettings', 'instance')}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   {/* Multiple Notification Channels Selection */}
                   <div className="space-y-2">
-                    <Label>Notification Channels</Label>
+                    <Label>{t('notificationChannels', 'instance')}</Label>
                     <div className="space-y-2 max-h-40 overflow-y-auto border rounded-md p-3">
                       {loadingAlertConfigs ? (
-                        <div className="text-sm text-muted-foreground">Loading channels...</div>
+                        <div className="text-sm text-muted-foreground">{t('loadingChannels', 'instance')}</div>
                       ) : alertConfigs.length > 0 ? (
                         alertConfigs.map((config) => (
                           <div key={config.id} className="flex items-center space-x-2">
@@ -442,14 +444,14 @@ export const EditServerDialog: React.FC<EditServerDialogProps> = ({
                           </div>
                         ))
                       ) : (
-                        <div className="text-sm text-muted-foreground">No notification channels available</div>
+                        <div className="text-sm text-muted-foreground">{t('noChannelsAvailable', 'instance')}</div>
                       )}
                     </div>
                     
                     {/* Selected Channels Display */}
                     {formData.notification_channels.length > 0 && (
                       <div className="space-y-2">
-                        <Label className="text-sm font-medium">Selected Channels:</Label>
+                        <Label className="text-sm font-medium">{t('selectedChannels', 'instance')}</Label>
                         <div className="flex flex-wrap gap-2">
                           {formData.notification_channels.map((channelId) => {
                             const channel = alertConfigs.find(c => c.id === channelId);
@@ -478,17 +480,17 @@ export const EditServerDialog: React.FC<EditServerDialogProps> = ({
 
                   {/* Server Set Threshold Selection */}
                   <div className="space-y-2">
-                    <Label htmlFor="thresholdId">Server Set Threshold</Label>
+                    <Label htmlFor="thresholdId">{t('serverSetThreshold', 'instance')}</Label>
                     <Select
                       value={formData.threshold_id}
                       onValueChange={(value) => setFormData(prev => ({ ...prev, threshold_id: value }))}
                       disabled={loadingThresholds}
                     >
                       <SelectTrigger>
-                        <SelectValue placeholder={loadingThresholds ? "Loading thresholds..." : "Select server threshold"} />
+                        <SelectValue placeholder={loadingThresholds ? t('loadingThresholds', 'instance') : t('selectServerThreshold', 'instance')} />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="none">No threshold (use default)</SelectItem>
+                        <SelectItem value="none">{t('noThreshold', 'instance')}</SelectItem>
                         {thresholds.map((threshold) => (
                           <SelectItem key={threshold.id} value={threshold.id}>
                             {threshold.name}
@@ -502,12 +504,12 @@ export const EditServerDialog: React.FC<EditServerDialogProps> = ({
                   {selectedThreshold && (
                     <Card className="bg-muted/50">
                       <CardHeader>
-                        <CardTitle className="text-base">Threshold Details: {selectedThreshold.name}</CardTitle>
+                        <CardTitle className="text-base">{t('thresholdDetails', 'instance')}: {selectedThreshold.name}</CardTitle>
                       </CardHeader>
                       <CardContent className="space-y-3">
                         <div className="grid grid-cols-2 gap-3 text-sm">
                           <div>
-                            <Label className="text-xs font-medium text-muted-foreground">CPU Threshold (%)</Label>
+                            <Label className="text-xs font-medium text-muted-foreground">{t('cpuThresholdPct', 'instance')}</Label>
                             <Input
                               type="number"
                               min="0"
@@ -521,7 +523,7 @@ export const EditServerDialog: React.FC<EditServerDialogProps> = ({
                             />
                           </div>
                           <div>
-                            <Label className="text-xs font-medium text-muted-foreground">RAM Threshold (%)</Label>
+                            <Label className="text-xs font-medium text-muted-foreground">{t('ramThresholdPct', 'instance')}</Label>
                             <Input
                               type="number"
                               min="0"
@@ -535,7 +537,7 @@ export const EditServerDialog: React.FC<EditServerDialogProps> = ({
                             />
                           </div>
                           <div>
-                            <Label className="text-xs font-medium text-muted-foreground">Disk Threshold (%)</Label>
+                            <Label className="text-xs font-medium text-muted-foreground">{t('diskThresholdPct', 'instance')}</Label>
                             <Input
                               type="number"
                               min="0"
@@ -549,7 +551,7 @@ export const EditServerDialog: React.FC<EditServerDialogProps> = ({
                             />
                           </div>
                           <div>
-                            <Label className="text-xs font-medium text-muted-foreground">Network Threshold (%)</Label>
+                            <Label className="text-xs font-medium text-muted-foreground">{t('networkThresholdPct', 'instance')}</Label>
                             <Input
                               type="number"
                               min="0"
@@ -569,17 +571,17 @@ export const EditServerDialog: React.FC<EditServerDialogProps> = ({
 
                   {/* Server Template Selection */}
                   <div className="space-y-2">
-                    <Label htmlFor="templateId">Server Template</Label>
+                    <Label htmlFor="templateId">{t('serverTemplate', 'instance')}</Label>
                     <Select
                       value={formData.template_id}
                       onValueChange={(value) => setFormData(prev => ({ ...prev, template_id: value }))}
                       disabled={loadingTemplates}
                     >
                       <SelectTrigger>
-                        <SelectValue placeholder={loadingTemplates ? "Loading templates..." : "Select server template"} />
+                        <SelectValue placeholder={loadingTemplates ? t('loadingTemplates', 'instance') : t('selectServerTemplate', 'instance')} />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="none">No template (use default)</SelectItem>
+                        <SelectItem value="none">{t('noTemplate', 'instance')}</SelectItem>
                         {templates.map((template) => (
                           <SelectItem key={template.id} value={template.id}>
                             {template.name}
@@ -593,44 +595,44 @@ export const EditServerDialog: React.FC<EditServerDialogProps> = ({
                   {selectedTemplate && (
                     <Card className="bg-muted/50">
                       <CardHeader>
-                        <CardTitle className="text-base">Template Details: {selectedTemplate.name}</CardTitle>
+                        <CardTitle className="text-base">{t('templateDetails', 'instance')}: {selectedTemplate.name}</CardTitle>
                       </CardHeader>
                       <CardContent className="space-y-3">
                         <div className="grid grid-cols-1 gap-3 text-sm">
                           <div>
-                            <Label className="text-xs font-medium text-muted-foreground">RAM Message</Label>
+                            <Label className="text-xs font-medium text-muted-foreground">{t('ramMessage', 'instance')}</Label>
                             <p className="text-sm bg-background p-2 rounded border">
-                              {selectedTemplate.ram_message || "No RAM message defined"}
+                              {selectedTemplate.ram_message || t('noMessageDefined', 'instance', { name: 'RAM' })}
                             </p>
                           </div>
                           <div>
-                            <Label className="text-xs font-medium text-muted-foreground">CPU Message</Label>
+                            <Label className="text-xs font-medium text-muted-foreground">{t('cpuMessage', 'instance')}</Label>
                             <p className="text-sm bg-background p-2 rounded border">
-                              {selectedTemplate.cpu_message || "No CPU message defined"}
+                              {selectedTemplate.cpu_message || t('noMessageDefined', 'instance', { name: 'CPU' })}
                             </p>
                           </div>
                           <div>
-                            <Label className="text-xs font-medium text-muted-foreground">Disk Message</Label>
+                            <Label className="text-xs font-medium text-muted-foreground">{t('diskMessage', 'instance')}</Label>
                             <p className="text-sm bg-background p-2 rounded border">
-                              {selectedTemplate.disk_message || "No disk message defined"}
+                              {selectedTemplate.disk_message || t('noMessageDefined', 'instance', { name: 'disk' })}
                             </p>
                           </div>
                           <div>
-                            <Label className="text-xs font-medium text-muted-foreground">Network Message</Label>
+                            <Label className="text-xs font-medium text-muted-foreground">{t('networkMessage', 'instance')}</Label>
                             <p className="text-sm bg-background p-2 rounded border">
-                              {selectedTemplate.network_message || "No network message defined"}
+                              {selectedTemplate.network_message || t('noMessageDefined', 'instance', { name: 'network' })}
                             </p>
                           </div>
                           <div>
-                            <Label className="text-xs font-medium text-muted-foreground">Up Message</Label>
+                            <Label className="text-xs font-medium text-muted-foreground">{t('upMessage', 'instance')}</Label>
                             <p className="text-sm bg-background p-2 rounded border">
-                              {selectedTemplate.up_message || "No up message defined"}
+                              {selectedTemplate.up_message || t('noMessageDefined', 'instance', { name: 'up' })}
                             </p>
                           </div>
                           <div>
-                            <Label className="text-xs font-medium text-muted-foreground">Down Message</Label>
+                            <Label className="text-xs font-medium text-muted-foreground">{t('downMessage', 'instance')}</Label>
                             <p className="text-sm bg-background p-2 rounded border">
-                              {selectedTemplate.down_message || "No down message defined"}
+                              {selectedTemplate.down_message || t('noMessageDefined', 'instance', { name: 'down' })}
                             </p>
                           </div>
                         </div>
@@ -649,16 +651,16 @@ export const EditServerDialog: React.FC<EditServerDialogProps> = ({
               onClick={handleCancel}
               disabled={isSubmitting}
             >
-              Cancel
+              {t('cancel', 'instance')}
             </Button>
             <Button type="submit" disabled={isSubmitting}>
               {isSubmitting ? (
                 <>
                   <RefreshCw className="mr-2 h-4 w-4 animate-spin" />
-                  Updating...
+                  {t('updating', 'instance')}
                 </>
               ) : (
-                "Update Server"
+                t('updateServer', 'instance')
               )}
             </Button>
           </div>

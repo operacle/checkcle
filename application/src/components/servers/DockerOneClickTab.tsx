@@ -5,6 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Copy, Download, Container } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { copyToClipboard } from "@/utils/copyUtils";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface DockerOneClickTabProps {
   serverToken: string;
@@ -26,6 +27,7 @@ export const DockerOneClickTab: React.FC<DockerOneClickTabProps> = ({
   serverId,
   onDialogClose,
 }) => {
+  const { t } = useLanguage();
   const getDockerOneClickCommand = () => {
     const scriptUrl = "https://cdn.checkcle.io/scripts/server-docker-agent.sh";
 
@@ -86,15 +88,15 @@ sudo -E bash ./server-docker-agent.sh`;
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-blue-700 dark:text-blue-400">
             <Container className="h-5 w-5" />
-            Docker One-Click Install
+            {t('dockerOneClickTitle')}
           </CardTitle>
           <CardDescription className="text-blue-600 dark:text-blue-300">
-            Automated Docker container installation with system monitoring capabilities
+            {t('dockerOneClickDesc')}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">
-            <Label className="text-blue-700 dark:text-blue-400">Docker One-Click Command</Label>
+            <Label className="text-blue-700 dark:text-blue-400">{t('dockerOneClickCommand')}</Label>
             <div className="relative">
               <pre className="bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 p-4 rounded-md text-sm overflow-x-auto whitespace-pre-wrap break-all text-blue-800 dark:text-blue-200">
                 <code>{getDockerOneClickCommand()}</code>
@@ -107,18 +109,18 @@ sudo -E bash ./server-docker-agent.sh`;
                 onClick={handleCopyOneClickCommand}
               >
                 <Copy className="h-4 w-4 mr-1" />
-                Copy
+                {t('copy')}
               </Button>
             </div>
           </div>
           
           <div className="text-sm text-blue-700 dark:text-blue-300 bg-blue-50 dark:bg-blue-950/50 border border-blue-200 dark:border-blue-800 p-3 rounded-md">
-            <p className="font-medium mb-1">This script will automatically:</p>
+            <p className="font-medium mb-1">{t('dockerScriptWill')}</p>
             <ol className="list-decimal list-inside space-y-1 text-xs">
-              <li>Download and setup the Docker monitoring agent</li>
-              <li>Configure all required environment variables</li>
-              <li>Start the container with proper system access</li>
-              <li>Setup monitoring data persistence</li>
+              <li>{t('dockerScriptStep1')}</li>
+              <li>{t('dockerScriptStep2')}</li>
+              <li>{t('dockerScriptStep3')}</li>
+              <li>{t('dockerScriptStep4')}</li>
             </ol>
           </div>
         </CardContent>
@@ -129,15 +131,15 @@ sudo -E bash ./server-docker-agent.sh`;
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Container className="h-5 w-5" />
-            Direct Docker Run Command
+            {t('directDockerTitle')}
           </CardTitle>
           <CardDescription>
-            If you prefer to run the Docker container directly without the script
+            {t('directDockerDesc')}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">
-            <Label>Docker Run Command</Label>
+            <Label>{t('dockerRunCommand')}</Label>
             <div className="relative">
               <pre className="bg-muted border p-4 rounded-md text-sm overflow-x-auto whitespace-pre-wrap break-all">
                 <code>{getDirectDockerCommand()}</code>
@@ -150,17 +152,17 @@ sudo -E bash ./server-docker-agent.sh`;
                 onClick={handleCopyDockerCommand}
               >
                 <Copy className="h-4 w-4 mr-1" />
-                Copy
+                {t('copy')}
               </Button>
             </div>
           </div>
 
           <div className="text-sm text-muted-foreground bg-muted/50 border p-3 rounded-md">
-            <p className="font-medium mb-1">Prerequisites for direct Docker run:</p>
+            <p className="font-medium mb-1">{t('dockerPrerequisites')}</p>
             <ol className="list-decimal list-inside space-y-1 text-xs">
-              <li>Docker must be installed and running</li>
-              <li>The operacle/checkcle-server-agent image must be available</li>
-              <li>Run as root or with sudo privileges</li>
+              <li>{t('dockerPrereqStep1')}</li>
+              <li>{t('dockerPrereqStep2')}</li>
+              <li>{t('dockerPrereqStep3')}</li>
             </ol>
           </div>
         </CardContent>
@@ -168,7 +170,7 @@ sudo -E bash ./server-docker-agent.sh`;
 
       <div className="flex justify-end pt-4">
         <Button onClick={onDialogClose}>
-          Done
+          {t('done')}
         </Button>
       </div>
     </div>

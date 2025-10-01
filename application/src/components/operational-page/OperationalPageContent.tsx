@@ -9,6 +9,8 @@ import { Button } from '@/components/ui/button';
 import { OperationalPageRecord } from '@/types/operational.types';
 import { Activity, Plus, RefreshCw } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useLanguage } from "@/contexts/LanguageContext";
+
 import {
   AlertDialog,
   AlertDialogAction,
@@ -21,6 +23,7 @@ import {
 } from '@/components/ui/alert-dialog';
 
 export const OperationalPageContent = () => {
+  const { t } = useLanguage();
   const navigate = useNavigate();
   const { data: pages, isLoading, error, refetch, isRefetching } = useOperationalPages();
   const deleteMutation = useDeleteOperationalPage();
@@ -68,13 +71,13 @@ export const OperationalPageContent = () => {
           <div className="mb-4">
             <Activity className="h-12 w-12 text-muted-foreground mx-auto" />
           </div>
-          <h3 className="text-lg font-semibold mb-2">Failed to load operational pages</h3>
+          <h3 className="text-lg font-semibold mb-2">{t('failedToLoadOperationalPages')}</h3>
           <p className="text-muted-foreground mb-4">
-            There was an error loading your operational pages. Please try again.
+            {t('loadingoperationalPages')}
           </p>
           <Button onClick={() => refetch()} variant="outline">
             <RefreshCw className="h-4 w-4 mr-2" />
-            Try Again
+            {t('tryagain')}
           </Button>
         </div>
       </div>
@@ -86,9 +89,9 @@ export const OperationalPageContent = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight mb-2">Operational Pages</h1>
+          <h1 className="text-3xl font-bold tracking-tight mb-2"> {t('operationalPages')}</h1>
           <p className="text-muted-foreground">
-            Manage your public status pages and monitor service health
+            {t('describeOperation')}
           </p>
         </div>
         
@@ -100,7 +103,7 @@ export const OperationalPageContent = () => {
             disabled={isRefetching}
           >
             <RefreshCw className={`h-4 w-4 mr-2 ${isRefetching ? 'animate-spin' : ''}`} />
-            Refresh
+            {t('refresh')}
           </Button>
           <CreateOperationalPageDialog />
         </div>
@@ -135,9 +138,9 @@ export const OperationalPageContent = () => {
             <div className="mb-4">
               <Activity className="h-12 w-12 text-muted-foreground mx-auto" />
             </div>
-            <h3 className="text-lg font-semibold mb-2">No operational pages found</h3>
+            <h3 className="text-lg font-semibold mb-2">{t('noOperationalPagesFound')}</h3>
             <p className="text-muted-foreground mb-6">
-              Create your first operational page to start monitoring your services and communicate status to your users.
+              {t('createYourFirstOperationalPage')}
             </p>
             <CreateOperationalPageDialog />
           </CardContent>
@@ -164,14 +167,14 @@ export const OperationalPageContent = () => {
         <div className="mt-8 pt-6 border-t">
           <div className="flex flex-wrap gap-6 text-sm text-muted-foreground">
             <div>
-              <span className="font-medium">Total Pages:</span> {pages.length}
+              <span className="font-medium">{t('totalPages')}:</span> {pages.length}
             </div>
             <div>
-              <span className="font-medium">Public Pages:</span>{' '}
+              <span className="font-medium">{t('totalPages')}:</span>{' '}
               {pages.filter(p => p.is_public === 'true').length}
             </div>
             <div>
-              <span className="font-medium">Operational:</span>{' '}
+              <span className="font-medium">{t('operational')}:</span>{' '}
               {pages.filter(p => p.status === 'operational').length}
             </div>
           </div>
@@ -189,19 +192,19 @@ export const OperationalPageContent = () => {
       <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Delete Operational Page</AlertDialogTitle>
+            <AlertDialogTitle>{t('deleteOperationalPage')}</AlertDialogTitle>
             <AlertDialogDescription>
-              Are you sure you want to delete "{pageToDelete?.title}"? This action cannot be undone and will permanently remove the operational page and all its components.
+              {t('deleteOperationalPageConfirm').replace('{title}', pageToDelete?.title ?? '')}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>{t('cancel')}</AlertDialogCancel>
             <AlertDialogAction
               onClick={confirmDelete}
               className="bg-red-600 hover:bg-red-700"
               disabled={deleteMutation.isPending}
             >
-              {deleteMutation.isPending ? 'Deleting...' : 'Delete'}
+              {deleteMutation.isPending ? t('deleting') : t('delete')}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

@@ -85,19 +85,19 @@ const ContainerMonitoring = () => {
           />
           <main className="flex-1 flex flex-col items-center justify-center p-4 sm:p-6">
             <div className="text-center max-w-md w-full">
-              <h2 className="text-xl sm:text-2xl font-bold mb-4">Error loading containers</h2>
+              <h2 className="text-xl sm:text-2xl font-bold mb-4">{t('errorLoadingContainers')}</h2>
               <p className="text-muted-foreground mb-4 text-sm sm:text-base">
-                Unable to fetch container data. Please check your connection and try again.
+                {t('unableToFetchContainerData')}
               </p>
               <div className="text-xs text-muted-foreground mb-4 font-mono">
-                Error: {error?.message || 'Unknown error'}
+                {t('errorUnknown')}: {error?.message || t('errorUnknown')}
               </div>
               <div className="flex gap-2 justify-center">
                 <Button onClick={handleRefresh} className="text-sm sm:text-base">
-                  Retry
+                  {t('retry')}
                 </Button>
                 <Button onClick={handleBackToServers} variant="outline" className="text-sm sm:text-base">
-                  Back to Servers
+                  {t('backToServers')}
                 </Button>
               </div>
             </div>
@@ -131,17 +131,17 @@ const ContainerMonitoring = () => {
                       className="flex items-center gap-2"
                     >
                       <ArrowLeft className="h-4 w-4" />
-                      Back to Servers
+                      {t('backToServers')}
                     </Button>
                   </div>
                   <h1 className="text-2xl font-bold text-foreground">
-                    Container Monitoring
+                    {t('containerMonitoring')}
                   </h1>
                   <p className={`text-muted-foreground mt-1 sm:mt-2 transition-all duration-300 ${sidebarCollapsed ? 'text-base sm:text-lg' : 'text-sm sm:text-base'}`}>
-                    Monitor and manage your Docker containers in real-time
+                    {t('monitorAndManageContainers')}
                     {serverId && (
                       <span className="block text-xs text-muted-foreground/70 mt-1">
-                        Server ID: {serverId}
+                        {t('serverIdLabel')}: {serverId}
                       </span>
                     )}
                   </p>

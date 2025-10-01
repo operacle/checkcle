@@ -14,6 +14,7 @@ import { useCreateStatusPageComponent, useStatusPageComponentsByOperationalId, u
 import { ComponentsSelector } from './ComponentsSelector';
 import { OperationalPageRecord } from '@/types/operational.types';
 import { StatusPageComponentRecord } from '@/types/statusPageComponents.types';
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const formSchema = z.object({
   title: z.string().min(1, 'Title is required'),
@@ -37,6 +38,7 @@ interface EditOperationalPageDialogProps {
 }
 
 export const EditOperationalPageDialog = ({ page, open, onOpenChange }: EditOperationalPageDialogProps) => {
+  const { t } = useLanguage();
   const [selectedComponents, setSelectedComponents] = useState<Partial<StatusPageComponentRecord>[]>([]);
   const [isFormSubmitting, setIsFormSubmitting] = useState(false);
   const [componentsLoaded, setComponentsLoaded] = useState(false);
@@ -195,9 +197,9 @@ export const EditOperationalPageDialog = ({ page, open, onOpenChange }: EditOper
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[800px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Edit Operational Page</DialogTitle>
+          <DialogTitle>{t('editOperationalPage')}</DialogTitle>
           <DialogDescription>
-            Update your operational status page settings and manage components.
+            {t('updateYourOperationalPage')}
           </DialogDescription>
         </DialogHeader>
 
@@ -209,9 +211,9 @@ export const EditOperationalPageDialog = ({ page, open, onOpenChange }: EditOper
                 name="title"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Title</FormLabel>
+                    <FormLabel>{t('title')}</FormLabel>
                     <FormControl>
-                      <Input placeholder="My Service Status" {...field} />
+                      <Input placeholder={t('myServiceStatusPlaceholder')} {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -223,9 +225,9 @@ export const EditOperationalPageDialog = ({ page, open, onOpenChange }: EditOper
                 name="slug"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Slug</FormLabel>
+                    <FormLabel>{t('slug')}</FormLabel>
                     <FormControl>
-                      <Input placeholder="my-service-status" {...field} />
+                      <Input placeholder={t('myServiceStatusSlugPlaceholder')} {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -238,10 +240,10 @@ export const EditOperationalPageDialog = ({ page, open, onOpenChange }: EditOper
               name="description"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Description</FormLabel>
+                  <FormLabel>{t('description')}</FormLabel>
                   <FormControl>
                     <Textarea 
-                      placeholder="A brief description of your operational page" 
+                      placeholder={t('operationalPageDescriptionPlaceholder')} 
                       className="min-h-[80px]"
                       {...field} 
                     />
@@ -257,17 +259,17 @@ export const EditOperationalPageDialog = ({ page, open, onOpenChange }: EditOper
                 name="theme"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Theme</FormLabel>
+                    <FormLabel>{t('theme')}</FormLabel>
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select theme" />
+                          <SelectValue placeholder={t('selectTheme')} />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="default">Default</SelectItem>
-                        <SelectItem value="dark">Dark</SelectItem>
-                        <SelectItem value="light">Light</SelectItem>
+                        <SelectItem value="default">{t('themeDefault')}</SelectItem>
+                        <SelectItem value="dark">{t('themeDark')}</SelectItem>
+                        <SelectItem value="light">{t('themeLight')}</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -280,18 +282,18 @@ export const EditOperationalPageDialog = ({ page, open, onOpenChange }: EditOper
                 name="status"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Status</FormLabel>
+                    <FormLabel>{t('status')}</FormLabel>
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select status" />
+                          <SelectValue placeholder={t('selectStatus')} />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="operational">Operational</SelectItem>
-                        <SelectItem value="degraded">Degraded Performance</SelectItem>
-                        <SelectItem value="maintenance">Under Maintenance</SelectItem>
-                        <SelectItem value="major_outage">Major Outage</SelectItem>
+                        <SelectItem value="operational">{t('statusOperational')}</SelectItem>
+                        <SelectItem value="degraded">{t('statusDegraded')}</SelectItem>
+                        <SelectItem value="maintenance">{t('statusMaintenance')}</SelectItem>
+                        <SelectItem value="major_outage">{t('statusMajorOutage')}</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -306,9 +308,9 @@ export const EditOperationalPageDialog = ({ page, open, onOpenChange }: EditOper
               render={({ field }) => (
                 <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
                   <div className="space-y-0.5">
-                    <FormLabel>Public Page</FormLabel>
+                    <FormLabel>{t('publicPage')}</FormLabel>
                     <FormDescription>
-                      Make this page publicly accessible
+                      {t('makePagePublic')}
                     </FormDescription>
                   </div>
                   <FormControl>
@@ -326,12 +328,12 @@ export const EditOperationalPageDialog = ({ page, open, onOpenChange }: EditOper
               name="custom_domain"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Custom Domain (Optional)</FormLabel>
+                  <FormLabel>{t('customDomainOptional')}</FormLabel>
                   <FormControl>
-                    <Input placeholder="status.yourdomain.com" {...field} />
+                    <Input placeholder={t('customDomainPlaceholder')} {...field} />
                   </FormControl>
                   <FormDescription>
-                    Custom domain for your status page
+                    {t('customDomainDescription')}
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -350,13 +352,13 @@ export const EditOperationalPageDialog = ({ page, open, onOpenChange }: EditOper
                 variant="outline" 
                 onClick={() => onOpenChange(false)}
               >
-                Cancel
+                {t('cancel')}
               </Button>
               <Button 
                 type="submit" 
                 disabled={isFormSubmitting || updateMutation.isPending || createComponentMutation.isPending}
               >
-                {isFormSubmitting || updateMutation.isPending || createComponentMutation.isPending ? 'Updating...' : 'Update Page'}
+                {isFormSubmitting || updateMutation.isPending || createComponentMutation.isPending ? t('updating') : t('updatePage')}
               </Button>
             </div>
           </form>

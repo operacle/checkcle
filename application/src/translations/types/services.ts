@@ -134,4 +134,67 @@ export interface ServicesTranslations {
 	processing: string;
 	back: string;
 	last20Checks: string;
+
+	// OneClickInstallTab.tsx
+	oneClickInstallTitle: string;
+	oneClickInstallDesc: string;
+	quickInstallCommand: string;
+	copy: string;
+	runCommandOnServer: string;
+	sshIntoServer: string;
+	pasteAndRun: string;
+	agentInstalled: string;
+	done: string;
+
+	// DockerOneClickTab.tsx
+	dockerOneClickTitle: string;
+	dockerOneClickDesc: string;
+	dockerOneClickCommand: string;
+	dockerScriptWill: string;
+	dockerScriptStep1: string;
+	dockerScriptStep2: string;
+	dockerScriptStep3: string;
+	dockerScriptStep4: string;
+	directDockerTitle: string;
+	directDockerDesc: string;
+	dockerRunCommand: string;
+	dockerPrerequisites: string;
+	dockerPrereqStep1: string;
+	dockerPrereqStep2: string;
+	dockerPrereqStep3: string;
+
+	// ManualInstallTab.tsx
+	manualInstallTitle: string;
+	manualInstallDesc: string;
+	serverName: string;
+	agentId: string;
+	osType: string;
+	downloadScript: string;
+	makeExecutable: string;
+	runInstall: string;
+	prerequisites: string;
+	prereqRoot: string;
+	prereqCurl: string;
+	prereqInternet: string;
+	afterInstall: string;
+	agentWillStart: string;
+
+	// ServerDetail.tsx
+	errorLoadingServer: string;
+	unableToFetchServerData: string;
+	backToServers: string;
+	loadingServerDetails: string;
+	serverDetail: string;
+	monitorServerMetrics: string;
+	serverHostnameIpOs: string;
+
+	// ContainerMonitoring.tsx
+	errorLoadingContainers: string;
+	unableToFetchContainerData: string;
+	errorUnknown: string;
+	containerMonitoring: string;
+	monitorAndManageContainers: string;
+	serverIdLabel: string;
+
+	
 }

@@ -8,6 +8,11 @@ import { MaintenanceTranslations } from './maintenance';
 import { IncidentTranslations } from './incident';
 import { SSLTranslations } from './ssl';
 import { SettingsTranslations } from './settings';
+import { InstanceTranslations } from './instance';
+import { OperationTranslations } from './operation';
+import { RegionTranslations } from './region';
+import { DockerTranslations } from './docker';
+import { PublicTranslations } from './public';
 
 export interface Translations {
   common: CommonTranslations;
@@ -19,4 +24,9 @@ export interface Translations {
   incident: IncidentTranslations;
   ssl: SSLTranslations;
   settings: SettingsTranslations;
+  instance: InstanceTranslations;
+  operation: OperationTranslations;
+  region: RegionTranslations;
+  docker: DockerTranslations;
+  public: PublicTranslations;
 }

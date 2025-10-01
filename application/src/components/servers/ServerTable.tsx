@@ -16,6 +16,7 @@ import { serverService } from "@/services/serverService";
 import { useToast } from "@/hooks/use-toast";
 import { pb } from "@/lib/pocketbase";
 import { useTheme } from "@/contexts/ThemeContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface ServerTableProps {
   servers: Server[];
@@ -24,6 +25,7 @@ interface ServerTableProps {
 }
 
 export const ServerTable = ({ servers, isLoading, onRefresh }: ServerTableProps) => {
+  const { t } = useLanguage();
   const { theme } = useTheme();
   const [searchTerm, setSearchTerm] = useState("");
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -68,8 +70,8 @@ export const ServerTable = ({ servers, isLoading, onRefresh }: ServerTableProps)
       await pb.collection('servers').update(serverId, updateData);
       
       toast({
-        title: isPaused ? "Server resumed" : "Server paused",
-        description: `Monitoring ${isPaused ? 'resumed' : 'paused'} for ${server.name}`,
+        title: isPaused ? t('serverResumed') : t('serverPaused'),
+        description: isPaused ? t('monitoringResumed', { name: server.name }) : t('monitoringPaused', { name: server.name }),
       });
       
      // console.log(`${isPaused ? 'Resume' : 'Pause'} server monitoring: ${serverId}`);
@@ -81,8 +83,8 @@ export const ServerTable = ({ servers, isLoading, onRefresh }: ServerTableProps)
      // console.error('Error updating server status:', error);
       toast({
         variant: "destructive",
-        title: "Error",
-        description: `Failed to ${isPaused ? 'resume' : 'pause'} server monitoring. Please try again.`,
+        title: t('error'),
+        description: isPaused ? t('resumeServerError') : t('pauseServerError'),
       });
     } finally {
       setPausingServers(prev => {
@@ -204,12 +206,12 @@ export const ServerTable = ({ servers, isLoading, onRefresh }: ServerTableProps)
     return (
       <Card className="flex-1 flex flex-col">
         <CardHeader className="flex-shrink-0">
-          <CardTitle>Servers</CardTitle>
+          <CardTitle>{t('servers')}</CardTitle>
         </CardHeader>
         <CardContent className="flex-1 flex items-center justify-center">
           <div className="flex items-center justify-center h-32">
             <RefreshCw className="h-6 w-6 animate-spin" />
-            <span className="ml-2">Loading servers...</span>
+            <span className="ml-2">{t('loadingServers')}</span>
           </div>
         </CardContent>
       </Card>
@@ -221,12 +223,12 @@ export const ServerTable = ({ servers, isLoading, onRefresh }: ServerTableProps)
       <Card className="bg-transparent border-0 shadow-none">
         <CardHeader className="pb-4 px-0">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <CardTitle className="text-xl font-semibold">Servers</CardTitle>
+            <CardTitle className="text-xl font-semibold">{t('servers')}</CardTitle>
             <div className="flex items-center gap-2">
               <div className="relative flex-1 sm:w-64">
                 <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
                 <Input
-                  placeholder="Search servers..."
+                  placeholder={t('searchServersPlaceholder')}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="pl-8"
@@ -241,23 +243,23 @@ export const ServerTable = ({ servers, isLoading, onRefresh }: ServerTableProps)
         <CardContent className="p-0">
           {filteredServers.length === 0 ? (
             <div className="flex items-center justify-center p-8">
-              <p className="text-muted-foreground">No servers found</p>
+              <p className="text-muted-foreground">{t('noServersFound')}</p>
             </div>
           ) : (
             <div className={`${theme === 'dark' ? 'bg-gray-900' : 'bg-white'} rounded-lg border border-border shadow-sm`}>
               <Table>
                 <TableHeader className={`${theme === 'dark' ? 'bg-gray-800' : 'bg-gray-50'}`}>
                   <TableRow className={`${theme === 'dark' ? 'border-gray-700 hover:bg-gray-800' : 'border-gray-200 hover:bg-gray-100'}`}>
-                    <TableHead className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'} font-medium text-base py-4`}>Name</TableHead>
-                    <TableHead className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'} font-medium text-base py-4`}>Status</TableHead>
-                    <TableHead className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'} font-medium text-base py-4`}>OS</TableHead>
-                    <TableHead className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'} font-medium text-base py-4`}>IP Address</TableHead>
-                    <TableHead className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'} font-medium text-base py-4`}>CPU</TableHead>
-                    <TableHead className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'} font-medium text-base py-4`}>Memory</TableHead>
-                    <TableHead className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'} font-medium text-base py-4`}>Disk</TableHead>
-                    <TableHead className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'} font-medium text-base py-4`}>Uptime</TableHead>
-                    <TableHead className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'} font-medium text-base py-4`}>Last Checked</TableHead>
-                    <TableHead className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'} font-medium text-base py-4 text-right`}>Actions</TableHead>
+                    <TableHead className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'} font-medium text-base py-4`}>{t('name')}</TableHead>
+                    <TableHead className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'} font-medium text-base py-4`}>{t('status')}</TableHead>
+                    <TableHead className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'} font-medium text-base py-4`}>{t('OS')}</TableHead>
+                    <TableHead className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'} font-medium text-base py-4`}>{t('IPAddress')}</TableHead>
+                    <TableHead className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'} font-medium text-base py-4`}>{t('CPU')}</TableHead>
+                    <TableHead className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'} font-medium text-base py-4`}>{t('memory')}</TableHead>
+                    <TableHead className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'} font-medium text-base py-4`}>{t('disk')}</TableHead>
+                    <TableHead className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'} font-medium text-base py-4`}>{t('uptime')}</TableHead>
+                    <TableHead className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'} font-medium text-base py-4`}>{t('lastChecked')}</TableHead>
+                    <TableHead className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'} font-medium text-base py-4 text-right`}>{t('actions')}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -333,7 +335,7 @@ export const ServerTable = ({ servers, isLoading, onRefresh }: ServerTableProps)
                           <DropdownMenu>
                             <DropdownMenuTrigger asChild>
                               <Button variant="ghost" className="h-8 w-8 p-0" disabled={isProcessing}>
-                                <span className="sr-only">Open menu</span>
+                                <span className="sr-only">{t('openMenu')}</span>
                                 {isProcessing ? (
                                   <RefreshCw className="h-4 w-4 animate-spin" />
                                 ) : (
@@ -344,12 +346,12 @@ export const ServerTable = ({ servers, isLoading, onRefresh }: ServerTableProps)
                             <DropdownMenuContent align="end" className="w-[200px]">
                               <DropdownMenuItem onClick={(e) => { e.stopPropagation(); handleViewDetails(server.id); }}>
                                 <Eye className="mr-2 h-4 w-4" />
-                                View Server Detail
+                                {t('viewServerDetail')}
                               </DropdownMenuItem>
                               {server.docker === 'true' && (
                                 <DropdownMenuItem onClick={(e) => { e.stopPropagation(); handleViewContainers(server.id); }}>
                                   <Activity className="mr-2 h-4 w-4" />
-                                  Container Monitoring
+                                  {t('containerMonitoring')}
                                 </DropdownMenuItem>
                               )}
                               <DropdownMenuSeparator />
@@ -360,26 +362,26 @@ export const ServerTable = ({ servers, isLoading, onRefresh }: ServerTableProps)
                                 {isPaused ? (
                                   <>
                                     <Play className="mr-2 h-4 w-4" />
-                                    Resume Monitoring
+                                    {t('resumeMonitoring')}
                                   </>
                                 ) : (
                                   <>
                                     <Pause className="mr-2 h-4 w-4" />
-                                    Pause Monitoring
+                                    {t('pauseMonitoring')}
                                   </>
                                 )}
                               </DropdownMenuItem>
                               <DropdownMenuSeparator />
                               <DropdownMenuItem onClick={(e) => { e.stopPropagation(); handleEdit(server); }}>
                                 <Edit className="mr-2 h-4 w-4" />
-                                Edit Server
+                                {t('editServer')}
                               </DropdownMenuItem>
                               <DropdownMenuItem 
                                 onClick={(e) => { e.stopPropagation(); handleDelete(server); }}
                                 className="text-red-600 focus:text-red-600"
                               >
                                 <Trash2 className="mr-2 h-4 w-4" />
-                                Delete Server
+                                {t('deleteServer')}
                               </DropdownMenuItem>
                             </DropdownMenuContent>
                           </DropdownMenu>
@@ -406,25 +408,21 @@ export const ServerTable = ({ servers, isLoading, onRefresh }: ServerTableProps)
       <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Are you sure you want to delete this server?</AlertDialogTitle>
+            <AlertDialogTitle>{t('deleteServerConfirmTitle')}</AlertDialogTitle>
             <AlertDialogDescription>
-              This action cannot be undone. This will permanently delete{' '}
-              <span className="font-semibold text-foreground">
-                {selectedServer?.name}
-              </span>{' '}
-              and all of its monitoring data.
+              {t('deleteServerConfirmDesc').replace('{name}', selectedServer?.name ?? '')}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel disabled={isDeleting}>
-              Cancel
+              {t('cancel')}
             </AlertDialogCancel>
             <AlertDialogAction
               onClick={confirmDelete}
               disabled={isDeleting}
               className="bg-red-600 text-white hover:bg-red-700"
             >
-              {isDeleting ? "Deleting..." : "Delete"}
+              {isDeleting ? t('deleting') : t('delete')}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

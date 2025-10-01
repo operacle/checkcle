@@ -70,15 +70,15 @@ const InstanceMonitoring = () => {
           />
           <main className="flex-1 flex flex-col items-center justify-center p-4 sm:p-6">
             <div className="text-center max-w-md w-full">
-              <h2 className="text-xl sm:text-2xl font-bold mb-4">Error loading servers</h2>
+              <h2 className="text-xl sm:text-2xl font-bold mb-4">{t('errorLoadingServers')}</h2>
               <p className="text-muted-foreground mb-4 text-sm sm:text-base">
-                Unable to fetch server data. Please check your connection and try again.
+                {t('unableToFetchServerData')}
               </p>
               <button 
                 onClick={handleRefresh} 
                 className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 text-sm sm:text-base"
               >
-                Retry
+                {t('retry')}
               </button>
             </div>
           </main>
@@ -104,15 +104,15 @@ const InstanceMonitoring = () => {
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div className="min-w-0 flex-1">
                   <h1 className="text-2xl lg:text-2xl font-bold text-foreground">
-                    Instance Monitoring
+                    {t('instanceMonitoring')}
                   </h1>
                   <p className="text-muted-foreground mt-1 text-xs sm:text-sm">
-                    Monitor and manage your server instances in real-time
+                    {t('describeMonitorInstance')}
                   </p>
                 </div>
                 <Button onClick={() => setAddDialogOpen(true)} className="flex-shrink-0">
                   <Plus className="mr-2 h-4 w-4" />
-                  Add Server Agent
+                  {t('addServerAgent')}
                 </Button>
               </div>
             </div>

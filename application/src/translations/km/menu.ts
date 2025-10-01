@@ -2,13 +2,13 @@
 import { MenuTranslations } from '../types/menu';
 
 export const menuTranslations: MenuTranslations = {
-  uptimeMonitoring: "ការត្រួតពិនិត្យ Uptime",
-  instanceMonitoring: "ការត្រួតពិនិត្យឧបករណ៍",
-  sslDomain: "SSL និងដមែន",
+  uptimeMonitoring: "ត្រួតពិនិត្យ Uptime",
+  instanceMonitoring: "ត្រួតពិនិត្យម៉ាស៊ីនមេ",
+  sslDomain: "SSL និងដូមែន",
   scheduleIncident: "កាលវិភាគនិងឧបទ្ទវហេតុ",
   operationalPage: "ទំព័រប្រតិបត្តិការ",
   reports: "របាយការណ៍",
-  regionalMonitoring: "ការត្រួតពិនិត្យតំបន់",
+  regionalMonitoring: "ត្រួតពិនិត្យតំបន់",
   settingPanel: "ផ្ទាំងការកំណត់",
   generalSettings: "ការកំណត់ទូទៅ",
   userManagement: "ការគ្រប់គ្រងអ្នកប្រើប្រាស់",

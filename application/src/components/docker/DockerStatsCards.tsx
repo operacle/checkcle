@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Container, Play, Square, AlertTriangle } from "lucide-react";
 import { DockerStats } from "@/types/docker.types";
 import { useTheme } from "@/contexts/ThemeContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface DockerStatsCardsProps {
   stats: DockerStats;
@@ -11,10 +12,11 @@ interface DockerStatsCardsProps {
 
 export const DockerStatsCards = ({ stats }: DockerStatsCardsProps) => {
   const { theme } = useTheme();
+  const { t } = useLanguage();
 
   const cards = [
     {
-      title: "Total Containers",
+      title: t('totalContainers', 'docker'),
       value: stats.total,
       icon: Container,
       color: "text-blue-600",
@@ -23,7 +25,7 @@ export const DockerStatsCards = ({ stats }: DockerStatsCardsProps) => {
         : "linear-gradient(135deg, rgba(65, 59, 55, 0.8) 0%, #3b82f6 100%)"
     },
     {
-      title: "Running",
+      title: t('running', 'docker'),
       value: stats.running,
       icon: Play,
       color: "text-green-600",
@@ -32,7 +34,7 @@ export const DockerStatsCards = ({ stats }: DockerStatsCardsProps) => {
         : "linear-gradient(135deg, rgba(65, 59, 55, 0.8) 0%, #10b981 100%)"
     },
     {
-      title: "Stopped",
+      title: t('stopped', 'docker'),
       value: stats.stopped,
       icon: Square,
       color: "text-gray-600",
@@ -41,7 +43,7 @@ export const DockerStatsCards = ({ stats }: DockerStatsCardsProps) => {
         : "linear-gradient(135deg, rgba(65, 59, 55, 0.8) 0%, #6b7280 100%)"
     },
     {
-      title: "Warning",
+      title: t('warning', 'docker'),
       value: stats.warning,
       icon: AlertTriangle,
       color: "text-amber-600",
@@ -90,7 +92,7 @@ export const DockerStatsCards = ({ stats }: DockerStatsCardsProps) => {
                   variant="outline" 
                   className="text-xs font-mono font-bold px-2 py-1 rounded-md bg-white/20 backdrop-blur-sm text-white border border-white/30"
                 >
-                  Containers
+                  {t('containersLabel', 'docker')}
                 </Badge>
               </div>
             </CardContent>

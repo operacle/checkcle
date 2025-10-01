@@ -16,6 +16,7 @@ import { ServerAgentConfigForm } from "./ServerAgentConfigForm";
 import { OneClickInstallTab } from "./OneClickInstallTab";
 import { DockerOneClickTab } from "./DockerOneClickTab";
 import { ManualInstallTab } from "./ManualInstallTab";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface AddServerAgentDialogProps {
   open: boolean;
@@ -28,6 +29,7 @@ export const AddServerAgentDialog: React.FC<AddServerAgentDialogProps> = ({
   onOpenChange,
   onAgentAdded,
 }) => {
+  const { t } = useLanguage();
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -62,8 +64,8 @@ export const AddServerAgentDialog: React.FC<AddServerAgentDialogProps> = ({
 
     if (!formData.serverName || !formData.osType) {
       toast({
-        title: "Validation Error",
-        description: "Please fill in all required fields.",
+        title: t('validationError'),
+        description: t('fillRequiredFields'),
         variant: "destructive",
       });
       return;
@@ -77,8 +79,8 @@ export const AddServerAgentDialog: React.FC<AddServerAgentDialogProps> = ({
       await new Promise(resolve => setTimeout(resolve, 1500));
 
       toast({
-        title: "Server Agent Created",
-        description: `${formData.serverName} monitoring agent has been configured successfully.`,
+        title: t('serverAgentCreated'),
+        description: t('serverAgentCreatedDesc').replace('{name}', formData.serverName),
       });
 
       // Switch to one-click install tab after successful creation
@@ -86,8 +88,8 @@ export const AddServerAgentDialog: React.FC<AddServerAgentDialogProps> = ({
       onAgentAdded();
     } catch (error) {
       toast({
-        title: "Error",
-        description: "Failed to create server monitoring agent.",
+        title: t('error'),
+        description: t('failedToCreateAgent'),
         variant: "destructive",
       });
     } finally {
@@ -116,19 +118,19 @@ export const AddServerAgentDialog: React.FC<AddServerAgentDialogProps> = ({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Server className="h-5 w-5" />
-            Add Server Monitoring Agent
+            {t('addServerMonitoringAgent')}
           </DialogTitle>
           <DialogDescription>
-            Configure a new server monitoring agent to track system metrics and performance.
+            {t('configureAgentDesc')}
           </DialogDescription>
         </DialogHeader>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="configure">Configure Agent</TabsTrigger>
-            <TabsTrigger value="one-click">One-Click Install</TabsTrigger>
-            <TabsTrigger value="docker-one-click">Docker One-Click</TabsTrigger>
-            <TabsTrigger value="manual">Manual Installation</TabsTrigger>
+            <TabsTrigger value="configure">{t('configureAgent')}</TabsTrigger>
+            <TabsTrigger value="one-click">{t('oneClickInstall')}</TabsTrigger>
+            <TabsTrigger value="docker-one-click">{t('dockerOneClick')}</TabsTrigger>
+            <TabsTrigger value="manual">{t('manualInstallation')}</TabsTrigger>
           </TabsList>
 
           <TabsContent value="configure" className="space-y-6">

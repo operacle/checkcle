@@ -2,18 +2,18 @@
 import { SettingsTranslations } from '../types/settings';
 
 export const settingsTranslations: SettingsTranslations = {
-  // Tabs
+  // General Settings - Tabs
   systemSettings: "ការកំណត់ប្រព័ន្ធ",
   mailSettings: "ការកំណត់សំបុត្រ",
-  
-  // System Settings
+
+  // General Settings - System Settings
   appName: "ឈ្មោះកម្មវិធី",
   appURL: "URL កម្មវិធី",
   senderName: "ឈ្មោះអ្នកផ្ញើ",
   senderEmail: "អាសយដ្ឋានអ៊ីមែលអ្នកផ្ញើ",
   hideControls: "លាក់ការគ្រប់គ្រង",
-  
-  // Mail Settings
+
+  // General Settings - Mail Settings
   smtpSettings: "ការកំណត់រចនាសម្ព័ន្ធ SMTP",
   smtpEnabled: "បើក SMTP",
   smtpHost: "ម៉ាស៊ីន SMTP",
@@ -23,8 +23,8 @@ export const settingsTranslations: SettingsTranslations = {
   smtpAuthMethod: "វិធីសាស្ត្រផ្ទៀងផ្ទាត់",
   enableTLS: "បើក TLS",
   localName: "ឈ្មោះមូលដ្ឋាន",
-  
-  // Test Email
+
+  // General Settings - Test Email
   testEmail: "សាកល្បងអ៊ីមែល",
   sendTestEmail: "ផ្ញើអ៊ីមែលសាកល្បង",
   emailTemplate: "គំរូអ៊ីមែល",
@@ -37,10 +37,14 @@ export const settingsTranslations: SettingsTranslations = {
   selectCollection: "ជ្រើសរើសបណ្តុំ",
   toEmailAddress: "ទៅអាសយដ្ឋានអ៊ីមែល",
   enterEmailAddress: "បញ្ចូលអាសយដ្ឋានអ៊ីមែល",
+  send: "ផ្ញើ",
   sending: "កំពុងផ្ញើ...",
-  
-  // Actions and status
-  save: "រក្សាទុកការផ្លាស់ប្ដូរ",
+  testEmailSettings: "សាកល្បងការកំណត់អ៊ីមែល",
+  testEmailDescription: "សាកល្បងថាតើការកំណត់អ៊ីមែលបច្ចុប្បន្នអាចប្រើបានឬអត់",
+  testEmailAlert: "នេះនឹងផ្ញើអ៊ីមែលសាកល្បងដោយប្រើការកំណត់ SMTP របស់អ្នក។ សូមប្រាកដថា SMTP ត្រូវបានកំណត់យ៉ាងត្រឹមត្រូវជាមុន។",
+
+  // General Settings - Actions and status
+  save: "រក្សាទុកការផ្លាស់ប្តូរ",
   saving: "កំពុងរក្សាទុក...",
   settingsUpdated: "បានធ្វើបច្ចុប្បន្នភាពការកំណត់ដោយជោគជ័យ",
   errorSavingSettings: "មានបញ្ហាក្នុងការរក្សាទុកការកំណត់",
@@ -48,5 +52,114 @@ export const settingsTranslations: SettingsTranslations = {
   testConnection: "សាកល្បងការតភ្ជាប់",
   testingConnection: "កំពុងសាកល្បងការតភ្ជាប់...",
   connectionSuccess: "ការតភ្ជាប់ជោគជ័យ",
-  connectionFailed: "ការតភ្ជាប់បរាជ័យ"
+  connectionFailed: "ការតភ្ជាប់បរាជ័យ",
+
+  // User Management
+  addUser: "បន្ថែមអ្នកប្រើប្រាស់",
+  permissionNotice: "សេចក្តីជូនដំណឹងអំពីការអនុញ្ញាត:",
+  permissionNoticeAddUser: "ក្នុងនាមជាអ្នកប្រើប្រាស់ជាអ្នកគ្រប់គ្រង អ្នកមិនមានសិទ្ធិចូលមើល ឬកែប្រែការកំណត់ប្រព័ន្ធ និងអ៊ីមែលទេ។ ការកំណត់ទាំងនេះអាចចូលប្រើ និងកែប្រែបានដោយអ្នកគ្រប់គ្រងជាន់ខ្ពស់តែប៉ុណ្ណោះ។ សូមទាក់ទងអ្នកគ្រប់គ្រងជាន់ខ្ពស់របស់អ្នក ប្រសិនបើអ្នកត្រូវការធ្វើការផ្លាស់ប្តូរលើការកំណត់ប្រព័ន្ធ ឬការកំណត់អ៊ីមែល។",
+  loadingSettings: "កំពុងផ្ទុកការកំណត់...",
+  loadingSettingsError: "កំហុសក្នុងការផ្ទុកការកំណត់",
+
+  //NotificationSettings.ts
+  titleNotification: "ការកំណត់ការជូនដំណឹង",
+descriptionChannelsServices: "កំណត់រចនាសម្ព័ន្ធបណ្តាញជូនដំណឹងសម្រាប់សេវាកម្មរបស់អ្នក",
+  addChannel: "បន្ថែមបណ្តាញ",
+  all: "បណ្តាញទាំងអស់",
+  telegram: "តេឡេក្រាម",
+  discord: "Discord",
+  slack: "Slack",
+  signal: "Signal",
+  googleChat: "Google Chat",
+  email: "អ៊ីមែល",
+  webhook: "Webhook",
+
+  // NotificationChannelDialog.tsx
+  editChannel: "កែសម្រួលបណ្តាញជូនដំណឹង",
+  addChannelDialog: "បន្ថែមបណ្តាញជូនដំណឹង",
+  channelName: "ឈ្មោះបណ្តាញ",
+  channelNameDesc: "ឈ្មោះសម្រាប់កំណត់អត្តសញ្ញាណបណ្តាញជូនដំណឹងនេះ",
+  channelType: "ប្រភេទបណ្តាញ",
+  selectType: "ជ្រើសរើសប្រភេទជូនដំណឹង",
+  enabled: "បើក",
+  enabledDesc: "បើក ឬបិទបណ្តាញជូនដំណឹងនេះ",
+  cancel: "បោះបង់",
+  updateChannel: "ធ្វើបច្ចុប្បន្នភាពបណ្តាញ",
+  createChannel: "បង្កើតបណ្តាញ",
+  payloadTemplates: "ទម្រង់បន្ទុក",
+  availablePlaceholders: "កន្លែងទុកជាមុនដែលអាចប្រើបាន៖",
+  server: "ម៉ាស៊ីនបម្រើ",
+  service: "សេវាកម្ម",
+  ssl: "SSL",
+  common: "ទូទៅ",
+  webhookUrl: "URL នៃ Webhook",
+  webhookUrlDesc: "URL ដែលការជូនដំណឹង webhook នឹងត្រូវបានផ្ញើទៅ",
+  payloadTemplate: "ទម្រង់បន្ទុក (ជាជម្រើស)",
+  payloadTemplateDesc: "ទម្រង់ JSON សម្រាប់បន្ទុក webhook។ ទុកចោលទទេដើម្បីប្រើទម្រង់លំនាំដើម។",
+  telegramChatId: "លេខសម្គាល់ជជែក",
+  telegramChatIdDesc: "លេខសម្គាល់ជជែក Telegram ដើម្បីផ្ញើការជូនដំណឹងទៅ",
+  botToken: "លេខសម្គាល់បុត",
+  botTokenDesc: "លេខសម្គាល់បុត Telegram របស់អ្នកពី @BotFather",
+  discordWebhookUrl: "URL នៃ Webhook",
+  discordWebhookUrlDesc: "URL នៃ webhook របស់ Discord ពីការកំណត់ម៉ាស៊ីនបម្រើរបស់អ្នក",
+  slackWebhookUrl: "URL នៃ Webhook",
+  slackWebhookUrlDesc: "URL នៃ webhook ចូលរបស់ Slack",
+  signalNumber: "លេខ Signal",
+  signalNumberDesc: "លេខទូរស័ព្ទ Signal ដើម្បីផ្ញើការជូនដំណឹងទៅ",
+  signalApiEndpoint: "ចំណុចបញ្ចប់ API របស់ Signal",
+  signalApiEndpointDesc: "ចំណុចបញ្ចប់ API សម្រាប់សេវាកម្ម Signal របស់អ្នក",
+  googleChatWebhookUrl: "URL នៃ Webhook របស់ Google Chat",
+  googleChatWebhookUrlDesc: "URL នៃ webhook របស់ Google Chat ពីកន្លែង Google Chat របស់អ្នក",
+  emailAddress: "អាសយដ្ឋានអ៊ីមែល",
+  emailAddressDesc: "អាសយដ្ឋានអ៊ីមែលដើម្បីផ្ញើការជូនដំណឹងទៅ",
+  emailSenderName: "ឈ្មោះអ្នកផ្ញើ",
+  emailSenderNameDesc: "ឈ្មោះបង្ហាញសម្រាប់អ៊ីមែលដែលផ្ញើចេញ",
+  smtpServer: "ម៉ាស៊ីនបម្រើ SMTP",
+  // smtpPort: "ច្រក SMTP",
+  // smtpPassword: "លេខសម្ងាត់ SMTP",
+  smtpPasswordDesc: "លេខសម្ងាត់សម្រាប់ការផ្ទៀងផ្ទាត់ជាមួយម៉ាស៊ីនបម្រើ SMTP",
+  ntfyEndpoint: "ចំណុចបញ្ចប់ NTFY",
+  ntfyEndpointDesc: "URL នៃចំណុចបញ្ចប់ NTFY រួមទាំងប្រធានបទរបស់អ្នក (ឧ. https://ntfy.sh/checkcle)",
+  apiToken: "លេខសម្គាល់ API",
+  apiTokenOptional: "លេខសម្គាល់ API (ជាជម្រើស)",
+  apiTokenDesc: "លេខសម្គាល់ API ជាជម្រើសសម្រាប់ការផ្ទៀងផ្ទាត់ជាមួយម៉ាស៊ីនបម្រើ NTFY",
+  pushoverUserKey: "លេខសម្គាល់អ្នកប្រើប្រាស់",
+  pushoverUserKeyDesc: "លេខសម្គាល់អ្នកប្រើប្រាស់ Pushover របស់អ្នក (ឬលេខសម្គាល់ក្រុម)",
+  notifiarrChannelId: "លេខសម្គាល់បណ្តាញ",
+  notifiarrChannelIdDesc: "លេខសម្គាល់បណ្តាញ Discord ដែលការជូនដំណឹងនឹងត្រូវបានផ្ញើទៅ",
+  gotifyServerUrl: "URL នៃម៉ាស៊ីនបម្រើ",
+  gotifyServerUrlDesc: "URL នៃម៉ាស៊ីនបម្រើ Gotify របស់អ្នក",
+  errorSaveChannel: "បរាជ័យក្នុងការរក្សាទុកបណ្តាញជូនដំណឹង",
+
+  channelNamePlaceholder: "ប៉ុស្តិ៍ផ្ទាល់សារជូនដំណឹងរបស់ខ្ញុំ",
+  telegramChatIdPlaceholder: "ID កុំព្យូទ័រនិមិត្តសារ Telegram",
+  botTokenPlaceholder: "Token Bot Telegram",
+  discordWebhookUrlPlaceholder: "https://discord.com/api/webhooks/...",
+  slackWebhookUrlPlaceholder: "https://hooks.slack.com/services/...",
+  signalNumberPlaceholder: "+1234567890",
+  signalApiEndpointPlaceholder: "https://your-signal-api.com/v2/send",
+  googleChatWebhookUrlPlaceholder: "https://chat.googleapis.com/v1/spaces/...",
+  emailAddressPlaceholder: "notifications@example.com",
+  emailSenderNamePlaceholder: "ប្រព័ន្ធជូនដំណឹងព្រមាន",
+  smtpServerPlaceholder: "smtp.gmail.com",
+  smtpPortPlaceholder: "587",
+  smtpPasswordPlaceholder: "បញ្ចូលពាក្យសម្ងាត់ SMTP របស់អ្នក",
+  ntfyEndpointPlaceholder: "https://ntfy.sh/your-topic",
+  apiTokenPlaceholder: "បញ្ចូល token API",
+  pushoverUserKeyPlaceholder: "កូនសោអ្នកប្រើ Pushover របស់អ្នក",
+  notifiarrChannelIdPlaceholder: "ID ប៉ុស្តិ៍ផ្ទាល់សារ Discord",
+  gotifyServerUrlPlaceholder: "https://your-gotify-server.com",
+  webhookUrlPlaceholder: "https://api.example.com/webhook",
+
+  // DataRetentionSettings.tsx
+  permissionNoticeDataRetention: "ជាអ្នកប្រើប្រាស់អ្នកគ្រប់គ្រង អ្នកមិនមានសិទ្ធចូលដំណើរការការកំណត់រក្សាទុកទិន្នន័យទេ។ ការកំណត់ទាំងនេះអាចត្រូវបានចូលដំណើរការនិងកែប្រែដោយតែអ្នកគ្រប់គ្រងដ៏ខ្ពស់ប៉ុណ្ណោះ។",
+  loadingRetentionSettings: "កំពុងផ្ទុកការកំណត់រក្សាទុក...",
+  dataRetention: "ការកំណត់រក្សាទុកទិន្នន័យ",
+  dataRetentionDescription: "កំណត់រចនាសម្ព័ន្ធពេលវេលាដែលទិន្នន័យត្រួតពិនិត្យត្រូវបានរក្សាទុកនៅក្នុងប្រព័ន្ធ",
+  uptimeRetentionLabel: "ការរក្សាទុកការតាមដានពេលដំណើរការ (ចំនួនថ្ងៃ)",
+  uptimeRetentionHelp: "ទិន្នន័យពេលដំណើរការសេវាកម្ម និងឧប្បត្តិហេតុយូរជាងនេះនឹងត្រូវលុបដោយស្វ័យប្រវត្តិ។",
+  serverRetentionLabel: "ការរក្សាទុកការតាមដានម៉ាស៊ីនមេ (ចំនួនថ្ងៃ)",
+  serverRetentionHelp: "រង្វាស់ម៉ាស៊ីនមេ និងទិន្នន័យដំណើរការដែលយូរជាងនេះនឹងត្រូវលុបដោយស្វ័យប្រវត្តិ។",
+  lastCleanup: "ការសម្អាតស្វ័យប្រវត្តិចុងក្រោយ",
+
 };

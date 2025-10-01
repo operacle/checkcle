@@ -120,15 +120,15 @@ const ServerDetail = () => {
           />
           <main className="flex-1 flex flex-col items-center justify-center p-4 sm:p-6">
             <div className="text-center max-w-md w-full">
-              <h2 className="text-xl sm:text-2xl font-bold mb-4">Error loading server</h2>
+              <h2 className="text-xl sm:text-2xl font-bold mb-4">{t('errorLoadingServer')}</h2>
               <p className="text-muted-foreground mb-4 text-sm sm:text-base">
-                Unable to fetch server data. Please check your connection and try again.
+                {t('unableToFetchServerData')}
               </p>
               <div className="text-xs text-muted-foreground mb-4 font-mono">
                 Error: {serverError?.message || 'Unknown error'}
               </div>
               <Button onClick={handleBackToServers} variant="outline" className="text-sm sm:text-base">
-                Back to Servers
+                {t('backToServers')}
               </Button>
             </div>
           </main>
@@ -151,7 +151,7 @@ const ServerDetail = () => {
           <main className="flex-1 flex flex-col items-center justify-center p-4 sm:p-6">
             <div className="text-center">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
-              <p className="text-muted-foreground">Loading server details...</p>
+              <p className="text-muted-foreground">{t('loadingServerDetails')}</p>
             </div>
           </main>
         </div>
@@ -183,7 +183,7 @@ const ServerDetail = () => {
                       className="flex items-center gap-2"
                     >
                       <ArrowLeft className="h-4 w-4" />
-                      Back to Servers
+                      {t('backToServers')}
                     </Button>
                   </div>
                   <div className="flex items-center gap-3 mb-2">
@@ -199,14 +199,17 @@ const ServerDetail = () => {
                       )}
                     </div>
                     <h1 className="text-2xl font-bold text-foreground">
-                      {server?.name || 'Server Detail'}
+                      {server?.name || t('serverDetail')}
                     </h1>
                   </div>
                   <p className="text-muted-foreground mt-1 sm:mt-2 text-sm sm:text-base">
-                    Monitor server performance metrics and system health
+                    {t('monitorServerMetrics')}
                     {server && (
                       <span className="block text-xs text-muted-foreground/70 mt-1">
-                        {server.hostname} • {server.ip_address} • {server.os_type}
+                        {t('serverHostnameIpOs')
+                          .replace('{hostname}', server.hostname)
+                          .replace('{ip_address}', server.ip_address)
+                          .replace('{os_type}', server.os_type)}
                       </span>
                     )}
                   </p>

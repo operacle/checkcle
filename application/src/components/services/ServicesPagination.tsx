@@ -63,9 +63,9 @@ export function ServicesPagination({
   return (
     <div className="flex items-center justify-between py-4 px-4 border-t border-border">
       <div className="flex items-center space-x-2">
-        <span className="text-sm text-muted-foreground">
-          {t("rowsPerPage") ?? "Rows per page"}:
-        </span>
+       <span className="text-sm text-muted-foreground whitespace-nowrap">
+        {t("rowsPerPage") ?? "Rows per page"}:
+       </span>
         <Select
           value={pageSize.toString()}
           onValueChange={(value) => onPageSizeChange(parseInt(value) as PageSize)}

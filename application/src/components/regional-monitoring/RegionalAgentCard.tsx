@@ -8,6 +8,7 @@ import { MapPin, Wifi, WifiOff, MoreVertical, Trash2, Terminal, Copy } from "luc
 import { RegionalService } from "@/types/regional.types";
 import { formatDistanceToNow } from "date-fns";
 import { useToast } from "@/hooks/use-toast";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface RegionalAgentCardProps {
   agent: RegionalService;
@@ -16,6 +17,7 @@ interface RegionalAgentCardProps {
 
 export const RegionalAgentCard: React.FC<RegionalAgentCardProps> = ({ agent, onDelete }) => {
   const { toast } = useToast();
+  const { t } = useLanguage();
 
   // Check if this is the default agent that cannot be removed
   const isDefaultAgent = agent.agent_id === "1" || agent.region_name === "Default";
@@ -24,13 +26,13 @@ export const RegionalAgentCard: React.FC<RegionalAgentCardProps> = ({ agent, onD
     try {
       await navigator.clipboard.writeText(agent.agent_id);
       toast({
-        title: "Copied!",
-        description: "Agent ID copied to clipboard.",
+        title: t('copied'),
+        description: t('copiedDescription'),
       });
     } catch (error) {
       toast({
-        title: "Copy failed",
-        description: "Failed to copy agent ID.",
+        title: t('copyFailed'),
+        description: t('copyFailedDescription'),
         variant: "destructive",
       });
     }
@@ -40,14 +42,14 @@ export const RegionalAgentCard: React.FC<RegionalAgentCardProps> = ({ agent, onD
     if (agent.connection === 'online') {
       return {
         icon: <Wifi className="h-4 w-4" />,
-        label: 'Online',
+        label: t('online'),
         variant: 'default' as const,
         className: 'bg-green-100 text-green-800 hover:bg-green-100'
       };
     } else {
       return {
         icon: <WifiOff className="h-4 w-4" />,
-        label: 'Offline',
+        label: t('offline'),
         variant: 'secondary' as const,
         className: 'bg-red-100 text-red-800 hover:bg-red-100'
       };
@@ -67,7 +69,7 @@ export const RegionalAgentCard: React.FC<RegionalAgentCardProps> = ({ agent, onD
                 {agent.region_name}
                 {isDefaultAgent && (
                   <Badge variant="outline" className="text-xs bg-blue-50 text-blue-700 border-blue-200">
-                    Default
+                    {t('defaultBadge')}
                   </Badge>
                 )}
               </CardTitle>
@@ -86,12 +88,12 @@ export const RegionalAgentCard: React.FC<RegionalAgentCardProps> = ({ agent, onD
             <DropdownMenuContent align="end">
               <DropdownMenuItem onClick={copyAgentId}>
                 <Copy className="mr-2 h-4 w-4" />
-                Copy Agent ID
+                {t('copyAgentId')}
               </DropdownMenuItem>
               {!isDefaultAgent && (
                 <DropdownMenuItem onClick={onDelete} className="text-red-600">
                   <Trash2 className="mr-2 h-4 w-4" />
-                  Remove Agent
+                  {t('removeAgent')}
                 </DropdownMenuItem>
               )}
             </DropdownMenuContent>
@@ -116,12 +118,12 @@ export const RegionalAgentCard: React.FC<RegionalAgentCardProps> = ({ agent, onD
         
         <div className="space-y-2">
           <div className="flex justify-between text-sm">
-            <span className="text-muted-foreground">Agent ID:</span>
+            <span className="text-muted-foreground">{t('agentId')}</span>
             <span className="font-mono text-xs">{agent.agent_id.substring(0, 12)}...</span>
           </div>
           
           <div className="flex justify-between text-sm">
-            <span className="text-muted-foreground">Last Updated:</span>
+            <span className="text-muted-foreground">{t('lastUpdated')}</span>
             <span className="text-xs">
               {formatDistanceToNow(new Date(agent.updated), { addSuffix: true })}
             </span>
@@ -132,7 +134,7 @@ export const RegionalAgentCard: React.FC<RegionalAgentCardProps> = ({ agent, onD
           <div className="pt-2 border-t">
             <div className="flex items-center text-xs text-green-600">
               <div className="w-2 h-2 bg-green-600 rounded-full mr-2 animate-pulse"></div>
-              Active monitoring
+              {t('activeMonitoring')}
             </div>
           </div>
         )}
@@ -141,7 +143,7 @@ export const RegionalAgentCard: React.FC<RegionalAgentCardProps> = ({ agent, onD
           <div className="pt-2 border-t">
             <div className="flex items-center text-xs text-red-600">
               <div className="w-2 h-2 bg-red-600 rounded-full mr-2"></div>
-              Connection lost
+              {t('connectionLost')}
             </div>
           </div>
         )}

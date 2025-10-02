@@ -158,14 +158,14 @@ const DataRetentionSettings = () => {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Database className="h-5 w-5" />
-              {t("dataRetention", "settings")}
+              {t("dataRetention")}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <Alert className="border-blue-200 bg-blue-50 dark:bg-blue-950 dark:border-blue-800">
               <AlertTriangle className="h-5 w-5 text-blue-600 dark:text-blue-400" />
               <AlertDescription className="text-blue-700 dark:text-blue-300">
-                <span className="font-medium">Permission Notice:</span> As an admin user, you do not have access to data retention settings. These settings can only be accessed and modified by Super Admins.
+                <span className="font-medium">{t("permissionNotice")}</span> {t("permissionNoticeDataRetention")}
               </AlertDescription>
             </Alert>
           </CardContent>
@@ -178,7 +178,7 @@ const DataRetentionSettings = () => {
     return (
       <div className="p-4 flex items-center justify-center">
         <Loader2 className="h-6 w-6 animate-spin mr-2" />
-        Loading retention settings...
+        {t("loadingRetentionSettings")}
       </div>
     );
   }
@@ -189,16 +189,16 @@ const DataRetentionSettings = () => {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Database className="h-5 w-5" />
-            Data Retention Settings
+            {t("dataRetention")}
           </CardTitle>
           <CardDescription>
-            Configure how long monitoring data is kept in the system
+            {t("dataRetentionDescription")}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="space-y-4">
             <div>
-              <Label htmlFor="uptimeRetention">Uptime Monitoring Retention (days)</Label>
+              <Label htmlFor="uptimeRetention">{t("uptimeRetentionLabel")}</Label>
               <Input
                 id="uptimeRetention"
                 type="number"
@@ -218,12 +218,12 @@ const DataRetentionSettings = () => {
                 className="mt-1"
               />
               <p className="text-sm text-muted-foreground mt-1">
-                Service uptime and incident data older than this will be automatically deleted
+                {t("uptimeRetentionHelp")}
               </p>
             </div>
 
             <div>
-              <Label htmlFor="serverRetention">Server Monitoring Retention (days)</Label>
+              <Label htmlFor="serverRetention">{t("serverRetentionLabel")}</Label>
               <Input
                 id="serverRetention"
                 type="number"
@@ -243,7 +243,7 @@ const DataRetentionSettings = () => {
                 className="mt-1"
               />
               <p className="text-sm text-muted-foreground mt-1">
-                Server metrics and process data older than this will be automatically deleted
+                {t("serverRetentionHelp")}
               </p>
             </div>
           </div>
@@ -252,7 +252,7 @@ const DataRetentionSettings = () => {
             <Alert>
               <Database className="h-4 w-4" />
               <AlertDescription>
-                Last automatic cleanup: {new Date(lastCleanup).toLocaleString()}
+                {t("lastCleanup")}: {new Date(lastCleanup).toLocaleString()}
               </AlertDescription>
             </Alert>
           )}
@@ -266,7 +266,7 @@ const DataRetentionSettings = () => {
             {isSaving ? (
               <Loader2 className="h-4 w-4 animate-spin" />
             ) : null}
-            Save Changes
+            {t("save")}
           </Button>
         </CardFooter>
       </Card>

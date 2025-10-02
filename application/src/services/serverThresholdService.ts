@@ -6,6 +6,8 @@ export interface ServerThreshold {
   name: string;
   cpu_threshold: number;
   ram_threshold: number;
+  // Some API responses may use a different field name; include it as optional
+  ram_threshold_message?: number;
   disk_threshold: number;
   network_threshold: number;
   created: string;

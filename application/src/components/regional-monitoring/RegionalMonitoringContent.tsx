@@ -9,8 +9,10 @@ import { RegionalService } from "@/types/regional.types";
 import { AddRegionalAgentDialog } from "./AddRegionalAgentDialog";
 import { RegionalAgentCard } from "./RegionalAgentCard";
 import { useToast } from "@/hooks/use-toast";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export const RegionalMonitoringContent = () => {
+  const { t } = useLanguage();
   const [addDialogOpen, setAddDialogOpen] = useState(false);
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -24,8 +26,8 @@ export const RegionalMonitoringContent = () => {
   const handleAgentAdded = () => {
     queryClient.invalidateQueries({ queryKey: ['regional-services'] });
     toast({
-      title: "Regional Agent Added",
-      description: "The regional monitoring agent has been successfully configured.",
+      title: t('regionalAgentAdded'),
+      description: t('regionalAgentAddedDesc'),
     });
   };
 
@@ -34,13 +36,13 @@ export const RegionalMonitoringContent = () => {
       await regionalService.deleteRegionalService(id);
       queryClient.invalidateQueries({ queryKey: ['regional-services'] });
       toast({
-        title: "Agent Removed",
-        description: "The regional monitoring agent has been removed.",
+        title: t('agentRemoved'),
+        description: t('agentRemovedDesc'),
       });
     } catch (error) {
       toast({
-        title: "Error",
-        description: "Failed to remove the regional monitoring agent.",
+        title: t('error'),
+        description: t('failedToRemoveAgent'),
         variant: "destructive",
       });
     }
@@ -53,14 +55,14 @@ export const RegionalMonitoringContent = () => {
     <div className="p-6 space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Regional Monitoring</h1>
+          <h1 className="text-3xl font-bold tracking-tight">{t('regionalmonitoring')}</h1>
           <p className="text-muted-foreground">
-            Manage distributed monitoring agents across different regions
+            {t('descriptRegionPage')}
           </p>
         </div>
         <Button onClick={() => setAddDialogOpen(true)}>
           <Plus className="mr-2 h-4 w-4" />
-          Add Regional Agent
+          {t('addRegionalAgent')}
         </Button>
       </div>
 
@@ -68,39 +70,39 @@ export const RegionalMonitoringContent = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Agents</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('totalAgents')}</CardTitle>
             <MapPin className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{totalAgents}</div>
             <p className="text-xs text-muted-foreground">
-              Regional monitoring agents
+              {t('regionalMonitoringAgents')}
             </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Online Agents</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('onlineAgents')}</CardTitle>
             <Wifi className="h-4 w-4 text-green-600" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-green-600">{onlineAgents}</div>
             <p className="text-xs text-muted-foreground">
-              Currently connected
+              {t('currentlyConnected')}
             </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Offline Agents</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('offlineAgents')}</CardTitle>
             <WifiOff className="h-4 w-4 text-red-600" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-red-600">{totalAgents - onlineAgents}</div>
             <p className="text-xs text-muted-foreground">
-              Disconnected agents
+              {t('disconnectedAgents')}
             </p>
           </CardContent>
         </Card>
@@ -108,7 +110,7 @@ export const RegionalMonitoringContent = () => {
 
       {/* Agents List */}
       <div className="space-y-4">
-        <h2 className="text-xl font-semibold">Regional Agents</h2>
+        <h2 className="text-xl font-semibold">{t('regionalAgents')}</h2>
         
         {isLoading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -131,13 +133,13 @@ export const RegionalMonitoringContent = () => {
           <Card>
             <CardContent className="flex flex-col items-center justify-center py-12">
               <MapPin className="h-12 w-12 text-muted-foreground mb-4" />
-              <h3 className="text-lg font-semibold mb-2">No Regional Agents</h3>
+              <h3 className="text-lg font-semibold mb-2">{t('noRegionalAgents')}</h3>
               <p className="text-muted-foreground text-center mb-4">
-                Get started by adding your first regional monitoring agent to extend your monitoring coverage.
+                {t('getStartedAddAgent')}
               </p>
               <Button onClick={() => setAddDialogOpen(true)}>
                 <Plus className="mr-2 h-4 w-4" />
-                Add First Agent
+                {t('addFirstAgent')}
               </Button>
             </CardContent>
           </Card>

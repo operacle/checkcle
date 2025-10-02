@@ -1,0 +1,86 @@
+
+import { OperationTranslations } from '../types/operation';
+
+export const operationTranslations: OperationTranslations = {
+  // OperationalPageContent.tsx
+	failedToLoadOperationalPages: "បរាជ័យក្នុងការផ្ទុកទំព័រប្រតិបត្តិការ",
+	loadingoperationalPages: "មានបញ្ហាក្នុងការផ្ទុកទំព័រប្រតិបត្តិការរបស់អ្នក។ សូមព្យាយាមម្តងទៀត។",
+	tryagain: "ព្យាយាមម្តងទៀត",
+	operationalPages: "ទំព័រប្រតិបត្តិការ",
+  describeOperation: "គ្រប់គ្រងទំព័រស្ថានភាពសាធារណៈរបស់អ្នក និងត្រួតពិនិត្យសុខភាពសេវាកម្ម",
+	refresh: "ធ្វើបច្ចុប្បន្នភាព",
+	noOperationalPagesFound: "រកមិនឃើញទំព័រប្រតិបត្តិការទេ",
+	createYourFirstOperationalPage: "បង្កើតទំព័រប្រតិបត្តិការដំបូងរបស់អ្នក ដើម្បីចាប់ផ្តើមត្រួតពិនិត្យសេវាកម្មរបស់អ្នក និងប្រាស្រ័យទាក់ទងស្ថានភាពទៅកាន់អ្នកប្រើប្រាស់។",
+	totalPages: "ទំព័រសរុប",
+	publicPages: "ទំព័រសាធារណៈ",
+	operational: "ប្រតិបត្តិការ",
+	deleteOperationalPage: "លុបទំព័រប្រតិបត្តិការ",
+	deleteOperationalPageConfirm: 'តើអ្នកប្រាកដថាចង់លុប "{title}" ឬ? សកម្មភាពនេះមិនអាចត្រឡប់វិញបានទេ ហើយនឹងលុបទំព័រប្រតិបត្តិការ និងសមាសធាតុទាំងអស់របស់វាជាអចិន្ត្រៃយ៍។',
+	cancel: "បោះបង់",
+  delete: "លុប",
+  deleting: "កំពុងលុប...",
+  
+  // EditOperationalPageDialog.tsx
+  editOperationalPage: "កែសម្រួលទំព័រប្រតិបត្តិការ",
+  updateYourOperationalPage: "ធ្វើបច្ចុប្បន្នភាពការកំណត់ទំព័រស្ថានភាពប្រតិបត្តិការរបស់អ្នក និងគ្រប់គ្រងសមាសធាតុ។",
+  title: "ចំណងជើង",
+  myServiceStatusPlaceholder: "ស្ថានភាពសេវាកម្មរបស់ខ្ញុំ",
+  slug: "ចំនងជើង URL",
+  myServiceStatusSlugPlaceholder: "ស្ថានភាពសេវាកម្មរបស់ខ្ញុំ",
+  description: "ការពិពណ៌នា",
+  operationalPageDescriptionPlaceholder: "ការពិពណ៌នាខ្លីអំពីទំព័រប្រតិបត្តិការ​របស់អ្នក",
+  theme: "ផ្ទៃខាងក្រោយ",
+  selectTheme: "ជ្រើសរើសផ្ទៃខាងក្រោយ",
+  themeDefault: "លំនាំដើម",
+  themeDark: "ងងឹត",
+  themeLight: "ភ្លឺ",
+  status: "ស្ថានភាព",
+  selectStatus: "ជ្រើសរើសស្ថានភាព",
+  statusOperational: "ប្រតិបត្តិការ",
+  statusDegraded: "ការសមត្ថភាពធ្លាក់ចុះ",
+  statusMaintenance: "នៅក្រោមការថែទាំ",
+  statusMajorOutage: "ការបាត់បង់ធំ",
+  publicPage: "ទំព័រសាធារណៈ",
+  makePagePublic: "ធ្វើឱ្យទំព័រនេះអាចចូលដំណើរការបានសាធារណៈ",
+  customDomainOptional: "ដែនកំណត់ផ្ទាល់ខ្លួន (ជាជម្រើស)",
+  customDomainPlaceholder: "status.yourdomain.com",
+  customDomainDescription: "ដែនកំណត់ផ្ទាល់ខ្លួនសម្រាប់ទំព័រស្ថានភាពរបស់អ្នក",
+  cancelUpdate: "បោះបង់",
+  updating: "កំពុងធ្វើបច្ចុប្បន្នភាព...",
+  updatePage: "ធ្វើបច្ចុប្បន្នភាពទំព័រ",
+
+  // ComponentsSelector.tsx
+  statusPageComponents: "សមាសធាតុទំព័រស្ថានភាព",
+  addMonitoringComponentsDesc: "បន្ថែមសមាសធាតុត្រួតពិនិត្យដូចជាសេវាកម្មពេលវេលាដំណើរការ, វិញ្ញាបនបត្រ SSL, និងការតាមដានឧប្បត្តិហេតុ",
+  selectedComponents: "សមាសធាតុដែលបានជ្រើសរើស",
+  service: "សេវាកម្ម",
+  server: "ម៉ាស៊ីនមេ",
+  addComponent: "បន្ថែមសមាសធាតុ",
+  componentName: "ឈ្មោះសមាសធាតុ",
+  componentNamePlaceholder: "ឧ. គេហទំព័រមេ",
+  displayOrder: "លំដាប់បង្ហាញ",
+  descriptionOptional: "ការពិពណ៌នា (ស្រេចចិត្ត)",
+  descriptionPlaceholder: "ការពិពណ៌នាសង្ខេបអំពីសមាសធាតុនេះ",
+  uptimeServiceOptional: "សេវាកម្មពេលវេលាដំណើរការ (ស្រេចចិត្ត)",
+  selectUptimeService: "ជ្រើសរើសសេវាកម្មពេលវេលាដំណើរការ",
+  serverIdOptional: "លេខសម្គាល់ម៉ាស៊ីនមេ (ស្រេចចិត្ត)",
+  serverIdPlaceholder: "server_456",
+  cancelComponent: "បោះបង់",
+
+  // OperationalPageCard.tsx
+  public: "សាធារណៈ",
+  yes: "បាទ/ចាស",
+  no: "ទេ",
+  updated: "បានធ្វើបច្ចុប្បន្នភាព",
+  view: "មើល",
+  edit: "កែសម្រួល",
+
+  // CreateOperationalPageDialog.tsx
+  createOperationalPage: "បង្កើតទំព័រប្រតិបត្តិការ",
+  createOperationalPageDesc: "បង្កើតទំព័រស្ថានភាពប្រតិបត្តិការថ្មីដើម្បីត្រួតពិនិត្យសេវាកម្ម និងសមាសធាតុរបស់អ្នក។",
+  createPage: "បង្កើតទំព័រ",
+  creating: "កំពុងបង្កើត...",
+  initialStatus: "ស្ថានភាពដំបូង",
+
+
+};

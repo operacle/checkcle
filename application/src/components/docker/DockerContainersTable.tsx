@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody } from "@/components/ui/table";
 import { DockerContainer } from "@/types/docker.types";
 import { DockerMetricsDialog } from "./DockerMetricsDialog";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { 
   DockerTableSearch, 
   DockerTableHeader, 
@@ -18,6 +19,7 @@ interface DockerContainersTableProps {
 }
 
 export const DockerContainersTable = ({ containers, isLoading, onRefresh }: DockerContainersTableProps) => {
+  const { t } = useLanguage();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedContainer, setSelectedContainer] = useState<DockerContainer | null>(null);
   const [metricsDialogOpen, setMetricsDialogOpen] = useState(false);
@@ -49,7 +51,7 @@ export const DockerContainersTable = ({ containers, isLoading, onRefresh }: Dock
         <CardHeader className="pb-4 px-0">
           <div className="flex flex-col gap-4">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-              <CardTitle className="text-lg sm:text-xl font-semibold">Docker Containers</CardTitle>
+              <CardTitle className="text-lg sm:text-xl font-semibold">{t('dockerContainers', 'docker')}</CardTitle>
               <DockerTableSearch
                 searchTerm={searchTerm}
                 onSearchChange={setSearchTerm}

@@ -53,4 +53,13 @@ export const incidentTranslations: IncidentTranslations = {
   failedToUpdateStatus: "បរាជ័យក្នុងការធ្វើបច្ចុប្បន្នភាពស្ថានភាព",
   inProgress: "កំពុងដំណើរការ",
   enterRootCause: 'បញ្ចូលហេតុផលដើម',
+  enterIncidentTitle: "បញ្ចូលចំណងជើងឧបទ្ទវហេតុ",
+  enterIncidentDescription: "បញ្ចូលការពិពណ៌នាអំពីឧបទ្ទវហេតុ",
+  enterServiceId: "បញ្ចូលលេខសម្គាល់សេវាកម្ម ដោយបំបែកដោយសញ្ញាក្បៀស",
+  selectAssignedUser: "ជ្រើសរើសអ្នកប្រើប្រាស់ដែលត្រូវបានចាត់តាំង",
+  noAssignedUser: "ឧបទ្ទវហេតុបច្ចុប្បន្នមិនត្រូវបានចាត់តាំងទៅអ្នកប្រើប្រាស់ណាមួយទេ",
+  affectedSystems: "ប្រព័ន្ធដែលរងផលប៉ះពាល់",
+  enterAffectedSystems: "បញ្ចូលប្រព័ន្ធដែលរងផលប៉ះពាល់",
+  separateSystemsWithComma: "បញ្ចូលប្រព័ន្ធដែលរងផលប៉ះពាល់ ដោយបំបែកដោយសញ្ញាក្បៀស",
+  createIncidentDesc: "បង្កើតឧបទ្ទវហេតុថ្មី"
 };

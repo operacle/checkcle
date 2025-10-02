@@ -6,6 +6,7 @@ import { OperationalPageRecord } from '@/types/operational.types';
 import { StatusBadge } from './StatusBadge';
 import { Globe, ExternalLink, Eye, Settings, Trash2 } from 'lucide-react';
 import { format } from 'date-fns';
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface OperationalPageCardProps {
   page: OperationalPageRecord;
@@ -15,6 +16,8 @@ interface OperationalPageCardProps {
 }
 
 export const OperationalPageCard = ({ page, onEdit, onView, onDelete }: OperationalPageCardProps) => {
+  const { t } = useLanguage();
+
   return (
     <Card className="hover:shadow-lg transition-shadow duration-200">
       <CardHeader className="pb-3">
@@ -32,23 +35,23 @@ export const OperationalPageCard = ({ page, onEdit, onView, onDelete }: Operatio
       <CardContent className="space-y-4">
         <div className="grid grid-cols-2 gap-4 text-sm">
           <div>
-            <span className="font-medium text-muted-foreground">Slug:</span>
+            <span className="font-medium text-muted-foreground">{t('slug')}:</span>
             <p className="mt-1">{page.slug}</p>
           </div>
           <div>
-            <span className="font-medium text-muted-foreground">Theme:</span>
+            <span className="font-medium text-muted-foreground">{t('theme')}:</span>
             <p className="mt-1 capitalize">{page.theme}</p>
           </div>
           <div>
-            <span className="font-medium text-muted-foreground">Public:</span>
+            <span className="font-medium text-muted-foreground">{t('public')}:</span>
             <div className="mt-1">
               <Badge variant={page.is_public === 'true' ? 'default' : 'secondary'}>
-                {page.is_public === 'true' ? 'Yes' : 'No'}
+                {page.is_public === 'true' ? t('yes') : t('no')}
               </Badge>
             </div>
           </div>
           <div>
-            <span className="font-medium text-muted-foreground">Updated:</span>
+            <span className="font-medium text-muted-foreground">{t('updated')}:</span>
             <p className="mt-1">{format(new Date(page.updated), 'MMM dd, yyyy')}</p>
           </div>
         </div>
@@ -70,7 +73,7 @@ export const OperationalPageCard = ({ page, onEdit, onView, onDelete }: Operatio
               className="flex-1"
             >
               <Eye className="h-4 w-4 mr-2" />
-              View
+              {t('view')}
             </Button>
           )}
           {onEdit && (
@@ -81,7 +84,7 @@ export const OperationalPageCard = ({ page, onEdit, onView, onDelete }: Operatio
               className="flex-1"
             >
               <Settings className="h-4 w-4 mr-2" />
-              Edit
+              {t('edit')}
             </Button>
           )}
           {onDelete && (

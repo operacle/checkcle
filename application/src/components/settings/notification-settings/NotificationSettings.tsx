@@ -9,6 +9,7 @@ import { WebhookConfiguration, webhookService } from "@/services/webhookService"
 import { NotificationChannelDialog } from "./NotificationChannelDialog";
 import { NotificationChannelList } from "./NotificationChannelList";
 import { pb } from "@/lib/pocketbase";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface CombinedChannel extends Partial<AlertConfiguration> {
   isWebhook?: boolean;
@@ -18,6 +19,7 @@ interface CombinedChannel extends Partial<AlertConfiguration> {
 }
 
 const NotificationSettings = () => {
+  const { t } = useLanguage();
   const [isLoading, setIsLoading] = useState(true);
   const [alertConfigs, setAlertConfigs] = useState<AlertConfiguration[]>([]);
   const [webhookConfigs, setWebhookConfigs] = useState<WebhookConfiguration[]>([]);
@@ -126,13 +128,13 @@ const NotificationSettings = () => {
       <CardHeader>
         <div className="flex items-center justify-between">
           <div>
-            <CardTitle>Notification Settings</CardTitle>
+            <CardTitle>{t("titleNotification")}</CardTitle>
             <CardDescription>
-              Configure notification channels for your services
+              {t("descriptionChannelsServices")}
             </CardDescription>
           </div>
           <Button onClick={handleAddNew}>
-            <Plus className="mr-2 h-4 w-4" /> Add Channel
+            <Plus className="mr-2 h-4 w-4" /> {t("addChannel")}
           </Button>
         </div>
       </CardHeader>
@@ -144,14 +146,14 @@ const NotificationSettings = () => {
           className="w-full"
         >
           <TabsList className="mb-4">
-            <TabsTrigger value="all">All Channels</TabsTrigger>
-            <TabsTrigger value="telegram">Telegram</TabsTrigger>
-            <TabsTrigger value="discord">Discord</TabsTrigger>
-            <TabsTrigger value="slack">Slack</TabsTrigger>
-            <TabsTrigger value="signal">Signal</TabsTrigger>
-            <TabsTrigger value="google_chat">Google Chat</TabsTrigger>
-            <TabsTrigger value="email">Email</TabsTrigger>
-            <TabsTrigger value="webhook">Webhook</TabsTrigger>
+            <TabsTrigger value="all">{t("all")}</TabsTrigger>
+            <TabsTrigger value="telegram">{t("telegram")}</TabsTrigger>
+            <TabsTrigger value="discord">{t("discord")}</TabsTrigger>
+            <TabsTrigger value="slack">{t("slack")}</TabsTrigger>
+            <TabsTrigger value="signal">{t("signal")}</TabsTrigger>
+            <TabsTrigger value="google_chat">{t("googleChat")}</TabsTrigger>
+            <TabsTrigger value="email">{t("email")}</TabsTrigger>
+            <TabsTrigger value="webhook">{t("webhook")}</TabsTrigger>
           </TabsList>
           
           <TabsContent value={currentTab} className="mt-0">

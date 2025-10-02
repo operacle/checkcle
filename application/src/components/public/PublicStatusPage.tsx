@@ -9,8 +9,10 @@ import { CurrentStatusSection } from './CurrentStatusSection';
 import { ComponentsStatusSection } from './ComponentsStatusSection';
 import { OverallUptimeSection } from './OverallUptimeSection';
 import { PublicStatusPageFooter } from './PublicStatusPageFooter';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export const PublicStatusPage = () => {
+  const { t } = useLanguage();
   const { slug } = useParams<{ slug: string }>();
 //  console.log('PublicStatusPage - slug from params:', slug);
   
@@ -59,9 +61,9 @@ export const PublicStatusPage = () => {
         <div className="text-center space-y-4">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
           <div className="space-y-2">
-            <p className="text-lg font-medium text-foreground">Loading Status Page</p>
-            <p className="text-sm text-muted-foreground">Fetching real-time system status...</p>
-            <p className="text-xs text-muted-foreground">Slug: {slug || 'No slug provided'}</p>
+            <p className="text-lg font-medium text-foreground">{t('loadingStatusPage', 'public')}</p>
+            <p className="text-sm text-muted-foreground">{t('fetchingRealtimeStatus', 'public')}</p>
+            <p className="text-xs text-muted-foreground">{t('slugLabel', 'public')}: {slug || 'No slug provided'}</p>
           </div>
         </div>
       </div>
@@ -76,19 +78,19 @@ export const PublicStatusPage = () => {
             <AlertCircle className="h-8 w-8 text-red-600 dark:text-red-400" />
           </div>
           <div className="space-y-2">
-            <h1 className="text-2xl font-bold text-foreground">Status Page Not Found</h1>
+            <h1 className="text-2xl font-bold text-foreground">{t('statusPageNotFound', 'public')}</h1>
             <p className="text-muted-foreground">
-              {error || 'The requested status page could not be found or is not publicly accessible.'}
+              {error || t('notFoundDescription', 'public')}
             </p>
-            <p className="text-xs text-muted-foreground">Slug: {slug || 'No slug provided'}</p>
+            <p className="text-xs text-muted-foreground">{t('slugLabel', 'public')}: {slug || 'No slug provided'}</p>
           </div>
           <div className="flex gap-3 justify-center">
             <Button onClick={() => window.history.back()} variant="outline">
-              Go Back
+              {t('goBack', 'public')}
             </Button>
             <Button onClick={() => window.location.reload()} className="gap-2">
               <RefreshCw className="h-4 w-4" />
-              Retry
+              {t('retry', 'public')}
             </Button>
           </div>
         </div>

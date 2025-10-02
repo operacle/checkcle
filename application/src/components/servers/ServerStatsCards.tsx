@@ -3,17 +3,19 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Server, Activity, AlertTriangle, Power } from "lucide-react";
 import { ServerStats } from "@/types/server.types";
 import { useTheme } from "@/contexts/ThemeContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface ServerStatsCardsProps {
   stats: ServerStats;
 }
 
 export const ServerStatsCards = ({ stats }: ServerStatsCardsProps) => {
+  const { t } = useLanguage();
   const { theme } = useTheme();
 
   const cards = [
     {
-      title: "TOTAL SERVERS",
+      title: t('totalServers', 'instance'),
       value: stats.total,
       icon: Server,
       gradient: theme === 'dark' 
@@ -21,7 +23,7 @@ export const ServerStatsCards = ({ stats }: ServerStatsCardsProps) => {
         : "linear-gradient(135deg, rgba(65, 59, 55, 0.8) 0%, #a0522d 100%)"
     },
     {
-      title: "ONLINE SERVERS",
+      title: t('onlineServers', 'instance'),
       value: stats.online,
       icon: Activity,
       gradient: theme === 'dark' 
@@ -29,7 +31,7 @@ export const ServerStatsCards = ({ stats }: ServerStatsCardsProps) => {
         : "linear-gradient(135deg, rgba(65, 59, 55, 0.8) 0%, #66bb6a 100%)"
     },
     {
-      title: "OFFLINE SERVERS",
+      title: t('offlineServers', 'instance'),
       value: stats.offline,
       icon: Power,
       gradient: theme === 'dark'
@@ -37,7 +39,7 @@ export const ServerStatsCards = ({ stats }: ServerStatsCardsProps) => {
         : "linear-gradient(135deg, rgba(65, 59, 55, 0.8) 0%, #ef5350 100%)"
     },
     {
-      title: "WARNING SERVERS",
+      title: t('warningServers', 'instance'),
       value: stats.warning,
       icon: AlertTriangle,
       gradient: theme === 'dark'

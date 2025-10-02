@@ -247,6 +247,7 @@ export const NotificationChannelDialog = ({
   onClose,
   editingConfig 
 }: NotificationChannelDialogProps) => {
+  const { t } = useLanguage();
   const isEditing = !!editingConfig;
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -325,7 +326,7 @@ export const NotificationChannelDialog = ({
       <DialogContent className="sm:max-w-[700px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>
-            {isEditing ? "Edit Notification Channel" : "Add Notification Channel"}
+            {isEditing ? t("editChannel") : t("addChannelDialog")}
           </DialogTitle>
         </DialogHeader>
         
@@ -336,28 +337,28 @@ export const NotificationChannelDialog = ({
               name="notify_name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Channel Name</FormLabel>
+                  <FormLabel>{t("channelName")}</FormLabel>
                   <FormControl>
-                    <Input placeholder="My Notification Channel" {...field} />
+                    <Input placeholder={t("channelNamePlaceholder")} {...field} />
                   </FormControl>
                   <FormDescription>
-                    A name to identify this notification channel
+                    {t("channelNameDesc")}
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            
+
             <FormField
               control={form.control}
               name="notification_type"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Channel Type</FormLabel>
+                  <FormLabel>{t("channelType")}</FormLabel>
                   <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select notification type" />
+                        <SelectValue placeholder={t("selectType")} />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -370,8 +371,8 @@ export const NotificationChannelDialog = ({
                               className="w-5 h-5 object-contain"
                             />
                             <div className="flex flex-col">
-                              <span className="font-medium">{option.label}</span>
-                              <span className="text-xs text-muted-foreground">{option.description}</span>
+                              <span className="font-medium">{t(option.value)}</span>
+                              <span className="text-xs text-muted-foreground">{t(option.description)}</span>
                             </div>
                           </div>
                         </SelectItem>
@@ -382,7 +383,7 @@ export const NotificationChannelDialog = ({
                 </FormItem>
               )}
             />
-            
+
             {notificationType === "telegram" && (
               <>
                 <FormField
@@ -390,12 +391,12 @@ export const NotificationChannelDialog = ({
                   name="telegram_chat_id"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Chat ID</FormLabel>
+                      <FormLabel>{t("telegramChatId")}</FormLabel>
                       <FormControl>
-                        <Input placeholder="Telegram Chat ID" {...field} />
+                        <Input placeholder={t("telegramChatIdPlaceholder")} {...field} />
                       </FormControl>
                       <FormDescription>
-                        The Telegram chat ID to send notifications to
+                        {t("telegramChatIdDesc")}
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
@@ -406,12 +407,12 @@ export const NotificationChannelDialog = ({
                   name="bot_token"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Bot Token</FormLabel>
+                      <FormLabel>{t("botToken")}</FormLabel>
                       <FormControl>
-                        <Input placeholder="Telegram Bot Token" {...field} type="password" />
+                        <Input placeholder={t("botTokenPlaceholder")} {...field} type="password" />
                       </FormControl>
                       <FormDescription>
-                        Your Telegram bot token from @BotFather
+                        {t("botTokenDesc")}
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
@@ -419,38 +420,38 @@ export const NotificationChannelDialog = ({
                 />
               </>
             )}
-            
+
             {notificationType === "discord" && (
               <FormField
                 control={form.control}
                 name="discord_webhook_url"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Webhook URL</FormLabel>
+                    <FormLabel>{t("discordWebhookUrl")}</FormLabel>
                     <FormControl>
-                      <Input placeholder="https://discord.com/api/webhooks/..." {...field} />
+                      <Input placeholder={t("discordWebhookUrlPlaceholder")} {...field} />
                     </FormControl>
                     <FormDescription>
-                      Discord webhook URL from your server settings
+                      {t("discordWebhookUrlDesc")}
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
               />
             )}
-            
+
             {notificationType === "slack" && (
               <FormField
                 control={form.control}
                 name="slack_webhook_url"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Webhook URL</FormLabel>
+                    <FormLabel>{t("slackWebhookUrl")}</FormLabel>
                     <FormControl>
-                      <Input placeholder="https://hooks.slack.com/services/..." {...field} />
+                      <Input placeholder={t("slackWebhookUrlPlaceholder")} {...field} />
                     </FormControl>
                     <FormDescription>
-                      Slack incoming webhook URL
+                      {t("slackWebhookUrlDesc")}
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -465,12 +466,12 @@ export const NotificationChannelDialog = ({
                   name="signal_number"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Signal Number</FormLabel>
+                      <FormLabel>{t("signalNumber")}</FormLabel>
                       <FormControl>
-                        <Input placeholder="+1234567890" {...field} />
+                        <Input placeholder={t("signalNumberPlaceholder")} {...field} />
                       </FormControl>
                       <FormDescription>
-                        Signal phone number to send notifications to
+                        {t("signalNumberDesc")}
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
@@ -481,12 +482,12 @@ export const NotificationChannelDialog = ({
                   name="signal_api_endpoint"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Signal API Endpoint</FormLabel>
+                      <FormLabel>{t("signalApiEndpoint")}</FormLabel>
                       <FormControl>
-                        <Input placeholder="https://your-signal-api.com/v2/send" {...field} />
+                        <Input placeholder={t("signalApiEndpointPlaceholder")} {...field} />
                       </FormControl>
                       <FormDescription>
-                        The Rest API endpoint for your Signal service
+                        {t("signalApiEndpointDesc")}
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
@@ -501,12 +502,12 @@ export const NotificationChannelDialog = ({
                 name="google_chat_webhook_url"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Google Chat Webhook URL</FormLabel>
+                    <FormLabel>{t("googleChatWebhookUrl")}</FormLabel>
                     <FormControl>
-                      <Input placeholder="https://chat.googleapis.com/v1/spaces/..." {...field} />
+                      <Input placeholder={t("googleChatWebhookUrlPlaceholder")} {...field} />
                     </FormControl>
                     <FormDescription>
-                      Google Chat webhook URL from your Google Chat space
+                      {t("googleChatWebhookUrlDesc")}
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -521,12 +522,12 @@ export const NotificationChannelDialog = ({
                   name="email_address"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Email Address</FormLabel>
+                      <FormLabel>{t("emailAddress")}</FormLabel>
                       <FormControl>
-                        <Input placeholder="notifications@example.com" {...field} type="email" />
+                        <Input placeholder={t("emailAddressPlaceholder")} {...field} type="email" />
                       </FormControl>
                       <FormDescription>
-                        Email address to send notifications to
+                        {t("emailAddressDesc")}
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
@@ -537,12 +538,12 @@ export const NotificationChannelDialog = ({
                   name="email_sender_name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Sender Name</FormLabel>
+                      <FormLabel>{t("emailSenderName")}</FormLabel>
                       <FormControl>
-                        <Input placeholder="Alert System" {...field} />
+                        <Input placeholder={t("emailSenderNamePlaceholder")} {...field} />
                       </FormControl>
                       <FormDescription>
-                        Display name for outgoing emails
+                        {t("emailSenderNameDesc")}
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
@@ -554,9 +555,9 @@ export const NotificationChannelDialog = ({
                     name="smtp_server"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>SMTP Server</FormLabel>
+                        <FormLabel>{t("smtpServer")}</FormLabel>
                         <FormControl>
-                          <Input placeholder="smtp.gmail.com" {...field} />
+                          <Input placeholder={t("smtpServerPlaceholder")} {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -567,9 +568,9 @@ export const NotificationChannelDialog = ({
                     name="smtp_port"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>SMTP Port</FormLabel>
+                        <FormLabel>{t("smtpPort")}</FormLabel>
                         <FormControl>
-                          <Input placeholder="587" {...field} />
+                          <Input placeholder={t("smtpPortPlaceholder")} {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -581,12 +582,12 @@ export const NotificationChannelDialog = ({
                   name="smtp_password"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>SMTP Password</FormLabel>
+                      <FormLabel>{t("smtpPassword")}</FormLabel>
                       <FormControl>
-                        <Input placeholder="Enter your SMTP password" {...field} type="password" />
+                        <Input placeholder={t("smtpPasswordPlaceholder")} {...field} type="password" />
                       </FormControl>
                       <FormDescription>
-                        Password for authenticating with the SMTP server
+                        {t("smtpPasswordDesc")}
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
@@ -602,12 +603,12 @@ export const NotificationChannelDialog = ({
                   name="ntfy_endpoint"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>NTFY Endpoint</FormLabel>
+                      <FormLabel>{t("ntfyEndpoint")}</FormLabel>
                       <FormControl>
-                        <Input placeholder="https://ntfy.sh/your-topic" {...field} />
+                        <Input placeholder={t("ntfyEndpointPlaceholder")} {...field} />
                       </FormControl>
                       <FormDescription>
-                        The NTFY endpoint URL including your topic (e.g., https://ntfy.sh/checkcle)
+                        {t("ntfyEndpointDesc")}
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
@@ -618,12 +619,12 @@ export const NotificationChannelDialog = ({
                   name="api_token"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>API Token (Optional)</FormLabel>
+                      <FormLabel>{t("apiTokenOptional")}</FormLabel>
                       <FormControl>
-                        <Input placeholder="Enter NTFY API token" {...field} type="password" />
+                        <Input placeholder={t("apiTokenPlaceholder")} {...field} type="password" />
                       </FormControl>
                       <FormDescription>
-                        Optional API token for authentication with NTFY server
+                        {t("apiTokenDesc")}
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
@@ -632,19 +633,19 @@ export const NotificationChannelDialog = ({
               </>
             )}
 
-             {notificationType === "pushover" && (
+            {notificationType === "pushover" && (
               <>
                 <FormField
                   control={form.control}
                   name="api_token"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>API Token</FormLabel>
+                      <FormLabel>{t("apiToken")}</FormLabel>
                       <FormControl>
-                        <Input placeholder="Your Pushover API token" {...field} type="password" />
+                        <Input placeholder={t("apiTokenPlaceholder")} {...field} type="password" />
                       </FormControl>
                       <FormDescription>
-                        Your Pushover application API token
+                        {t("apiTokenDesc")}
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
@@ -655,12 +656,12 @@ export const NotificationChannelDialog = ({
                   name="user_key"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>User Key</FormLabel>
+                      <FormLabel>{t("pushoverUserKey")}</FormLabel>
                       <FormControl>
-                        <Input placeholder="Your Pushover user key" {...field} />
+                        <Input placeholder={t("pushoverUserKeyPlaceholder")} {...field} />
                       </FormControl>
                       <FormDescription>
-                        Your Pushover user key (or group key)
+                        {t("pushoverUserKeyDesc")}
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
@@ -676,12 +677,12 @@ export const NotificationChannelDialog = ({
                   name="api_token"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>API Token</FormLabel>
+                      <FormLabel>{t("apiToken")}</FormLabel>
                       <FormControl>
-                        <Input placeholder="Your Notifiarr API token" {...field} type="password" />
+                        <Input placeholder={t("apiTokenPlaceholder")} {...field} type="password" />
                       </FormControl>
                       <FormDescription>
-                        Your Notifiarr API token for sending notifications
+                        {t("apiTokenDesc")}
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
@@ -692,12 +693,12 @@ export const NotificationChannelDialog = ({
                   name="channel_id"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Channel ID</FormLabel>
+                      <FormLabel>{t("notifiarrChannelId")}</FormLabel>
                       <FormControl>
-                        <Input placeholder="Discord Channel ID" {...field} />
+                        <Input placeholder={t("notifiarrChannelIdPlaceholder")} {...field} />
                       </FormControl>
                       <FormDescription>
-                        The Discord channel ID where notifications will be sent
+                        {t("notifiarrChannelIdDesc")}
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
@@ -713,12 +714,12 @@ export const NotificationChannelDialog = ({
                   name="api_token"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>API Token</FormLabel>
+                      <FormLabel>{t("apiToken")}</FormLabel>
                       <FormControl>
-                        <Input placeholder="Your Gotify API token" {...field} type="password" />
+                        <Input placeholder={t("apiTokenPlaceholder")} {...field} type="password" />
                       </FormControl>
                       <FormDescription>
-                        Your Gotify application API token
+                        {t("apiTokenDesc")}
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
@@ -729,12 +730,12 @@ export const NotificationChannelDialog = ({
                   name="server_url"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Server URL</FormLabel>
+                      <FormLabel>{t("gotifyServerUrl")}</FormLabel>
                       <FormControl>
-                        <Input placeholder="https://your-gotify-server.com" {...field} />
+                        <Input placeholder={t("gotifyServerUrlPlaceholder")} {...field} />
                       </FormControl>
                       <FormDescription>
-                        The URL of your Gotify server
+                        {t("gotifyServerUrlDesc")}
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
@@ -742,7 +743,7 @@ export const NotificationChannelDialog = ({
                 />
               </>
             )}
-            
+
             {notificationType === "webhook" && (
               <>
                 <FormField
@@ -750,12 +751,12 @@ export const NotificationChannelDialog = ({
                   name="webhook_url"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Webhook URL</FormLabel>
+                      <FormLabel>{t("webhookUrl")}</FormLabel>
                       <FormControl>
-                        <Input placeholder="https://api.example.com/webhook" {...field} />
+                        <Input placeholder={t("webhookUrlPlaceholder")} {...field} />
                       </FormControl>
                       <FormDescription>
-                        The URL where webhook notifications will be sent
+                        {t("webhookUrlDesc")}
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
@@ -768,10 +769,9 @@ export const NotificationChannelDialog = ({
                     name="webhook_payload_template"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Payload Template (Optional)</FormLabel>
-                       
+                        <FormLabel>{t("payloadTemplate")}</FormLabel>
                         <FormDescription>
-                          JSON template for the webhook payload. Leave empty to use default template.
+                          {t("payloadTemplateDesc")}
                         </FormDescription>
                         <FormMessage />
                       </FormItem>
@@ -780,15 +780,15 @@ export const NotificationChannelDialog = ({
 
                   <Card>
                     <CardHeader className="pb-3">
-                      <CardTitle className="text-sm font-medium">Payload Templates</CardTitle>
+                      <CardTitle className="text-sm font-medium">{t("payloadTemplates")}</CardTitle>
                     </CardHeader>
                     <CardContent>
                       <div className="space-y-3">
                         <div className="mt-4">
-                          <h4 className="text-sm font-medium mb-2">Available Placeholders:</h4>
+                          <h4 className="text-sm font-medium mb-2">{t("availablePlaceholders")}</h4>
                           <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs">
                             <div className="space-y-1">
-                              <p className="font-medium text-muted-foreground">Server:</p>
+                              <p className="font-medium text-muted-foreground">{t("server")}</p>
                               <div className="space-y-0.5">
                                 <code className="bg-muted px-1 rounded">${'{server_name}'}</code><br/>
                                 <code className="bg-muted px-1 rounded">${'{cpu_usage}'}</code><br/>
@@ -797,7 +797,7 @@ export const NotificationChannelDialog = ({
                               </div>
                             </div>
                             <div className="space-y-1">
-                              <p className="font-medium text-muted-foreground">Service:</p>
+                              <p className="font-medium text-muted-foreground">{t("service")}</p>
                               <div className="space-y-0.5">
                                 <code className="bg-muted px-1 rounded">${'{service_name}'}</code><br/>
                                 <code className="bg-muted px-1 rounded">${'{response_time}'}</code><br/>
@@ -806,7 +806,7 @@ export const NotificationChannelDialog = ({
                               </div>
                             </div>
                             <div className="space-y-1">
-                              <p className="font-medium text-muted-foreground">SSL:</p>
+                              <p className="font-medium text-muted-foreground">{t("ssl")}</p>
                               <div className="space-y-0.5">
                                 <code className="bg-muted px-1 rounded">${'{domain}'}</code><br/>
                                 <code className="bg-muted px-1 rounded">${'{expiry_date}'}</code><br/>
@@ -815,7 +815,7 @@ export const NotificationChannelDialog = ({
                               </div>
                             </div>
                             <div className="space-y-1">
-                              <p className="font-medium text-muted-foreground">Common:</p>
+                              <p className="font-medium text-muted-foreground">{t("common")}</p>
                               <div className="space-y-0.5">
                                 <code className="bg-muted px-1 rounded">${'{status}'}</code><br/>
                                 <code className="bg-muted px-1 rounded">${'{time}'}</code><br/>
@@ -838,9 +838,9 @@ export const NotificationChannelDialog = ({
               render={({ field }) => (
                 <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3">
                   <div className="space-y-0.5">
-                    <FormLabel>Enabled</FormLabel>
+                    <FormLabel>{t("enabled")}</FormLabel>
                     <FormDescription>
-                      Enable or disable this notification channel
+                      {t("enabledDesc")}
                     </FormDescription>
                   </div>
                   <FormControl>
@@ -855,11 +855,11 @@ export const NotificationChannelDialog = ({
             
             <DialogFooter>
               <Button variant="outline" type="button" onClick={handleClose}>
-                Cancel
+                {t("cancel")}
               </Button>
               <Button type="submit" disabled={isSubmitting}>
                 {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                {isEditing ? "Update Channel" : "Create Channel"}
+                {isEditing ? t("updateChannel") : t("createChannel")}
               </Button>
             </DialogFooter>
           </form>

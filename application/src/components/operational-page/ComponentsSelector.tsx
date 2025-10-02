@@ -11,6 +11,7 @@ import { Plus, X, Server } from 'lucide-react';
 import { StatusPageComponentRecord } from '@/types/statusPageComponents.types';
 import { useQuery } from '@tanstack/react-query';
 import { serviceService } from '@/services/serviceService';
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface ComponentsSelectorProps {
   selectedComponents: Partial<StatusPageComponentRecord>[];
@@ -19,6 +20,7 @@ interface ComponentsSelectorProps {
 }
 
 export const ComponentsSelector = ({ selectedComponents, onComponentsChange, onComponentDelete }: ComponentsSelectorProps) => {
+  const { t } = useLanguage();
   const [showAddForm, setShowAddForm] = useState(false);
   const [newComponent, setNewComponent] = useState({
     name: '',
@@ -71,16 +73,16 @@ export const ComponentsSelector = ({ selectedComponents, onComponentsChange, onC
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Server className="h-5 w-5" />
-          Status Page Components
+          {t('statusPageComponents')}
         </CardTitle>
         <CardDescription>
-          Add monitoring components like uptime services, SSL certificates, and incident tracking
+          {t('addMonitoringComponentsDesc')}
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         {selectedComponents.length > 0 && (
           <div className="space-y-2">
-            <Label>Selected Components</Label>
+            <Label>{t('selectedComponents')}</Label>
             <div className="space-y-2">
               {selectedComponents.map((component, index) => (
                 <div key={component.id || index} className="flex items-center justify-between p-3 border rounded-lg">
@@ -92,12 +94,12 @@ export const ComponentsSelector = ({ selectedComponents, onComponentsChange, onC
                     <div className="flex gap-2 mt-1">
                       {component.service_id && (
                         <Badge variant="secondary" className="text-xs">
-                          Service: {services.find(s => s.id === component.service_id)?.name || component.service_id}
+                          {t('service')}: {services.find(s => s.id === component.service_id)?.name || component.service_id}
                         </Badge>
                       )}
                       {component.server_id && (
                         <Badge variant="secondary" className="text-xs">
-                          Server: {component.server_id}
+                          {t('server')}: {component.server_id}
                         </Badge>
                       )}
                     </div>
@@ -122,22 +124,22 @@ export const ComponentsSelector = ({ selectedComponents, onComponentsChange, onC
             className="w-full"
           >
             <Plus className="h-4 w-4 mr-2" />
-            Add Component
+            {t('addComponent')}
           </Button>
         ) : (
           <div className="border rounded-lg p-4 space-y-4">
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <Label htmlFor="component-name">Component Name</Label>
+                <Label htmlFor="component-name">{t('componentName')}</Label>
                 <Input
                   id="component-name"
-                  placeholder="e.g., Main Website"
+                  placeholder={t('componentNamePlaceholder')}
                   value={newComponent.name}
                   onChange={(e) => setNewComponent({ ...newComponent, name: e.target.value })}
                 />
               </div>
               <div>
-                <Label htmlFor="display-order">Display Order</Label>
+                <Label htmlFor="display-order">{t('displayOrder')}</Label>
                 <Input
                   id="display-order"
                   type="number"
@@ -148,10 +150,10 @@ export const ComponentsSelector = ({ selectedComponents, onComponentsChange, onC
             </div>
 
             <div>
-              <Label htmlFor="component-description">Description (Optional)</Label>
+              <Label htmlFor="component-description">{t('descriptionOptional')}</Label>
               <Textarea
                 id="component-description"
-                placeholder="Brief description of this component"
+                placeholder={t('descriptionPlaceholder')}
                 value={newComponent.description}
                 onChange={(e) => setNewComponent({ ...newComponent, description: e.target.value })}
               />
@@ -159,10 +161,10 @@ export const ComponentsSelector = ({ selectedComponents, onComponentsChange, onC
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <Label htmlFor="service-id">Uptime Service (Optional)</Label>
+                <Label htmlFor="service-id">{t('uptimeServiceOptional')}</Label>
                 <Select onValueChange={(value) => setNewComponent({ ...newComponent, service_id: value })}>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select an uptime service" />
+                    <SelectValue placeholder={t('selectUptimeService')} />
                   </SelectTrigger>
                   <SelectContent>
                     {services.map((service) => (
@@ -181,10 +183,10 @@ export const ComponentsSelector = ({ selectedComponents, onComponentsChange, onC
                 </Select>
               </div>
               <div>
-                <Label htmlFor="server-id">Server ID (Optional)</Label>
+                <Label htmlFor="server-id">{t('serverIdOptional')}</Label>
                 <Input
                   id="server-id"
-                  placeholder="server_456"
+                  placeholder={t('serverIdPlaceholder')}
                   value={newComponent.server_id}
                   onChange={(e) => setNewComponent({ ...newComponent, server_id: e.target.value })}
                 />
@@ -193,10 +195,10 @@ export const ComponentsSelector = ({ selectedComponents, onComponentsChange, onC
 
             <div className="flex gap-2">
               <Button onClick={addComponent} disabled={!newComponent.name.trim()}>
-                Add Component
+                {t('addComponent')}
               </Button>
               <Button variant="outline" onClick={() => setShowAddForm(false)}>
-                Cancel
+                {t('cancel')}
               </Button>
             </div>
           </div>

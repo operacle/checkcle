@@ -79,7 +79,7 @@ Click "Fork" on [GitHub](https://github.com/operacle/checkcle) to create your ow
 
 ### 2. Clone Your Fork
 ```bash
-git clone --branch develop https://github.com/operacle/checkcle.git
+git clone https://github.com/yourusername/checkcle.git
 cd checkcle
 ```
 
@@ -116,7 +116,7 @@ go run main.go (you do not need to change the .env while it's the localhost conn
 Click "Fork" on [GitHub](https://github.com/operacle/Distributed-Regional-Monitoring) to create your own copy.
 
 #### 2. Clone Your Fork
-git clone --branch main https://github.com/operacle/Distributed-Regional-Monitoring.git
+git clone https://github.com/yourusername/Distributed-Regional-Monitoring.git
 cd Distributed-Regional-Monitoring
 
 #### 3. Install Go Service (make sure you have installed the Go Service)

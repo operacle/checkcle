@@ -35,10 +35,7 @@ export const AddServerAgentDialog: React.FC<AddServerAgentDialogProps> = ({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [activeTab, setActiveTab] = useState("configure");
 
-  // Get current PocketBase URL
   const currentPocketBaseUrl = getCurrentEndpoint();
-
-  // Form state
   const [formData, setFormData] = useState({
     serverName: "",
     description: "",
@@ -49,12 +46,16 @@ export const AddServerAgentDialog: React.FC<AddServerAgentDialogProps> = ({
     notificationEnabled: true,
   });
 
-  // Generated server token and agent ID
-  const [serverToken] = useState(() => 
+  const generateNewCredentials = () => ({
+    serverToken: `srv_${Math.random().toString(36).substring(2, 15)}${Math.random().toString(36).substring(2, 15)}`,
+    serverId: `agent_${Math.random().toString(36).substring(2, 15)}${Math.random().toString(36).substring(2, 15)}`
+  });
+
+  const [serverToken, setServerToken] = useState(() => 
     `srv_${Math.random().toString(36).substring(2, 15)}${Math.random().toString(36).substring(2, 15)}`
   );
   
-  const [serverId] = useState(() => 
+  const [serverId, setServerId] = useState(() => 
     `agent_${Math.random().toString(36).substring(2, 15)}${Math.random().toString(36).substring(2, 15)}`
   );
 
@@ -74,8 +75,6 @@ export const AddServerAgentDialog: React.FC<AddServerAgentDialogProps> = ({
     setIsSubmitting(true);
 
     try {
-      // Here you would typically create the server monitoring configuration
-      // For now, we'll simulate the process
       await new Promise(resolve => setTimeout(resolve, 1500));
 
       toast({
@@ -83,7 +82,9 @@ export const AddServerAgentDialog: React.FC<AddServerAgentDialogProps> = ({
         description: t('serverAgentCreatedDesc').replace('{name}', formData.serverName),
       });
 
-      // Switch to one-click install tab after successful creation
+      const newCredentials = generateNewCredentials();
+      setServerToken(newCredentials.serverToken);
+      setServerId(newCredentials.serverId);
       setActiveTab("one-click");
       onAgentAdded();
     } catch (error) {
@@ -98,7 +99,6 @@ export const AddServerAgentDialog: React.FC<AddServerAgentDialogProps> = ({
   };
 
   const handleDialogClose = () => {
-    // Reset form and tab when dialog closes
     setActiveTab("configure");
     setFormData({
       serverName: "",
@@ -109,6 +109,11 @@ export const AddServerAgentDialog: React.FC<AddServerAgentDialogProps> = ({
       dockerEnabled: false,
       notificationEnabled: true,
     });
+    
+    const newCredentials = generateNewCredentials();
+    setServerToken(newCredentials.serverToken);
+    setServerId(newCredentials.serverId);
+    
     onOpenChange(false);
   };
 
@@ -121,7 +126,7 @@ export const AddServerAgentDialog: React.FC<AddServerAgentDialogProps> = ({
             {t('addServerMonitoringAgent')}
           </DialogTitle>
           <DialogDescription>
-            {t('configureAgentDesc')}
+           {t('configureAgentDesc')}
           </DialogDescription>
         </DialogHeader>
 
@@ -154,7 +159,7 @@ export const AddServerAgentDialog: React.FC<AddServerAgentDialogProps> = ({
               onDialogClose={handleDialogClose}
             />
           </TabsContent>
-          
+
           <TabsContent value="docker-one-click" className="space-y-6">
             <DockerOneClickTab
               serverToken={serverToken}

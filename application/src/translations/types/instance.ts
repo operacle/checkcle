@@ -14,6 +14,13 @@ export interface InstanceTranslations {
   loadingServers: string;
   searchServersPlaceholder: string;
   noServersFound: string;
+  deleteSelected: string;
+  deleteSelectedConfirmTitle: string;
+  deleteSelectedConfirmDesc: string;
+  selectedCount: string;
+  serversDeleted: string;
+  serversDeletedDesc: string;
+  partialSuccess: string;
   name: string;
   status: string;
   OS: string;

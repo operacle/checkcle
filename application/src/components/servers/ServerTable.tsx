@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
@@ -33,6 +34,9 @@ export const ServerTable = ({ servers, isLoading, onRefresh }: ServerTableProps)
   const [selectedServer, setSelectedServer] = useState<Server | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
   const [pausingServers, setPausingServers] = useState<Set<string>>(new Set());
+  const [selectedServerIds, setSelectedServerIds] = useState<Set<string>>(new Set());
+  const [bulkDeleteDialogOpen, setBulkDeleteDialogOpen] = useState(false);
+  const [isBulkDeleting, setIsBulkDeleting] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -41,6 +45,25 @@ export const ServerTable = ({ servers, isLoading, onRefresh }: ServerTableProps)
     server.hostname.toLowerCase().includes(searchTerm.toLowerCase()) ||
     server.ip_address.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const allVisibleSelected = filteredServers.length > 0 && filteredServers.every(s => selectedServerIds.has(s.id));
+  const someVisibleSelected = filteredServers.some(s => selectedServerIds.has(s.id)) && !allVisibleSelected;
+
+  const toggleSelectAllVisible = (checked: boolean) => {
+    const newSet = new Set(selectedServerIds);
+    if (checked) {
+      filteredServers.forEach(s => newSet.add(s.id));
+    } else {
+      filteredServers.forEach(s => newSet.delete(s.id));
+    }
+    setSelectedServerIds(newSet);
+  };
+
+  const toggleSelectOne = (serverId: string, checked: boolean) => {
+    const newSet = new Set(selectedServerIds);
+    if (checked) newSet.add(serverId); else newSet.delete(serverId);
+    setSelectedServerIds(newSet);
+  };
 
   const handleViewDetails = (serverId: string) => {
     navigate(`/server-detail/${serverId}`);
@@ -135,6 +158,33 @@ export const ServerTable = ({ servers, isLoading, onRefresh }: ServerTableProps)
       });
     } finally {
       setIsDeleting(false);
+    }
+  };
+
+  const confirmBulkDelete = async () => {
+    if (selectedServerIds.size === 0 || isBulkDeleting) return;
+    try {
+      setIsBulkDeleting(true);
+      const ids = Array.from(selectedServerIds);
+      const deletions = ids.map(id => pb.collection('servers').delete(id));
+      const results = await Promise.allSettled(deletions);
+      const failed = results.filter(r => r.status === 'rejected').length;
+
+      if (failed === 0) {
+        toast({ title: "Servers deleted", description: `${ids.length} server(s) have been deleted.` });
+      } else if (failed === ids.length) {
+        toast({ variant: "destructive", title: "Error", description: "Failed to delete selected servers. Please try again." });
+      } else {
+        toast({ variant: "destructive", title: "Partial success", description: `Deleted ${ids.length - failed}, failed ${failed}.` });
+      }
+
+      onRefresh();
+      setSelectedServerIds(new Set());
+      setBulkDeleteDialogOpen(false);
+    } catch (_e) {
+      toast({ variant: "destructive", title: "Error", description: "Failed to delete selected servers. Please try again." });
+    } finally {
+      setIsBulkDeleting(false);
     }
   };
 
@@ -234,6 +284,18 @@ export const ServerTable = ({ servers, isLoading, onRefresh }: ServerTableProps)
                   className="pl-8"
                 />
               </div>
+              {selectedServerIds.size > 0 && (
+                <div className="hidden sm:block text-sm text-muted-foreground mr-2">
+                  {selectedServerIds.size} selected
+                </div>
+              )}
+              <Button
+                onClick={() => setBulkDeleteDialogOpen(true)}
+                variant="destructive"
+                disabled={selectedServerIds.size === 0}
+              >
+                Delete Selected
+              </Button>
               <Button onClick={onRefresh} variant="outline" size="icon">
                 <RefreshCw className="h-4 w-4" />
               </Button>
@@ -250,6 +312,16 @@ export const ServerTable = ({ servers, isLoading, onRefresh }: ServerTableProps)
               <Table>
                 <TableHeader className={`${theme === 'dark' ? 'bg-gray-800' : 'bg-gray-50'}`}>
                   <TableRow className={`${theme === 'dark' ? 'border-gray-700 hover:bg-gray-800' : 'border-gray-200 hover:bg-gray-100'}`}>
+                    <TableHead className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'} w-10`}>
+                      <div onClick={(e) => e.stopPropagation()}>
+                        <Checkbox
+                          checked={allVisibleSelected}
+                          onCheckedChange={(v) => toggleSelectAllVisible(Boolean(v))}
+                          aria-label="Select all"
+                          indeterminate={someVisibleSelected}
+                        />
+                      </div>
+                    </TableHead>
                     <TableHead className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'} font-medium text-base py-4`}>{t('name')}</TableHead>
                     <TableHead className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'} font-medium text-base py-4`}>{t('status')}</TableHead>
                     <TableHead className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'} font-medium text-base py-4`}>{t('OS')}</TableHead>
@@ -270,12 +342,20 @@ export const ServerTable = ({ servers, isLoading, onRefresh }: ServerTableProps)
                     const isPaused = server.status === "paused";
                     const isProcessing = pausingServers.has(server.id);
 
+                    const isSelected = selectedServerIds.has(server.id);
                     return (
                       <TableRow 
                         key={server.id} 
-                        className="hover:bg-muted/50 cursor-pointer"
+                        className={`hover:bg-muted/50 cursor-pointer ${isSelected ? 'bg-muted/30' : ''}`}
                         onClick={() => handleViewDetails(server.id)}
                       >
+                        <TableCell onClick={(e) => e.stopPropagation()}>
+                          <Checkbox
+                            checked={isSelected}
+                            onCheckedChange={(v) => toggleSelectOne(server.id, Boolean(v))}
+                            aria-label={`Select ${server.name}`}
+                          />
+                        </TableCell>
                         <TableCell className="font-medium">
                           <div className="truncate" title={server.name}>
                             {server.name}
@@ -423,6 +503,30 @@ export const ServerTable = ({ servers, isLoading, onRefresh }: ServerTableProps)
               className="bg-red-600 text-white hover:bg-red-700"
             >
               {isDeleting ? t('deleting') : t('delete')}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {/* Bulk Delete Confirmation Dialog */}
+      <AlertDialog open={bulkDeleteDialogOpen} onOpenChange={setBulkDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete selected servers?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete {selectedServerIds.size} server(s) and all of their monitoring data.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={isBulkDeleting}>
+              {t('cancel')}
+            </AlertDialogCancel>
+            <AlertDialogAction
+              onClick={confirmBulkDelete}
+              disabled={isBulkDeleting}
+              className="bg-red-600 text-white hover:bg-red-700"
+            >
+              {isBulkDeleting ? t('deleting') : 'Delete Selected'}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

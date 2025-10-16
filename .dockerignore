@@ -1,0 +1,10 @@
+.git
+server/
+**/node_modules
+**/dist
+**/.next
+**/.turbo
+**/.cache
+**/coverage
+**/*.log
+

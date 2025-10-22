@@ -39,6 +39,7 @@ We support the latest stable release of `checkcle`. Security patches may also be
 
 | Version | Supported |
 |---------|-----------|
+| `develop` (latest) | ✅ Yes |
 | `main` (latest) | ✅ Yes |
 | Older versions | ⚠️ Best-effort |
 | Pre-release or forks | ❌ No |

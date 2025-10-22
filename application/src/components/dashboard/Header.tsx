@@ -41,23 +41,19 @@ export const Header = ({
       }
     };
     updateGreeting();
-    // Update greeting if language changes
 
-    // You could add a timer to update the greeting throughout the day
-    // but that's typically unnecessary since most sessions aren't active across time periods
   }, [language, t]);
 
   // Log avatar data for debugging
   useEffect(() => {
     if (currentUser) {
-      //console.log("Avatar URL in Header:", currentUser.avatar);
+
     }
   }, [currentUser]);
 
-  // Prepare avatar URL - ensure it displays correctly if it's a local profile image
   let avatarUrl = '';
   if (currentUser?.avatar) {
-    // If it's a relative path from the public folder, make sure it's resolved properly
+
     if (currentUser.avatar.startsWith('/upload/profile/')) {
       avatarUrl = currentUser.avatar;
     } else {
@@ -155,7 +151,7 @@ export const Header = ({
           variant="outline" 
           size="icon" 
           className="rounded-full w-8 h-8 border-border"
-          onClick={() => window.open("https://x.com/checkcle_oss)", "_blank")}
+          onClick={() => window.open("https://x.com/checkcle_oss", "_blank")}
         >
           <span className="sr-only">X (Twitter)</span>
           <Twitter className="w-4 h-4" />

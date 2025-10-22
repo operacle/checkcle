@@ -15,7 +15,7 @@ services:
         hard: 8192
 
   frontend:
-    image: ghcr.io/diptamahardhika/checkcle-frontend:sha-b2ae075
+    image: ghcr.io/operacle/checkcle-frontend:sha-b2ae075
     container_name: checkcle-frontend
     ports:
       - "8990:80"

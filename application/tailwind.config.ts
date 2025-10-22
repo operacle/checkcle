@@ -3,6 +3,15 @@ import type { Config } from "tailwindcss";
 
 export default {
 	darkMode: ["class"],
+	safelist: [
+		"text-purple-400",
+		"text-blue-400",
+		"text-cyan-400",
+		"text-emerald-400",
+		"text-amber-400",
+		"text-indigo-400",
+		"text-rose-400"
+	],
 	content: [
 		"./pages/**/*.{ts,tsx}",
 		"./components/**/*.{ts,tsx}",

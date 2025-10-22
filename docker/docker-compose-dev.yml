@@ -2,16 +2,38 @@ version: '3.9'
 
 services:
   checkcle:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: checkcle
+    image: operacle/checkcle:latest
+    container_name: checkcle-dev
     restart: unless-stopped
     ports:
       - "8090:8090"
     volumes:
-      - /var/pb_data:/mnt/pb_data  # Updated mount target to match CMD in Dockerfile
+      - pb_data:/mnt/pb_data  # Persist PocketBase data across rebuilds
     ulimits:
       nofile:
         soft: 4096
         hard: 8192
+
+  frontend:
+    image: ghcr.io/diptamahardhika/checkcle-frontend:sha-b2ae075
+    container_name: checkcle-frontend
+    ports:
+      - "8990:80"
+    environment:
+      - NODE_ENV=development
+    depends_on:
+      - checkcle
+    # Fall back to dev server when FRONTEND_IMAGE is not set
+    deploy:
+      replicas: 1
+    # Compose doesn't support conditional configs; document usage:
+    # - To use prebuilt image: export FRONTEND_IMAGE=ghcr.io/<owner>/checkcle-frontend:<tag>
+    # - To use live dev server instead, comment 'image' above and uncomment the block below:
+    # working_dir: /app
+    # command: sh -c "npm ci && npm run dev -- --host 0.0.0.0 --port 8990"
+    # volumes:
+    #   - ../application:/app
+    #   - /app/node_modules
+
+volumes:
+  pb_data:

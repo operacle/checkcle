@@ -48,7 +48,7 @@ CheckCleは、フルスタックシステム、アプリケーション、イン
     ユーザー: admin@example.com | パスワード: Admin123456
 
 ## 🌟 主要機能
-### 📝 ロードマップ : [DEVELOPMENT_ROADMAP](DEVELOPMENT_ROADMAP.md)
+### 📝 ロードマップ : [DEVELOPMENT_ROADMAP](docs/DEVELOPMENT_ROADMAP.md)
 
 ### アップタイムサービス & インフラストラクチャサーバー監視
 - HTTP、DNS、Pingプロトコルの監視
@@ -72,23 +72,7 @@ CheckCleは、フルスタックシステム、アプリケーション、イン
 
 ### 以下のオプションのいずれかを使用してCheckCleをインストールします。
 
-1. CheckCle ワンクリックインストール - ターミナルにコピーして実行するだけ
-```bash 
-curl -fsSL https://checkcle.io/install.sh | bash
-
-```
-2. docker runでインストール。以下の準備済みdocker runコマンドをコピーするだけ
-```bash 
-docker run -d \
-  --name checkcle \
-  --restart unless-stopped \
-  -p 8090:8090 \
-  -v /opt/pb_data:/mnt/pb_data \
-  --ulimit nofile=4096:8192 \
-  operacle/checkcle:latest
-
-```
-3. Docker compose設定でインストール
+1. Docker compose設定でインストール（推奨）
 ```bash 
 
 version: '3.9'
@@ -108,6 +92,18 @@ services:
         hard: 8192
 
 ```
+2. docker runでインストール。以下の準備済みdocker runコマンドをコピーするだけ
+```bash
+docker run -d \
+  --name checkcle \
+  --restart unless-stopped \
+  -p 8090:8090 \
+  -v /opt/pb_data:/mnt/pb_data \
+  --ulimit nofile=4096:8192 \
+  operacle/checkcle:latest
+
+```
+
 3. 管理Web画面
 
     デフォルトURL: http://0.0.0.0:8090
@@ -117,33 +113,13 @@ services:
 4. https://docs.checkcle.io のクイックスタートガイドに従ってください
 
 ###
-![checkcle-collapse-black](https://pub-4a4062303020445f8f289a2fee84f9e8.r2.dev/images/uptime-monitoring.png)
-![Service Detail Page](https://pub-4a4062303020445f8f289a2fee84f9e8.r2.dev/images/uptime-service-detail.png)
-![checkcle-server-instance](https://pub-4a4062303020445f8f289a2fee84f9e8.r2.dev/images/instance-server-monitoring.png)
-![Schedule Maintenance](https://pub-4a4062303020445f8f289a2fee84f9e8.r2.dev/images/checkcle-schedule-maintenance.png)
-![SSL Monitoring](https://pub-4a4062303020445f8f289a2fee84f9e8.r2.dev/images/ssl-monitoring.png)
+![checkcle-collapse-black](https://cdn.checkcle.io/images/uptime/uptime-1.4.png)
+![Service Detail Page](https://cdn.checkcle.io/images/uptime/uptime-regional-detail.png)
+![checkcle-server-instance](https://cdn.checkcle.io/images/server/server-list.png)
+![SSL Monitoring](https://cdn.checkcle.io/images/ssl-domain/ssl-list.png)
+![Notification System](https://cdn.checkcle.io/general/powerfull_notification.png)
 
-## 📝 開発ロードマップ
 
-- ✅ ヘルスチェック & アップタイム監視（HTTP）
-- ✅ ライブ統計情報付きダッシュボードUI  
-- ✅ マルチユーザーシステム認証（管理者）
-- ✅ 通知（Telegram）
-- ✅ Dockerコンテナ化 
-- ✅ CheckCle ウェブサイト
-- ✅ CheckCle デモサーバー
-- ✅ SSL & ドメイン監視
-- ✅ メンテナンススケジュール 
-- ✅ インシデント管理
-- [ ] インフラストラクチャサーバー監視
-- ✅ 運用ステータス / パブリックステータスページ
-- ✅ アップタイム監視（HTTP、TCP、PING、DNS）フル機能
-- ✅ 分散地域監視エージェント [サポート運用](https://github.com/operacle/Distributed-Regional-Monitoring)
-- ✅ システム設定パネル＆メール設定
-- ✅ ユーザー権限ロール
-- [ ] 通知（Email/Slack/Discord/Signal）  
-- ✅ データ保持 & 自動圧縮（データ & データベース圧縮のマルチオプション）
-- ✅ 完全なドキュメント付きオープンソースリリース 
 
 ## 🌟 CheckCleはコミュニティのため？
 - **情熱を持って開発**: コミュニティのためのオープンソース愛好家によって作成
@@ -153,26 +129,36 @@ services:
 ---
 
 ## スポンサー
-🙏 スポンサーの皆様には心より感謝しております。皆様のご貢献により、インフラストラクチャ（ホスティング、ドメイン）の維持、テストの実行、価値ある機能の継続的な開発が可能になっています。
+スポンサーシップの受付は終了しました。今後は、クラウドサーバー、ドメイン、ホスティングクレジットなどのインフラストラクチャを提供するエコシステムおよびコミュニティパートナーシップの形でのみサポートを受け付けます。
 
-### 🥈 シルバー・アップタイム・アライ
-
-<a href="https://github.com/michaelortnerit">
-  <img src="https://avatars.githubusercontent.com/u/135371107?v=4" width="75" height="75" style="border-radius: 50%; display: block;" />
-</a>
-
-### 🧡 Ping サポーター
-
-<a href="https://github.com/samang-dauth">
-  <img src="https://avatars.githubusercontent.com/u/4575656?v=4" width="75" height="75" style="border-radius: 50%; display: block;" />
-</a>
+CheckCleをサポートすることに興味がある技術系企業の方は、著者まで直接お問い合わせください：tolaleng@checkcle.io
 
 ### 🤝 エコシステム & コミュニティパートナー
-<a href="https://github.com/gitbookio">
-  <img src="https://avatars.githubusercontent.com/u/7111340?s=200&v=4" 
-       width="75" height="75" 
-       style="border-radius: 50%; display: block;" />
-</a>
+<div style="display: flex; align-items: center; gap: 10px;">
+  <a href="https://github.com/gitbookio">
+    <img src="https://avatars.githubusercontent.com/u/7111340?s=200&v=4"
+         width="75" height="75"
+         style="border-radius: 50%;"
+         alt="GitBook Logo" />
+  </a>
+
+  <a href="https://www.cloudflare.com">
+    <img src="https://cdn.checkcle.io/images/sponsor/cloudflare-checkcle_logo.png"
+         height="60"
+         alt="Cloudflare Logo" />
+  </a>
+    <a href="https://m.do.co/c/0c27ef82475f">
+    <img src="https://cdn.checkcle.io/images/sponsor/digitalocean_checkcle.png"
+         height="50"
+         alt="DigitalOcean Logo" />
+  </a>
+  </a>
+    <a href="https://www.jetbrains.com/">
+    <img src="https://cdn.checkcle.io/images/sponsor/jetbrains.png"
+         height="50"
+         alt="Jetbrains Logo" />
+  </a>
+</div>
 
 ---
 
@@ -191,27 +177,18 @@ CheckCleの改善にご協力いただける方法をご紹介します：
 - 🌟 **機能提案** – アイデアはありますか？[ディスカッション](https://github.com/operacle/checkcle/discussions)を開始するか、機能リクエストのissueを開いてください。
 - 🛠 **プルリクエスト送信** – コードの改善、バグ修正、機能追加、ドキュメントの改良を行ってください。
 - 📝 **ドキュメント改善** – タイポ修正でも助かります！
-- 🌍 **口コミ宣伝** – リポジトリに⭐をつけ、SNSでシェアし、他の人を貢献に招待してください！
+- 🌍 **口コミ宣伝** – [CheckCle](https://github.com/operacle/checkcle.git) リポジトリに⭐をつけ、SNSでシェアし、他の人を貢献に招待してください！
 
 ---
 
 ## 🌍 つながりを保つ
 - ウェブサイト: [checkcle.io](https://checkcle.io)
 - ドキュメント: [docs.checkcle.io](https://docs.checkcle.io) | CheckCle OSS サイトプランをスポンサーしてくださった[GitBook](https://github.com/gitbookio)に特別な感謝を！
-- GitHubリポジトリ: ⭐ [CheckCle](https://github.com/operacle/checkcle.git)
-- コミュニティチャンネル: ディスカッションやissuesで参加してください！
-- Discord: コミュニティに参加 [@discord](https://discord.gg/xs9gbubGwX)
-- X: [@checkcle_oss](https://x.com/checkcle_oss)
+- Discordでチャット: コミュニティに参加 [@discord](https://discord.gg/xs9gbubGwX)
+- Xでフォロー: [@checkcle_oss](https://x.com/checkcle_oss)
 
 ## 📜 ライセンス
 
 CheckCleはMITライセンスの下でリリースされています。
 
 ---
-
-
-## スター履歴
-
-[![Star History Chart](https://api.star-history.com/svg?repos=operacle/checkcle&type=Date)](https://www.star-history.com/#operacle/checkcle&Date)
-
-CheckCleで情報を把握し、オンラインを維持しましょう！ 🌐

@@ -79,7 +79,7 @@ CheckCleの改善に役立つ方法をいくつか紹介します：
 
 ### 2. フォークをクローン
 ```bash
-git clone --branch develop https://github.com/operacle/checkcle.git
+git clone https://github.com/yourusername/checkcle.git
 cd checkcle
 ```
 
@@ -89,12 +89,12 @@ READMEまたはプロジェクトドキュメントの指示に従って、必�
 ### 4. ローカル開発の開始
 ```bash
 #Webアプリケーション
-cd application/ 
+cd application/
 npm install && npm run dev
 
 #サーバーバックエンド
 cd server
-./pocketbase serve --dir pb_data 
+./pocketbase serve --dir pb_data
 
 localhostを使用していない場合は、次のコマンドで実行してください (./pocketbase serve --http=0.0.0.0:8090 --dir pb_data)
 ```
@@ -102,7 +102,7 @@ localhostを使用していない場合は、次のコマンドで実行して�
 ### 5. サービスチェック操作の開始
 
 ```bash
-#サーバーバックエンド 
+#サーバーバックエンド
 サービス操作を開始 (PING、HTTP、TCP、DNSのサービスチェック)
 
 cd server/service-operation
@@ -116,7 +116,7 @@ go run main.go (localhost接続の場合、.envを変更する必要はありま
 [GitHub](https://github.com/operacle/Distributed-Regional-Monitoring)で「Fork」をクリックして、自分のコピーを作成してください。
 
 #### 2. フォークをクローン
-git clone --branch main https://github.com/operacle/Distributed-Regional-Monitoring.git
+git clone https://github.com/yourusername/Distributed-Regional-Monitoring.git
 cd Distributed-Regional-Monitoring
 
 #### 3. Goサービスのインストール（Goサービスがインストールされていることを確認してください）

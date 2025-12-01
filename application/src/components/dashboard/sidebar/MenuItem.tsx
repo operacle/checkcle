@@ -39,17 +39,17 @@ export const MenuItem: React.FC<MenuItemProps> = ({
     }
   };
   const isActive = path && location.pathname === path;
-  const mainIconSize = "h-6 w-6";
+  const mainIconSize = "h-5 w-5";
   return <div className={`
-        ${collapsed ? 'p-3' : 'p-2 pl-3'} 
+        ${collapsed ? 'p-3' : 'py-3 px-3'} 
         mb-1 rounded-lg 
         ${isActive ? theme === 'dark' ? 'bg-gray-800' : 'bg-sidebar-accent' : `hover:${theme === 'dark' ? 'bg-gray-800' : 'bg-sidebar-accent'}`} 
-        flex items-center 
+        flex items-center gap-3
         ${collapsed ? 'justify-center' : ''} 
-        cursor-pointer
+        cursor-pointer transition-colors
       `} onClick={handleClick}>
-      <Icon className={`${mainIconSize} ${color}`} />
-      {!collapsed && <span className="ml-2.5 text-foreground tracking-wide text-[15px] font-normal">
+      <Icon className={`${mainIconSize} flex-shrink-0 ${theme === 'dark' ? 'text-gray-400' : 'text-muted-foreground'}`} />
+      {!collapsed && <span className="text-sidebar-foreground font-inter text-[14px] font-medium tracking-tight leading-tight whitespace-nowrap">
           {t(translationKey)}
         </span>}
     </div>;

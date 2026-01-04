@@ -16,6 +16,7 @@ export const loginTranslations: LoginTranslations = {
   loginSuccessMessage: "You have been logged in successfully.",
   loginFailed: "Login failed",
   authenticationFailed: "Authentication failed",
+  invalidCredentials: "Invalid email or password",
   bySigningIn: "By signing in, you agree to our",
   termsAndConditions: "Terms & Conditions",
   and: "and",

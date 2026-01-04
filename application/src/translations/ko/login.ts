@@ -16,6 +16,7 @@ export const loginTranslations: LoginTranslations = {
   loginSuccessMessage: "성공적으로 로그인되었습니다.",
   loginFailed: "로그인 실패",
   authenticationFailed: "인증 실패",
+  invalidCredentials: "유효하지 않은 이메일 또는 비밀번호",
   bySigningIn: "로그인하면 다음에 동의하게 됩니다:",
   termsAndConditions: "이용약관",
   and: "및",

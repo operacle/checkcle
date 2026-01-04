@@ -16,6 +16,7 @@ export const loginTranslations: LoginTranslations = {
   loginSuccessMessage: "您已成功登录。",
   loginFailed: "登录失败",
   authenticationFailed: "身份验证失败",
+  invalidCredentials: "邮箱或密码无效",
   bySigningIn: "通过登录，您同意我们的",
   termsAndConditions: "条款与条件",
   and: "和",

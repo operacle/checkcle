@@ -14,6 +14,7 @@ export interface LoginTranslations {
   loginSuccessMessage: string;
   loginFailed: string;
   authenticationFailed: string;
+  invalidCredentials: string;
   bySigningIn: string;
   termsAndConditions: string;
   and: string;

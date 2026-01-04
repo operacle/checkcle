@@ -15,6 +15,7 @@ export const loginTranslations: LoginTranslations = {
   loginSuccessMessage: "正常にログインしました。",
   loginFailed: "ログイン失敗",
   authenticationFailed: "認証に失敗しました",
+  invalidCredentials: "メールアドレスまたはパスワードが正しくありません",
   bySigningIn: "サインインすることで、",
   termsAndConditions: "利用規約",
   and: "と",

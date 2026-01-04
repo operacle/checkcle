@@ -16,6 +16,7 @@ export const loginTranslations: LoginTranslations = {
   loginSuccessMessage: "អ្នកបានចូលប្រើដោយជោគជ័យ។",
   loginFailed: "ការចូលបានបរាជ័យ",
   authenticationFailed: "ការផ្ទៀងផ្ទាត់បានបរាជ័យ",
+  invalidCredentials: "អ៊ីមែល ឬពាក្យសម្ងាត់មិនត្រឹមត្រូវ",
   bySigningIn: "ដោយការចូល អ្នកយល់ព្រមនឹង",
   termsAndConditions: "លក្ខខណ្ឌ",
   and: "និង",

@@ -51,13 +51,32 @@ export const AddServerAgentDialog: React.FC<AddServerAgentDialogProps> = ({
     serverId: `agent_${Math.random().toString(36).substring(2, 15)}${Math.random().toString(36).substring(2, 15)}`
   });
 
-  const [serverToken, setServerToken] = useState(() => 
+  const [serverToken, setServerToken] = useState(() =>
     `srv_${Math.random().toString(36).substring(2, 15)}${Math.random().toString(36).substring(2, 15)}`
   );
-  
-  const [serverId, setServerId] = useState(() => 
+
+  const [serverId, setServerId] = useState(() =>
     `agent_${Math.random().toString(36).substring(2, 15)}${Math.random().toString(36).substring(2, 15)}`
   );
+
+  // Refresh credentials and reset form whenever the dialog opens
+  React.useEffect(() => {
+    if (open) {
+      const newCredentials = generateNewCredentials();
+      setServerToken(newCredentials.serverToken);
+      setServerId(newCredentials.serverId);
+      setActiveTab("configure");
+      setFormData({
+        serverName: "",
+        description: "",
+        osType: "",
+        checkInterval: "60",
+        retryAttempt: "3",
+        dockerEnabled: false,
+        notificationEnabled: true,
+      });
+    }
+  }, [open]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -81,10 +100,6 @@ export const AddServerAgentDialog: React.FC<AddServerAgentDialogProps> = ({
         title: t('serverAgentCreated'),
         description: t('serverAgentCreatedDesc').replace('{name}', formData.serverName),
       });
-
-      const newCredentials = generateNewCredentials();
-      setServerToken(newCredentials.serverToken);
-      setServerId(newCredentials.serverId);
       setActiveTab("one-click");
       onAgentAdded();
     } catch (error) {
@@ -99,21 +114,6 @@ export const AddServerAgentDialog: React.FC<AddServerAgentDialogProps> = ({
   };
 
   const handleDialogClose = () => {
-    setActiveTab("configure");
-    setFormData({
-      serverName: "",
-      description: "",
-      osType: "",
-      checkInterval: "60",
-      retryAttempt: "3",
-      dockerEnabled: false,
-      notificationEnabled: true,
-    });
-    
-    const newCredentials = generateNewCredentials();
-    setServerToken(newCredentials.serverToken);
-    setServerId(newCredentials.serverId);
-    
     onOpenChange(false);
   };
 
@@ -126,7 +126,7 @@ export const AddServerAgentDialog: React.FC<AddServerAgentDialogProps> = ({
             {t('addServerMonitoringAgent')}
           </DialogTitle>
           <DialogDescription>
-           {t('configureAgentDesc')}
+            {t('configureAgentDesc')}
           </DialogDescription>
         </DialogHeader>
 

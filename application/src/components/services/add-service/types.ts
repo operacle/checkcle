@@ -26,6 +26,10 @@ export const useServiceSchema = () => {
       url: z.string()
         .min(1, t("urlDomainHostRequired"))
         .refine(
+          (value) => !/\s/.test(value),
+          t("spacesNotAllowed")
+        )
+        .refine(
           (value) => value.trim().length > 0,
           t("enterValidUrlHostnameDomain")
         ),

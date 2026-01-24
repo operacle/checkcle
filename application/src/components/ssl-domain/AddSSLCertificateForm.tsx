@@ -17,27 +17,33 @@ import { alertConfigService, AlertConfiguration } from "@/services/alertConfigSe
 import { sslNotificationTemplateService, SslNotificationTemplate } from "@/services/sslNotificationTemplateService";
 import { useLanguage } from "@/contexts/LanguageContext";
 
-const formSchema = z.object({
-  domain: z.string().min(1, "Domain is required"),
-  warning_threshold: z.coerce.number().int().min(1).max(365),
-  expiry_threshold: z.coerce.number().int().min(1).max(30),
-  notification_channels: z.array(z.string()).optional(),
-  alert_template: z.string().optional(),
-  check_interval: z.coerce.number().int().min(1).max(30).optional()
-});
-
 interface AddSSLCertificateFormProps {
   onSubmit: (data: AddSSLCertificateDto) => Promise<void>;
   onCancel: () => void;
   isPending?: boolean;
 }
 
-export const AddSSLCertificateForm = ({ 
-  onSubmit, 
+export const AddSSLCertificateForm = ({
+  onSubmit,
   onCancel,
-  isPending = false 
+  isPending = false
 }: AddSSLCertificateFormProps) => {
   const { t } = useLanguage();
+
+  const formSchema = z.object({
+    domain: z.string()
+      .min(1, t("domain") + " is required")
+      .refine(
+        (value) => !/\s/.test(value),
+        t("spacesNotAllowed")
+      ),
+    warning_threshold: z.coerce.number().int().min(1).max(365),
+    expiry_threshold: z.coerce.number().int().min(1).max(30),
+    notification_channels: z.array(z.string()).optional(),
+    alert_template: z.string().optional(),
+    check_interval: z.coerce.number().int().min(1).max(30).optional()
+  });
+
   const [alertConfigs, setAlertConfigs] = useState<AlertConfiguration[]>([]);
   const [sslTemplates, setSslTemplates] = useState<SslNotificationTemplate[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -78,7 +84,7 @@ export const AddSSLCertificateForm = ({
         setIsLoading(false);
       }
     };
-    
+
     fetchData();
   }, [t]);
 
@@ -89,16 +95,16 @@ export const AddSSLCertificateForm = ({
         domain: values.domain,
         warning_threshold: values.warning_threshold,
         expiry_threshold: values.expiry_threshold,
-        notification_channel: values.notification_channels && values.notification_channels.length > 0 
-          ? values.notification_channels.join(',') 
+        notification_channel: values.notification_channels && values.notification_channels.length > 0
+          ? values.notification_channels.join(',')
           : '',
-        notification_id: values.notification_channels && values.notification_channels.length > 0 
-          ? values.notification_channels.join(',') 
+        notification_id: values.notification_channels && values.notification_channels.length > 0
+          ? values.notification_channels.join(',')
           : '',
         template_id: values.alert_template && values.alert_template !== 'none' ? values.alert_template : '',
         check_interval: values.check_interval
       };
-      
+
       await onSubmit(certData);
       form.reset();
     } catch (error) {
@@ -136,7 +142,7 @@ export const AddSSLCertificateForm = ({
             </FormItem>
           )}
         />
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <FormField
             control={form.control}
@@ -154,7 +160,6 @@ export const AddSSLCertificateForm = ({
               </FormItem>
             )}
           />
-          
           <FormField
             control={form.control}
             name="expiry_threshold"
@@ -189,7 +194,6 @@ export const AddSSLCertificateForm = ({
             </FormItem>
           )}
         />
-        
         <FormField
           control={form.control}
           name="notification_channels"
@@ -197,7 +201,7 @@ export const AddSSLCertificateForm = ({
             <FormItem>
               <FormLabel>{t('notificationChannel')} (Multi-select)</FormLabel>
               <div className="space-y-3">
-                <Select 
+                <Select
                   onValueChange={handleAddNotificationChannel}
                   value=""
                 >
@@ -247,7 +251,7 @@ export const AddSSLCertificateForm = ({
                 )}
               </div>
               <FormDescription className="flex items-center gap-1">
-                <Bell className="h-4 w-4" /> 
+                <Bell className="h-4 w-4" />
                 {t('whereToSend')}
               </FormDescription>
               <FormMessage />
@@ -289,7 +293,6 @@ export const AddSSLCertificateForm = ({
             </FormItem>
           )}
         />
-        
         <DialogFooter>
           <Button type="button" variant="outline" onClick={onCancel}>{t('cancel')}</Button>
           <Button type="submit" disabled={isPending || isLoading}>

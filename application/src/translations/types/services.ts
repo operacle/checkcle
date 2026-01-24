@@ -1,19 +1,19 @@
 
 export interface ServicesTranslations {
 
-  serviceStatus: string;
-  uptime: string;
-  lastChecked: string;
-  noServices: string;
-  currentlyMonitoring: string;
-  retry: string;
-  overview: string;
-  newService: string;
-  rowsPerPage: string;
-  search: string;
-  allTypes: string;
-  createNewService: string;
-  createNewServiceDesc: string;
+    serviceStatus: string;
+	uptime: string;
+	lastChecked: string;
+	noServices: string;
+	currentlyMonitoring: string;
+	retry: string;
+	overview: string;
+	newService: string;
+	rowsPerPage: string;
+	search: string;
+	allTypes: string;
+	createNewService: string;
+	createNewServiceDesc: string;
 
 	// ServiceBasicFields.tsx
 	serviceName: string;
@@ -87,6 +87,7 @@ export interface ServicesTranslations {
 	serviceNameRequired: string;
 	urlDomainHostRequired: string;
 	enterValidUrlHostnameDomain: string;
+	spacesNotAllowed: string;
 
 	// Dashboard
 	upServices: string;

@@ -88,6 +88,7 @@ export const servicesTranslations: ServicesTranslations = {
   serviceNameRequired: "តម្រូវឱ្យមានឈ្មោះសេវាកម្ម",
   urlDomainHostRequired: "តម្រូវឱ្យមាន URL/ដែន/ម៉ាស៊ីន",
   enterValidUrlHostnameDomain: "សូមបញ្ចូល URL, ឈ្មោះម៉ាស៊ីន ឬដែនដែលត្រឹមត្រូវ",
+  spacesNotAllowed: "មិនអនុញ្ញាតឱ្យមានចន្លោះទំនេរទេ",
 
   // Dashboard
   upServices: "សេវាកម្មដំណើរការ",

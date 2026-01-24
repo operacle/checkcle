@@ -88,6 +88,7 @@ export const servicesTranslations: ServicesTranslations = {
 	serviceNameRequired: "Service name is required",
 	urlDomainHostRequired: "URL/Domain/Host is required",
 	enterValidUrlHostnameDomain: "Please enter a valid URL, hostname, or domain",
+	spacesNotAllowed: "Spaces are not allowed",
 
 	// Dashboard
 	upServices: "UP SERVICES",

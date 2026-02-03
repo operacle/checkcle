@@ -1,4 +1,3 @@
-
 import { pb } from '@/lib/pocketbase';
 
 export interface LoginCredentials {
@@ -98,5 +97,10 @@ export const authService = {
     } catch (error) {
     //  console.error('Failed to refresh user data:', error);
     }
+  },
+
+  async impersonateUser(userId: string, durationSeconds: number = 3600): Promise<string | undefined> {
+    const impersonateClient = await pb.collection("users").impersonate(userId, durationSeconds);
+    return impersonateClient.authStore?.token;
   }
 };

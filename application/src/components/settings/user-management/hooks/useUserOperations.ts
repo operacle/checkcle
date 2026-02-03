@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { userService, User, UpdateUserData, CreateUserData } from "@/services/userService";
@@ -121,6 +120,38 @@ export const useUserOperations = (
     }
   };
 
+  const onImpersonate = async (
+    data: UserFormValues & { durationSeconds?: number },
+    currentUser: User | null
+  ): Promise<string | undefined> => {
+    const loggedInUser = authService.getCurrentUser();
+    if (!currentUser) return;
+
+    try {
+      const token = await authService.impersonateUser(currentUser.id, data?.durationSeconds ?? 3600);
+
+      toast({
+        title: "Impersonation token generated",
+        description: `Token generated for ${currentUser.full_name || currentUser.username}.`,
+      });
+
+      return token;
+    } catch (error) {
+      let description = "Error impersonating user.";
+      if (loggedInUser?.role !== "superadmin") {
+        description = "Only superadmin users can impersonate other users.";
+      }
+
+      toast({
+        title: "Error impersonating user",
+        description,
+        variant: "destructive",
+      });
+
+      throw error;
+    }
+  };
+
   const onAddUser = async (data: NewUserFormValues) => {
     setIsSubmitting(true);
     try {
@@ -177,6 +208,7 @@ export const useUserOperations = (
   return {
     handleDeleteUser,
     onSubmit,
+    onImpersonate,
     onAddUser,
   };
 };

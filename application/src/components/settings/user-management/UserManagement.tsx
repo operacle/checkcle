@@ -1,9 +1,9 @@
-
 import React from "react";
 import UserTable from "./UserTable";
 import AddUserDialog from "./AddUserDialog";
 import EditUserDialog from "./EditUserDialog";
 import DeleteUserDialog from "./DeleteUserDialog";
+import ImpersonationTokenDialog from "./ImpersonationTokenDialog";
 import { useUserManagement } from "./hooks";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { UserCog, Loader2, AlertCircle, Info, Users, ShieldAlert } from "lucide-react";
@@ -34,8 +34,12 @@ const UserManagement = () => {
     handleDeletePrompt,
     handleDeleteUser,
     onSubmit,
+    onImpersonate,
     onAddUser,
-    fetchUsers
+    fetchUsers,
+    impersonationToken,
+    isImpersonationTokenDialogOpen,
+    setIsImpersonationTokenDialogOpen,
   } = useUserManagement();
 
   // Get the current logged in user to check their role
@@ -79,7 +83,14 @@ const UserManagement = () => {
 
             <AddUserDialog isOpen={isAddUserDialogOpen && isSuperAdmin} setIsOpen={setIsAddUserDialogOpen} form={newUserForm} onSubmit={onAddUser} isSubmitting={isSubmitting} />
 
-            <EditUserDialog isOpen={isDialogOpen} setIsOpen={setIsDialogOpen} form={form} user={currentUser} onSubmit={onSubmit} isSubmitting={isSubmitting} error={updateError} />
+            <EditUserDialog isOpen={isDialogOpen} setIsOpen={setIsDialogOpen} form={form} user={currentUser} onImpersonate={onImpersonate} onSubmit={onSubmit} isSubmitting={isSubmitting} error={updateError} />
+
+            <ImpersonationTokenDialog
+              open={isImpersonationTokenDialogOpen}
+              onOpenChange={setIsImpersonationTokenDialogOpen}
+              token={impersonationToken}
+              impersonatedUserLabel={currentUser?.full_name || currentUser?.username}
+            />
 
             <DeleteUserDialog isOpen={isDeleting} setIsOpen={setIsDeleting} user={userToDelete} onDelete={handleDeleteUser} isDeleting={isSubmitting} />
           </AccordionContent>

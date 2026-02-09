@@ -1,4 +1,3 @@
-
 import React from "react";
 import {
   Dialog,
@@ -18,6 +17,8 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import UserTextField from "./form-fields/UserTextField";
 import UserToggleField from "./form-fields/UserToggleField";
 import UserRoleField from "./form-fields/UserRoleField";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 
 interface EditUserDialogProps {
   isOpen: boolean;
@@ -25,6 +26,7 @@ interface EditUserDialogProps {
   form: UseFormReturn<any>;
   user: User | null;
   onSubmit: (data: any) => void;
+  onImpersonate: (data: any) => void;
   isSubmitting?: boolean;
   error?: string | null;
 }
@@ -35,10 +37,18 @@ const EditUserDialog = ({
   form, 
   user, 
   onSubmit,
+  onImpersonate,
   isSubmitting = false,
   error = null
 }: EditUserDialogProps) => {
   if (!user) return null;
+
+  const [impersonationDurationSeconds, setImpersonationDurationSeconds] = React.useState<number>(3600);
+
+  const handleImpersonateClick = () => {
+    // Impersonation should not depend on edit form validation.
+    onImpersonate({ user, durationSeconds: impersonationDurationSeconds });
+  };
   
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -100,6 +110,23 @@ const EditUserDialog = ({
                 />
               </form>
             </Form>
+
+            {/* Impersonation settings are not part of the form to avoid validation */}
+            <div className="mt-6 space-y-2">
+              <Label htmlFor="impersonation-duration">Impersonation token duration (seconds)</Label>
+              <Input
+                id="impersonation-duration"
+                type="number"
+                inputMode="numeric"
+                min={60}
+                step={60}
+                value={impersonationDurationSeconds}
+                onChange={(e) => setImpersonationDurationSeconds(Number(e.target.value || 0))}
+              />
+              <p className="text-xs text-muted-foreground">
+                Default is 3600 (1 hour). Minimum 60 seconds.
+              </p>
+            </div>
           </div>
         </ScrollArea>
 
@@ -123,6 +150,20 @@ const EditUserDialog = ({
               </>
             ) : (
               "Update User"
+            )}
+          </Button>
+          <Button 
+            type="button"
+            onClick={handleImpersonateClick}
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Impersonating...
+              </>
+            ) : (
+              "Impersonate"
             )}
           </Button>
         </DialogFooter>

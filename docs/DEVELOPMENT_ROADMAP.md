@@ -92,10 +92,15 @@ The roadmap is divided into the following stages:
 - [ ] ✅ Enhance the Data retention feature
 
 
-### 🚀 v1.7.0 – Feature Enhancements _(Target: Q3 2025)_
+### 🚀 v1.7.0 – Feature Enhancements 
 **Status:** 🔧 In Progress
 #### Tentative Features:
 - [ ] ✅ Fix Regenerate Server Agent ID & Token without page refresh
+- [ ] ✅ feat: implement user impersonation by @giriparus
+- [ ] ✅ Fix server agent ID & token refresh when adding multiple agents (closes #165)
+- [ ] ✅ Fix hostname/IP validation to prevent whitespace input in the SSL and Create New Service form (closes #114)
+- [ ] ✅ Fix responsive breakpoints and flex layout for sidebar menu
+- [ ] 🔧 Implement CheckCle to Support Multiple Database (Postgres, MySQL and SQLite)
 - [ ] 🔧 Improve the uptime history bar load performance in the uptime monitoring dashboard.
 - [ ] 🔧 Bugfix: recovery time not displayed correctly in incident history on Uptime dashboard
 - [ ] 🔧 feat: add configurable notification support customizable delay before sending downtime notifications

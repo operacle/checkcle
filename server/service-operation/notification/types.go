@@ -67,6 +67,9 @@ type AlertConfiguration struct {
 	APIToken              string `json:"api_token"`
 	UserKey               string `json:"user_key"`
 	ServerURL             string `json:"server_url"`
+	MatrixHomeserver      string `json:"matrix_homeserver"`
+	MatrixRoomID          string `json:"matrix_room_id"`
+	MatrixAccessToken     string `json:"matrix_access_token"`
 }
 
 // ServerNotificationTemplate represents a server notification template

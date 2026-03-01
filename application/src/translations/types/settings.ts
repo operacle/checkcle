@@ -71,6 +71,7 @@ export interface SettingsTranslations {
   googleChat: string;
   email: string;
   webhook: string;
+  matrix: string;
 
   // NotificationChannelDialog.tsx
   editChannel: string;
@@ -127,6 +128,12 @@ export interface SettingsTranslations {
   notifiarrChannelIdDesc: string;
   gotifyServerUrl: string;
   gotifyServerUrlDesc: string;
+  matrixHomeserver: string;
+  matrixHomeserverDesc: string;
+  matrixRoomId: string;
+  matrixRoomIdDesc: string;
+  matrixAccessToken: string;
+  matrixAccessTokenDesc: string;
   errorSaveChannel: string;
 
   channelNamePlaceholder: string;
@@ -148,6 +155,9 @@ export interface SettingsTranslations {
   notifiarrChannelIdPlaceholder: string;
   gotifyServerUrlPlaceholder: string;
   webhookUrlPlaceholder: string;
+  matrixHomeserverPlaceholder: string;
+  matrixRoomIdPlaceholder: string;
+  matrixAccessTokenPlaceholder: string;
 
   // DataRetentionSettings.tsx
   // permissionNotice: string;

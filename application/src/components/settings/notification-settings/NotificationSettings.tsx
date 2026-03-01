@@ -154,6 +154,7 @@ const NotificationSettings = () => {
             <TabsTrigger value="google_chat">{t("googleChat")}</TabsTrigger>
             <TabsTrigger value="email">{t("email")}</TabsTrigger>
             <TabsTrigger value="webhook">{t("webhook")}</TabsTrigger>
+            <TabsTrigger value="matrix">{t("matrix")}</TabsTrigger>
           </TabsList>
           
           <TabsContent value={currentTab} className="mt-0">

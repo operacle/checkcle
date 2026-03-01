@@ -7,7 +7,7 @@ export interface AlertConfiguration {
   collectionId?: string;
   collectionName?: string;
   service_id: string;
-  notification_type: "telegram" | "discord" | "slack" | "signal" | "google_chat" | "email" | "ntfy" | "pushover" | "notifiarr" | "gotify" | "webhook";
+  notification_type: "telegram" | "discord" | "slack" | "signal" | "google_chat" | "email" | "ntfy" | "pushover" | "notifiarr" | "gotify" | "webhook" | "matrix";
   telegram_chat_id?: string;
   discord_webhook_url?: string;
   signal_number?: string;
@@ -34,6 +34,9 @@ export interface AlertConfiguration {
   server_url?: string;
   webhook_url?: string;
   webhook_payload_template?: string;
+  matrix_homeserver?: string;
+  matrix_room_id?: string;
+  matrix_access_token?: string;
 }
 
 export const alertConfigService = {
@@ -105,8 +108,13 @@ export const alertConfigService = {
       } else if (config.notification_type === "webhook") {
         cleanConfig.webhook_url = config.webhook_url || "";
         cleanConfig.webhook_payload_template = config.webhook_payload_template || "";
-        
-      }     
+
+      } else if (config.notification_type === "matrix") {
+        cleanConfig.matrix_homeserver = config.matrix_homeserver || "";
+        cleanConfig.matrix_room_id = config.matrix_room_id || "";
+        cleanConfig.matrix_access_token = config.matrix_access_token || "";
+
+      }
       const result = await pb.collection('alert_configurations').create(cleanConfig);
      
       toast({

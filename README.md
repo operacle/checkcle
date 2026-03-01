@@ -60,7 +60,7 @@ CheckCle is an Open Source solution for seamless, real-time monitoring of full-s
 - Infrastructure Server Monitoring, Supports Linux (🐧 Debian, Ubuntu, CentOS, Red Hat, etc.) and Windows (Beta). And Servers metrics like CPU, RAM, disk usage, and network activity) with an one-line installation angent script.
 - Schedule Maintenance & Incident Management
 - Operational Status / Public Status Pages
-- Notifications via email, Telegram, Discord, and Slack
+- Notifications via email, Telegram, Discord, Slack, Matrix, and more
 - Reports & Analytics
 - Settings Panel (User Management, Data Retention, Multi-language, Themes (Dark & Light Mode), Notification and channels and alert templates).
 

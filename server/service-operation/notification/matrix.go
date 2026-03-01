@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"html"
 	"net/http"
 	"net/url"
 	"strings"
@@ -26,7 +27,10 @@ type matrixMessagePayload struct {
 	FormattedBody string `json:"formatted_body,omitempty"`
 }
 
-// SendNotification sends a plain message to a Matrix room
+// SendNotification sends a formatted message to a Matrix room.
+// It sends both a plain-text fallback body and an HTML formatted_body with
+// severity-based colors so clients that support Matrix's custom HTML format
+// display a rich, colored notification.
 func (ms *MatrixService) SendNotification(config *AlertConfiguration, message string) error {
 	if config.MatrixHomeserver == "" || config.MatrixRoomID == "" || config.MatrixAccessToken == "" {
 		return fmt.Errorf("matrix homeserver, room ID and access token are required")
@@ -45,8 +49,10 @@ func (ms *MatrixService) SendNotification(config *AlertConfiguration, message st
 	)
 
 	payload := matrixMessagePayload{
-		MsgType: "m.text",
-		Body:    message,
+		MsgType:       "m.text",
+		Body:          message,
+		Format:        "org.matrix.custom.html",
+		FormattedBody: ms.buildHTMLBody(message),
 	}
 
 	jsonData, err := json.Marshal(payload)
@@ -73,6 +79,74 @@ func (ms *MatrixService) SendNotification(config *AlertConfiguration, message st
 	}
 
 	return nil
+}
+
+// buildHTMLBody converts a plain-text notification message into Matrix-compatible HTML.
+// The first line becomes a colored bold heading based on alert severity; subsequent
+// detail lines are rendered as a bullet list. Clients that don't support HTML fall
+// back to the plain Body field.
+func (ms *MatrixService) buildHTMLBody(plainText string) string {
+	lines := strings.Split(strings.TrimSpace(plainText), "\n")
+	if len(lines) == 0 {
+		return "<p>" + html.EscapeString(plainText) + "</p>"
+	}
+
+	title := strings.TrimSpace(lines[0])
+	color := ms.statusColor(title)
+
+	var sb strings.Builder
+	sb.WriteString(fmt.Sprintf("<p><strong><font color=%q>%s</font></strong></p>", color, html.EscapeString(title)))
+
+	var items []string
+	for _, line := range lines[1:] {
+		line = strings.TrimSpace(line)
+		if line == "" {
+			continue
+		}
+		// Strip leading bullet markers added by the plain-text generators
+		line = strings.TrimPrefix(line, "•")
+		line = strings.TrimPrefix(line, "-")
+		line = strings.TrimSpace(line)
+		if line != "" {
+			items = append(items, "<li>"+html.EscapeString(line)+"</li>")
+		}
+	}
+
+	if len(items) > 0 {
+		sb.WriteString("<ul>")
+		for _, item := range items {
+			sb.WriteString(item)
+		}
+		sb.WriteString("</ul>")
+	}
+
+	sb.WriteString("<p><em>CheckCle System Alert</em></p>")
+	return sb.String()
+}
+
+// statusColor returns an HTML hex color string that reflects the alert severity
+// detected from keywords and emoji in the message heading.
+func (ms *MatrixService) statusColor(message string) string {
+	lower := strings.ToLower(message)
+	if strings.Contains(lower, "🔴") || strings.Contains(lower, "down") ||
+		strings.Contains(lower, "expired") || strings.Contains(lower, "failed") ||
+		strings.Contains(lower, "critical") || strings.Contains(lower, "error") {
+		return "#E74C3C" // Red
+	}
+	if strings.Contains(lower, "🟡") || strings.Contains(lower, "warning") ||
+		strings.Contains(lower, "expiring") {
+		return "#F39C12" // Yellow
+	}
+	if strings.Contains(lower, "🟠") || strings.Contains(lower, "maintenance") ||
+		strings.Contains(lower, "paused") {
+		return "#E67E22" // Orange
+	}
+	if strings.Contains(lower, "🟢") || strings.Contains(lower, "up") ||
+		strings.Contains(lower, "resolved") || strings.Contains(lower, "restored") ||
+		strings.Contains(lower, "success") {
+		return "#2ECC71" // Green
+	}
+	return "#3498DB" // Blue — info / default
 }
 
 // SendServerNotification sends a server-specific notification via Matrix
@@ -297,5 +371,9 @@ func (ms *MatrixService) generateDefaultServerMessage(payload *NotificationPaylo
 	case "warning":
 		statusEmoji = "🟡"
 	}
-	return fmt.Sprintf("%s 🖥️ Server %s (%s) status: %s", statusEmoji, payload.ServiceName, payload.Hostname, strings.ToUpper(payload.Status))
+	resource := strings.ToUpper(resourceType)
+	if resource == "" {
+		resource = "GENERAL"
+	}
+	return fmt.Sprintf("%s 🖥️ Server %s (%s) [%s] status: %s", statusEmoji, payload.ServiceName, payload.Hostname, resource, strings.ToUpper(payload.Status))
 }

@@ -82,6 +82,7 @@ export const NotificationChannelList = ({
       case "pushover": return "Pushover";
       case "notifiarr": return "Notifiarr";
       case "webhook": return "Webhook";
+      case "matrix": return "Matrix";
       default: return type || "Unknown";
     }
   };
@@ -102,6 +103,8 @@ export const NotificationChannelList = ({
         return config.signal_number || '';
       case "email":
         return config.email_address || '';
+      case "matrix":
+        return config.matrix_room_id || '';
       default:
         return '';
     }

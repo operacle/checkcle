@@ -38,7 +38,7 @@ interface NotificationChannelDialogProps {
 
 const baseSchema = z.object({
   notify_name: z.string().min(1, "Name is required"),
-  notification_type: z.enum(["telegram", "discord", "slack", "signal", "google_chat", "email", "ntfy", "pushover", "notifiarr", "gotify", "webhook"]),
+  notification_type: z.enum(["telegram", "discord", "slack", "signal", "google_chat", "email", "ntfy", "pushover", "notifiarr", "gotify", "webhook", "matrix"]),
   enabled: z.boolean().default(true),
   service_id: z.string().default("global"),
   template_id: z.string().optional(),
@@ -110,6 +110,13 @@ const gotifySchema = baseSchema.extend({
   server_url: z.string().url("Must be a valid server URL"),
 });
 
+const matrixSchema = baseSchema.extend({
+  notification_type: z.literal("matrix"),
+  matrix_homeserver: z.string().url("Must be a valid homeserver URL"),
+  matrix_room_id: z.string().min(1, "Room ID is required"),
+  matrix_access_token: z.string().min(1, "Access token is required"),
+});
+
 const formSchema = z.discriminatedUnion("notification_type", [
   telegramSchema,
   discordSchema,
@@ -122,6 +129,7 @@ const formSchema = z.discriminatedUnion("notification_type", [
   notifiarrSchema,
   gotifySchema,
   webhookSchema,
+  matrixSchema,
 ]);
 
 type FormValues = z.infer<typeof formSchema>;
@@ -188,11 +196,17 @@ const notificationTypeOptions = [
     description: "Send push notifications via Gotify",
     icon: "/upload/notification/gotify.png" 
   },
-  { 
-    value: "webhook", 
-    label: "Webhook", 
+  {
+    value: "webhook",
+    label: "Webhook",
     description: "Send notifications to custom webhook",
     icon: "/upload/notification/webhook.png"
+  },
+  {
+    value: "matrix",
+    label: "Matrix",
+    description: "Send notifications to a Matrix chat room",
+    icon: "/upload/notification/matrix.png"
   },
 ];
 
@@ -832,6 +846,59 @@ export const NotificationChannelDialog = ({
               </>
             )}
             
+            {notificationType === "matrix" && (
+              <>
+                <FormField
+                  control={form.control}
+                  name="matrix_homeserver"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t("matrixHomeserver")}</FormLabel>
+                      <FormControl>
+                        <Input placeholder={t("matrixHomeserverPlaceholder")} {...field} />
+                      </FormControl>
+                      <FormDescription>
+                        {t("matrixHomeserverDesc")}
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="matrix_room_id"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t("matrixRoomId")}</FormLabel>
+                      <FormControl>
+                        <Input placeholder={t("matrixRoomIdPlaceholder")} {...field} />
+                      </FormControl>
+                      <FormDescription>
+                        {t("matrixRoomIdDesc")}
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="matrix_access_token"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t("matrixAccessToken")}</FormLabel>
+                      <FormControl>
+                        <Input placeholder={t("matrixAccessTokenPlaceholder")} {...field} type="password" />
+                      </FormControl>
+                      <FormDescription>
+                        {t("matrixAccessTokenDesc")}
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </>
+            )}
+
             <FormField
               control={form.control}
               name="enabled"

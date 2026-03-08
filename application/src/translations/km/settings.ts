@@ -73,6 +73,7 @@ descriptionChannelsServices: "កំណត់រចនាសម្ព័ន្�
   googleChat: "Google Chat",
   email: "អ៊ីមែល",
   webhook: "Webhook",
+  matrix: "Matrix",
 
   // NotificationChannelDialog.tsx
   editChannel: "កែសម្រួលបណ្តាញជូនដំណឹង",
@@ -129,6 +130,12 @@ descriptionChannelsServices: "កំណត់រចនាសម្ព័ន្�
   notifiarrChannelIdDesc: "លេខសម្គាល់បណ្តាញ Discord ដែលការជូនដំណឹងនឹងត្រូវបានផ្ញើទៅ",
   gotifyServerUrl: "URL នៃម៉ាស៊ីនបម្រើ",
   gotifyServerUrlDesc: "URL នៃម៉ាស៊ីនបម្រើ Gotify របស់អ្នក",
+  matrixHomeserver: "Homeserver URL",
+  matrixHomeserverDesc: "URL នៃ Matrix homeserver របស់អ្នក (ឧ. https://matrix.org)",
+  matrixRoomId: "Room ID",
+  matrixRoomIdDesc: "Matrix room ID ដែលការជូនដំណឹងនឹងត្រូវបានផ្ញើទៅ (ឧ. !abc123:matrix.org)",
+  matrixAccessToken: "Access Token",
+  matrixAccessTokenDesc: "Access token នៃ Matrix bot account របស់អ្នក",
   errorSaveChannel: "បរាជ័យក្នុងការរក្សាទុកបណ្តាញជូនដំណឹង",
 
   channelNamePlaceholder: "ប៉ុស្តិ៍ផ្ទាល់សារជូនដំណឹងរបស់ខ្ញុំ",
@@ -150,6 +157,9 @@ descriptionChannelsServices: "កំណត់រចនាសម្ព័ន្�
   notifiarrChannelIdPlaceholder: "ID ប៉ុស្តិ៍ផ្ទាល់សារ Discord",
   gotifyServerUrlPlaceholder: "https://your-gotify-server.com",
   webhookUrlPlaceholder: "https://api.example.com/webhook",
+  matrixHomeserverPlaceholder: "https://matrix.org",
+  matrixRoomIdPlaceholder: "!roomid:matrix.org",
+  matrixAccessTokenPlaceholder: "syt_...",
 
   // DataRetentionSettings.tsx
   permissionNoticeDataRetention: "ជាអ្នកប្រើប្រាស់អ្នកគ្រប់គ្រង អ្នកមិនមានសិទ្ធចូលដំណើរការការកំណត់រក្សាទុកទិន្នន័យទេ។ ការកំណត់ទាំងនេះអាចត្រូវបានចូលដំណើរការនិងកែប្រែដោយតែអ្នកគ្រប់គ្រងដ៏ខ្ពស់ប៉ុណ្ណោះ។",

@@ -73,6 +73,7 @@ export const settingsTranslations: SettingsTranslations = {
   googleChat: "Google Chat",
   email: "Email",
   webhook: "Webhook",
+  matrix: "Matrix",
 
   // NotificationChannelDialog.tsx
   editChannel: "Edit Notification Channel",
@@ -129,6 +130,12 @@ export const settingsTranslations: SettingsTranslations = {
   notifiarrChannelIdDesc: "The Discord channel ID where notifications will be sent",
   gotifyServerUrl: "Server URL",
   gotifyServerUrlDesc: "The URL of your Gotify server",
+  matrixHomeserver: "Homeserver URL",
+  matrixHomeserverDesc: "The URL of your Matrix homeserver (e.g. https://matrix.org)",
+  matrixRoomId: "Room ID",
+  matrixRoomIdDesc: "The Matrix room ID to send notifications to (e.g. !abc123:matrix.org)",
+  matrixAccessToken: "Access Token",
+  matrixAccessTokenDesc: "The access token of your Matrix bot account",
   errorSaveChannel: "Failed to save notification channel",
 
   channelNamePlaceholder: "My Notification Channel",
@@ -150,6 +157,9 @@ export const settingsTranslations: SettingsTranslations = {
   notifiarrChannelIdPlaceholder: "Discord Channel ID",
   gotifyServerUrlPlaceholder: "https://your-gotify-server.com",
   webhookUrlPlaceholder: "https://api.example.com/webhook",
+  matrixHomeserverPlaceholder: "https://matrix.org",
+  matrixRoomIdPlaceholder: "!roomid:matrix.org",
+  matrixAccessTokenPlaceholder: "syt_...",
 
   // DataRetentionSettings.tsx
   // permissionNotice: "Permission Notice:",

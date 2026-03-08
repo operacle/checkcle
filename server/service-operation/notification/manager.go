@@ -33,6 +33,7 @@ func NewNotificationManager(pbClient *pocketbase.PocketBaseClient) *Notification
 	services["pushover"] = NewPushoverService()
 	services["notifiarr"] = NewNotifiarrService()
 	services["gotify"] = NewGotifyService()
+	services["matrix"] = NewMatrixService()
 
 	// log.Printf("✅ Notification services initialized: %v", getKeys(services))
 

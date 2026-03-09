@@ -1,0 +1,111 @@
+package security_test
+
+import (
+	"fmt"
+	"regexp"
+	"slices"
+	"testing"
+
+	"github.com/pocketbase/pocketbase/tools/security"
+)
+
+func TestRandomString(t *testing.T) {
+	testRandomString(t, security.RandomString)
+}
+
+func TestRandomStringWithAlphabet(t *testing.T) {
+	testRandomStringWithAlphabet(t, security.RandomStringWithAlphabet)
+}
+
+func TestPseudorandomString(t *testing.T) {
+	testRandomString(t, security.PseudorandomString)
+}
+
+func TestPseudorandomStringWithAlphabet(t *testing.T) {
+	testRandomStringWithAlphabet(t, security.PseudorandomStringWithAlphabet)
+}
+
+// -------------------------------------------------------------------
+
+func testRandomStringWithAlphabet(t *testing.T, randomFunc func(n int, alphabet string) string) {
+	scenarios := []struct {
+		alphabet      string
+		expectPattern string
+	}{
+		{"0123456789_", `[0-9_]+`},
+		{"abcdef123", `[abcdef123]+`},
+		{"!@#$%^&*()", `[\!\@\#\$\%\^\&\*\(\)]+`},
+	}
+
+	for i, s := range scenarios {
+		t.Run(fmt.Sprintf("%d_%q", i, s.alphabet), func(t *testing.T) {
+			generated := make([]string, 0, 500)
+			length := 10
+
+			for j := 0; j < 500; j++ {
+				var run func(int)
+				run = func(attempt int) {
+					result := randomFunc(length, s.alphabet)
+
+					if len(result) != length {
+						t.Fatalf("(%d) Expected the length of the string to be %d, got %d", j, length, len(result))
+					}
+
+					reg := regexp.MustCompile(s.expectPattern)
+					if match := reg.MatchString(result); !match {
+						t.Fatalf("(%d) The generated string should have only %s characters, got %q", j, s.expectPattern, result)
+					}
+
+					if slices.Contains(generated, result) {
+						if attempt > 3 {
+							t.Fatalf("(%d) Repeating random string - found %q in %q", j, result, generated)
+						}
+
+						// rerun
+						run(attempt + 1)
+						return
+					}
+
+					generated = append(generated, result)
+				}
+
+				run(1)
+			}
+		})
+	}
+}
+
+func testRandomString(t *testing.T, randomFunc func(n int) string) {
+	generated := make([]string, 0, 500)
+	reg := regexp.MustCompile(`[a-zA-Z0-9]+`)
+	length := 10
+
+	for i := 0; i < 500; i++ {
+		var run func(int)
+		run = func(attempt int) {
+			result := randomFunc(length)
+
+			if len(result) != length {
+				t.Fatalf("(%d) Expected the length of the string to be %d, got %d", i, length, len(result))
+			}
+
+			if match := reg.MatchString(result); !match {
+				t.Fatalf("(%d) The generated string should have only [a-zA-Z0-9]+ characters, got %q", i, result)
+			}
+
+			if slices.Contains(generated, result) {
+				if attempt > 3 {
+					t.Fatalf("(%d) Repeating random string - found %q in \n%v", i, result, generated)
+				}
+
+				// rerun
+				run(attempt + 1)
+				return
+			}
+
+			generated = append(generated, result)
+		}
+
+		run(1)
+	}
+}

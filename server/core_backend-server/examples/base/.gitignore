@@ -1,0 +1,7 @@
+# ignore everything
+/*
+
+# exclude from the ignore filter
+!.gitignore
+!.env.example
+!main.go

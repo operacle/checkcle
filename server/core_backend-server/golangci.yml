@@ -1,0 +1,26 @@
+version: "2"
+run:
+  concurrency: 4
+  timeout: 10m
+linters:
+  default: none
+  enable:
+    - asasalint
+    - asciicheck
+    - gomodguard
+    - goprintffuncname
+    - govet
+    - ineffassign
+    - misspell
+    - nakedret
+    - nolintlint
+    - prealloc
+    - reassign
+    - staticcheck
+    - unconvert
+    - unused
+    - whitespace
+formatters:
+  enable:
+    - gofmt
+    - goimports

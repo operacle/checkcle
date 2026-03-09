@@ -1,0 +1,77 @@
+name: basebuild
+
+on:
+  pull_request:
+  push:
+    tags:        
+      - '*'
+
+jobs:
+  goreleaser:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        # Docker Hub image
+        image: postgres
+        env:
+          POSTGRES_USER: user
+          POSTGRES_PASSWORD: pass
+        ports:
+          - 6432:6432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      flags: ""
+    steps:
+      # re-enable auto-snapshot from goreleaser-action@v3
+      # (https://github.com/goreleaser/goreleaser-action-v4-auto-snapshot-example)
+      - if: ${{ !startsWith(github.ref, 'refs/tags/v') }}
+        run: echo "flags=--snapshot" >> $GITHUB_ENV
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install PostgreSQL client tools
+        run: sudo apt-get update && sudo apt-get install -y postgresql-client
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.17.0
+
+      - name: Set up Go
+        uses: actions/setup-go@v6
+        with:
+          go-version: '>=1.25.5'
+
+      # This step usually is not needed because the /ui/dist is pregenerated locally
+      # but its here to ensure that each release embeds the latest admin ui artifacts.
+      # If the artificats differs, a "dirty error" is thrown - https://goreleaser.com/errors/dirty/
+      - name: Build Admin dashboard UI
+        run: npm --prefix=./ui ci && npm --prefix=./ui run build
+
+      # Temporary disable as the types can have random generated identifiers making it non-deterministic.
+      #
+      # # Similar to the above, the jsvm types are pregenerated locally
+      # # but its here to ensure that it wasn't forgotten to be executed.
+      # - name: Generate jsvm types
+      #   run: go run ./plugins/jsvm/internal/types/types.go
+
+      - name: Run tests
+        run: go test ./...
+
+      - name: Run GoReleaser
+        uses: goreleaser/goreleaser-action@v6
+        with:
+          distribution: goreleaser
+          version: '~> v2'
+          args: release --clean ${{ env.flags }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,0 +1,20 @@
+/.vscode/
+.idea
+
+.DS_Store
+
+# goreleaser builds folder
+/.builds/
+
+# tests coverage
+coverage.out
+
+# plaintask todo files
+*.todo
+
+# generated markdown previews
+README.html
+CHANGELOG.html
+CHANGELOG_16_22.html
+CHANGELOG_8_15.html
+LICENSE.html

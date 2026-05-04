@@ -1,4 +1,4 @@
-import PocketBase from 'pocketbase';
+import PocketBase, { BaseAuthStore } from 'pocketbase';
 
 // Dynamically detect API base URL from current host (for use in browser)
 const dynamicBaseUrl =
@@ -28,8 +28,9 @@ export const setApiEndpoint = (endpoint: string): void => {
   }
 };
 
-// Initialize the PocketBase client with the current API URL
-export const pb = new PocketBase(getCurrentEndpoint());
+// Initialize the PocketBase client with an in-memory auth store so auth tokens
+// are not persisted in localStorage where XSS can trivially exfiltrate them.
+export const pb = new PocketBase(getCurrentEndpoint(), new BaseAuthStore());
 
 // Helper to check if user is authenticated
 export const isAuthenticated = () => {
@@ -39,28 +40,7 @@ export const isAuthenticated = () => {
 // Export the auth store for use in components
 export const authStore = pb.authStore;
 
-// Configure PocketBase to persist authentication between page reloads
+// Remove any auth tokens that may have been persisted by earlier versions.
 if (typeof window !== 'undefined') {
-  const storedAuthData = localStorage.getItem('pocketbase_auth');
-  if (storedAuthData) {
-    try {
-      const parsedData = JSON.parse(storedAuthData);
-      pb.authStore.save(parsedData.token, parsedData.model);
-    } catch (error) {
-      console.error('Failed to parse stored auth data:', error);
-      localStorage.removeItem('pocketbase_auth');
-    }
-  }
-
-  // Subscribe to authStore changes to persist authentication
-  pb.authStore.onChange(() => {
-    if (pb.authStore.isValid) {
-      localStorage.setItem('pocketbase_auth', JSON.stringify({
-        token: pb.authStore.token,
-        model: pb.authStore.model
-      }));
-    } else {
-      localStorage.removeItem('pocketbase_auth');
-    }
-  });
+  localStorage.removeItem('pocketbase_auth');
 }

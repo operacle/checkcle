@@ -18,6 +18,17 @@ export const publicTranslations: PublicTranslations = {
   notFoundDescription: "ទំព័រស្ថានភាពដែលបានស្នើរសុំមិនអាចរកឃើញ ឬមិនអាចចូលមើលជាសាធារណៈបាន។",
   goBack: "ត្រឡប់ក្រោយ",
   retry: "ព្យាយាមម្តងទៀត",
+
+  activeIncidents: "ឧប្បត្តិហេតុកំពុងដំណើរការ",
+  affectedLabel: "ផ្នែករងផលប៉ះពាល់",
+  incidentInvestigating: "កំពុងស៊ើបអង្កេត",
+  incidentIdentified: "បានកំណត់អត្តសញ្ញាណ",
+  incidentFoundRootCause: "បានរកឃើញមូលហេតុ",
+  incidentMonitoring: "កំពុងតាមដាន",
+
+  scheduledMaintenance: "ការថែទាំដែលបានកំណត់ពេល",
+  maintenanceScheduledStatus: "បានកំណត់ពេល",
+  maintenanceInProgress: "កំពុងដំណើរការ",
 };
 
 

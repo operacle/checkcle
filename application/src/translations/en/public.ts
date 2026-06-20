@@ -18,6 +18,17 @@ export const publicTranslations: PublicTranslations = {
   notFoundDescription: "The requested status page could not be found or is not publicly accessible.",
   goBack: "Go Back",
   retry: "Retry",
+
+  activeIncidents: "Active Incidents",
+  affectedLabel: "Affected",
+  incidentInvestigating: "Investigating",
+  incidentIdentified: "Identified",
+  incidentFoundRootCause: "Root cause found",
+  incidentMonitoring: "Monitoring",
+
+  scheduledMaintenance: "Scheduled Maintenance",
+  maintenanceScheduledStatus: "Scheduled",
+  maintenanceInProgress: "In progress",
 };
 
 

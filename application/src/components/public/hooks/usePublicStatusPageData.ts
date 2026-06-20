@@ -3,16 +3,21 @@ import { useState, useEffect } from 'react';
 import { OperationalPageRecord } from '@/types/operational.types';
 import { StatusPageComponentRecord } from '@/types/statusPageComponents.types';
 import { Service, UptimeData } from '@/types/service.types';
+import { IncidentItem } from '@/services/incident/types';
+import { MaintenanceItem } from '@/services/types/maintenance.types';
 import { operationalPageService } from '@/services/operationalPageService';
 import { statusPageComponentsService } from '@/services/statusPageComponentsService';
 import { serviceService } from '@/services/serviceService';
 import { uptimeService } from '@/services/uptimeService';
+import { publicStatusService } from '@/services/publicStatusService';
 
 export const usePublicStatusPageData = (slug: string | undefined) => {
   const [page, setPage] = useState<OperationalPageRecord | null>(null);
   const [components, setComponents] = useState<StatusPageComponentRecord[]>([]);
   const [services, setServices] = useState<Service[]>([]);
   const [uptimeData, setUptimeData] = useState<Record<string, UptimeData[]>>({});
+  const [incidents, setIncidents] = useState<IncidentItem[]>([]);
+  const [maintenance, setMaintenance] = useState<MaintenanceItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -85,9 +90,20 @@ export const usePublicStatusPageData = (slug: string | undefined) => {
         });
         setUptimeData(uptimeMap);
        // console.log('Uptime data set successfully');
-        
+
+        // Fetch active incidents and upcoming maintenance for this page
+        const serviceIds = pageComponents
+          .map(component => component.service_id)
+          .filter((id): id is string => Boolean(id));
+        const [activeIncidents, upcomingMaintenance] = await Promise.all([
+          publicStatusService.getActiveIncidents(foundPage.id, serviceIds),
+          publicStatusService.getUpcomingMaintenance(foundPage.id),
+        ]);
+        setIncidents(activeIncidents);
+        setMaintenance(upcomingMaintenance);
+
        // console.log('All data fetched successfully');
-        
+
       } catch (err) {
        // console.error('Error fetching public page:', err);
         setError(`Failed to load status page: ${err}`);
@@ -104,6 +120,8 @@ export const usePublicStatusPageData = (slug: string | undefined) => {
     components,
     services,
     uptimeData,
+    incidents,
+    maintenance,
     loading,
     error
   };

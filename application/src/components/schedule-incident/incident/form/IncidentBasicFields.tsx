@@ -12,8 +12,16 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { useQuery } from '@tanstack/react-query';
 import { userService } from '@/services/userService';
+import { serviceService } from '@/services/serviceService';
 import { Badge } from '@/components/ui/badge';
 import { X, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -48,6 +56,13 @@ export const IncidentBasicFields: React.FC = () => {
       }
     },
     staleTime: 300000 // Cache for 5 minutes
+  });
+
+  // Fetch uptime services for the affected-service dropdown
+  const { data: services = [] } = useQuery({
+    queryKey: ['services'],
+    queryFn: serviceService.getServices,
+    staleTime: 300000,
   });
 
   // Add user to assigned_to
@@ -119,9 +134,27 @@ export const IncidentBasicFields: React.FC = () => {
         render={({ field }) => (
           <FormItem>
             <FormLabel>{t('serviceId')}</FormLabel>
-            <FormControl>
-              <Input placeholder={t('enterServiceId')} {...field} />
-            </FormControl>
+            <Select value={field.value || undefined} onValueChange={field.onChange}>
+              <FormControl>
+                <SelectTrigger>
+                  <SelectValue placeholder={t('selectUptimeService')} />
+                </SelectTrigger>
+              </FormControl>
+              <SelectContent>
+                {services.map((service) => (
+                  <SelectItem key={service.id} value={service.id}>
+                    <div className="flex items-center gap-2">
+                      <div className={`w-2 h-2 rounded-full ${
+                        service.status === 'up' ? 'bg-green-500' :
+                        service.status === 'down' ? 'bg-red-500' :
+                        'bg-yellow-500'
+                      }`} />
+                      {service.name}
+                    </div>
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
             <FormMessage />
           </FormItem>
         )}

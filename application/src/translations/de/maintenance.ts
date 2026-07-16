@@ -1,3 +1,4 @@
+
 import { MaintenanceTranslations } from '../types/maintenance';
 
 export const maintenanceTranslations: MaintenanceTranslations = {
@@ -77,4 +78,12 @@ export const maintenanceTranslations: MaintenanceTranslations = {
   selectNotificationChannel: 'Benachrichtigungskanal hinzufügen',
   enableNotificationsFirst: 'Aktivieren Sie zuerst Benachrichtigungen, um einen Kanal auszuwählen',
   updateMaintenance: 'Wartung aktualisieren',
+  loginToViewProfile: 'Bitte melden Sie sich an, um Ihr Profil anzuzeigen',
+  goToLogin: 'Zum Login',
+  loadingUserData: 'Benutzerdaten werden geladen...',
+  retry: 'Erneut versuchen',
+  loadingServerData: 'Serverdaten werden geladen...',
+  retrievingYourInformation: 'Bitte warten Sie, während wir Ihre Informationen abrufen...',
+  servicesPagination: '{startItem}-{endItem} von {totalItems} Diensten',
+  servicesPaginationNoService: '0 Dienste',
 };

@@ -18,6 +18,19 @@ export interface PublicTranslations {
   notFoundDescription: string;
   goBack: string;
   retry: string;
+
+  // IncidentsSection
+  activeIncidents: string;
+  affectedLabel: string;
+  incidentInvestigating: string;
+  incidentIdentified: string;
+  incidentFoundRootCause: string;
+  incidentMonitoring: string;
+
+  // MaintenanceSection
+  scheduledMaintenance: string;
+  maintenanceScheduledStatus: string;
+  maintenanceInProgress: string;
 }
 
 

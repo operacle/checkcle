@@ -6,6 +6,8 @@ import { RefreshCw, AlertCircle } from 'lucide-react';
 import { usePublicStatusPageData } from './hooks/usePublicStatusPageData';
 import { StatusPageHeader } from './StatusPageHeader';
 import { CurrentStatusSection } from './CurrentStatusSection';
+import { IncidentsSection } from './IncidentsSection';
+import { MaintenanceSection } from './MaintenanceSection';
 import { ComponentsStatusSection } from './ComponentsStatusSection';
 import { OverallUptimeSection } from './OverallUptimeSection';
 import { PublicStatusPageFooter } from './PublicStatusPageFooter';
@@ -16,7 +18,7 @@ export const PublicStatusPage = () => {
   const { slug } = useParams<{ slug: string }>();
 //  console.log('PublicStatusPage - slug from params:', slug);
   
-  const { page, components, services, uptimeData, loading, error } = usePublicStatusPageData(slug);
+  const { page, components, services, uptimeData, incidents, maintenance, loading, error } = usePublicStatusPageData(slug);
   const [lastUpdated, setLastUpdated] = useState(new Date());
 
   // Auto-refresh every 30 seconds
@@ -105,6 +107,12 @@ export const PublicStatusPage = () => {
 
       {/* Main Content */}
       <main className="max-w-4xl mx-auto px-4 py-8">
+        {/* Active Incidents */}
+        <IncidentsSection incidents={incidents} services={services} />
+
+        {/* Scheduled Maintenance */}
+        <MaintenanceSection maintenance={maintenance} />
+
         {/* Current Status */}
         <CurrentStatusSection page={page} components={components} services={services} />
 

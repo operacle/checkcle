@@ -1,0 +1,32 @@
+
+import { CommonTranslations } from '../types/common';
+
+export const commonTranslations: CommonTranslations = {
+  welcome: "Witamy",
+  logout: "Wyloguj",
+  language: "Język",
+  english: "Angielski",
+  khmer: "Khmerski",
+  german: "Niemiecki",
+  korean: "Koreański",
+  japanese: "Japoński",
+  simplifiedChinese: "Chiński prosty",
+  goodMorning: "Dzień dobry",
+  goodAfternoon: "Dzień dobry",
+  goodEvening: "Dobry wieczór",
+  profile: "Profile",
+  settings: "Ustawienia",
+  documentation: "Dokumentacja",
+  notifications: "Powiadomienia",
+  close: "Zamknij",
+  cancel: "Anuluj",
+  view: "Pogląd",
+  edit: "Edytuj",
+  delete: "Usuń",
+  status: "Status",
+  time: "Czas",
+  title: "Tytuł",
+  description: "Opis",
+  success: "Sukces",
+  error: "Błąd",
+};

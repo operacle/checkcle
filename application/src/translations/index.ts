@@ -1,14 +1,16 @@
 import enTranslations from './en';
+import plTranslations from './pl';
 import kmTranslations from './km';
 import deTranslations from './de';
 import koTranslations from './ko';
 import jaTranslations from './ja';
 import zhcnTranslations from './zhcn';
 
-export type Language = "en" | "km" | "de" | "ko" | "ja" | "zhcn";
+export type Language = "en" | "pl" | "km" | "de" | "ko" | "ja" | "zhcn";
 
 export const translations = {
   en: enTranslations,
+  pl: plTranslations,
   km: kmTranslations,
   de: deTranslations,
   ko: koTranslations,

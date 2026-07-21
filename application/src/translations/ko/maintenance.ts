@@ -78,4 +78,12 @@ export const maintenanceTranslations: MaintenanceTranslations = {
   selectNotificationChannel: '알림 채널 추가',
   enableNotificationsFirst: '채널을 선택하려면 먼저 알림을 활성화하세요',
   updateMaintenance: '유지보수 업데이트',
+  goToLogin: '로그인으로 이동',
+  loadingServerData: '서버 데이터를 불러오는 중...',
+  loadingUserData: '사용자 데이터를 불러오는 중...',
+  loginToViewProfile: '프로필을 보려면 로그인하세요',
+  retrievingYourInformation: '정보를 가져오는 중입니다. 잠시 기다려 주세요...',
+  retry: '다시 시도',
+  servicesPagination: '{startItem}-{endItem} / {totalItems} 서비스',
+  servicesPaginationNoService: '0 서비스',
 };
